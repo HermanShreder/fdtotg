@@ -36,7 +36,7 @@ s.parentNode.insertBefore(t,s);
 }(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '1575630377491379');
 fbq('track', 'PageView');
-<\\/script>
+</script>
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=1575630377491379&ev=PageView&noscript=1"
 /></noscript>
@@ -120,7 +120,7 @@ document.getElementById('tgBtn').addEventListener('click', function(e) {
     trackTG('TELEGRAM_BUTTON_CLICK');
     setTimeout(function() { executeRedirect(); }, 300);
 });
-<\\/script>
+</script>
 </body>
 </html>`;
 
@@ -181,7 +181,7 @@ if (device === 'iOS' || device === 'Android') {
     trackTG('DESKTOP_REDIRECT_START');
     setTimeout(function() { window.location.replace(TG_CHANNEL_URL); }, 400);
 }
-<\\/script>
+</script>
 </body>
 </html>`;
 
