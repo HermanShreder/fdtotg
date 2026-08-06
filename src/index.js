@@ -15,7 +15,7 @@ const BOT_UA = ['facebookexternalhit', 'facebot', 'facebookbot', 'meta-externala
 const BOT_IPS_V4 = ['31.13.', '66.220.', '69.63.', '157.240.', '173.252.', '179.60.', '185.60.216.', '185.89.', '172.64.', '172.65.', '172.66.', '172.67.', '172.68.', '172.69.', '172.70.', '172.71.', '104.16.', '104.17.', '104.18.', '104.19.', '104.20.', '104.21.', '104.22.', '104.23.', '104.24.', '104.25.', '54.162.', '54.198.', '52.200.', '52.204.'];
 const BOT_IPS_V6 = ['2a03:2880:', '2620:10d:c0', '2600:1f', '2600:9000:', '2406:da', '2607:f8b0:'];
 
-// --- 1. ЛЕНДИНГ (ИСПРАВЛЕННЫЙ) ---
+// --- 1. ЛЕНДИНГ ---
 const INDEX_HTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,12 +76,18 @@ body { display: flex; flex-direction: column; align-items: center; justify-conte
 <script>
 var EXTERNAL_PAGE_URL = '/external.html';
 
-var visitorId = localStorage.getItem('visitor_id');
-if (!visitorId) {
-    visitorId = (typeof crypto !== 'undefined' && crypto.randomUUID) 
-        ? crypto.randomUUID() 
-        : 'v-' + Math.random().toString(36).substring(2) + Date.now().toString(36);
-    localStorage.setItem('visitor_id', visitorId);
+var visitorId = 'unknown';
+try {
+    visitorId = localStorage.getItem('visitor_id');
+    if (!visitorId) {
+        visitorId = (typeof crypto !== 'undefined' && crypto.randomUUID) 
+            ? crypto.randomUUID() 
+            : 'v-' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+        localStorage.setItem('visitor_id', visitorId);
+    }
+} catch(e) {
+    // Фоллбэк, если localStorage заблокирован (например, Safari Incognito)
+    visitorId = 'v-' + Math.random().toString(36).substring(2) + Date.now().toString(36);
 }
 
 var ua = navigator.userAgent || '';
@@ -190,7 +196,7 @@ document.getElementById('tgBtn').addEventListener('click', function(e) {
 </body>
 </html>`;
 
-// --- 2. EXTERNAL (РЕДИРЕКТ В КАНАЛ, ИСПРАВЛЕННЫЙ) ---
+// --- 2. EXTERNAL ---
 const EXTERNAL_HTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -215,7 +221,9 @@ var tgScheme = 'tg://join?invite=' + TG_INVITE_CODE;
 document.getElementById('openBtn').href = TG_CHANNEL_URL;
 
 var params = new URLSearchParams(location.search);
-var visitorId = params.get('v') || localStorage.getItem('visitor_id') || 'unknown';
+var visitorId = 'unknown';
+try { visitorId = params.get('v') || localStorage.getItem('visitor_id') || 'unknown'; } catch(e) {}
+
 var ua = navigator.userAgent || '';
 var device = /iPhone|iPad|iPod/i.test(ua) ? 'iOS' : (/Android/i.test(ua) ? 'Android' : 'Desktop');
 
@@ -268,7 +276,8 @@ window.addEventListener('pagehide', function() { clearTimeout(fallbackTimer); })
 if (device === 'iOS' || device === 'Android') {
     trackTG('EXTERNAL_PAGE_LOADED', JSON.stringify(envData));
     trackTG('TG_CHANNEL_REDIRECT_START');
-    setTimeout(function() { window.location.replace(TG_CHANNEL_URL); }, 400);
+    // Увеличили задержку до 800мс, чтобы Android Chrome 100% успел загрузить страницу
+    setTimeout(function() { window.location.replace(TG_CHANNEL_URL); }, 800);
     fallbackTimer = setTimeout(function() { 
         if (document.visibilityState === 'visible') { 
             trackTG('TG_LINK_FAILED_SHOW_BUTTON'); 
@@ -278,7 +287,7 @@ if (device === 'iOS' || device === 'Android') {
 } else {
     trackTG('EXTERNAL_PAGE_LOADED', JSON.stringify(envData));
     trackTG('DESKTOP_REDIRECT_START');
-    setTimeout(function() { window.location.replace(TG_CHANNEL_URL); }, 400);
+    setTimeout(function() { window.location.replace(TG_CHANNEL_URL); }, 800);
 }
 </script>
 </body>
@@ -306,12 +315,22 @@ async function sendTG(text) {
     });
 }
 
-async function geoIP(ip) {
+async function geoIP(ip, request) {
+    // Максимально быстрый ответ от встроенной системы Cloudflare
+    if (request && request.cf) {
+        return {
+            country: request.cf.country || '?',
+            city: request.cf.city || '?',
+            isp: request.cf.asOrganization || '?'
+        };
+    }
+
     if (!ip || ip === '127.0.0.1') return { country: '?', city: '?', isp: '?' };
     try {
-        const r = await fetch('http://ip-api.com/json/' + ip + '?fields=status,country,city,isp');
+        // HTTPS API, чтобы избежать TypeError в Cloudflare
+        const r = await fetch('https://ipwho.is/' + ip);
         const d = await r.json();
-        if (d.status === 'success') return { country: d.country, city: d.city, isp: d.isp };
+        if (d.success) return { country: d.country, city: d.city, isp: d.connection?.isp || '?' };
     } catch (e) {}
     return { country: '?', city: '?', isp: '?' };
 }
@@ -365,7 +384,8 @@ export default {
 
             const classification = classify(ua, ip);
             const type = classification === 'bot' ? '🤖 БОТ' : '👤 ЧЕЛОВЕК';
-            const geo = await geoIP(ip);
+            // Передаем request, чтобы использовать request.cf
+            const geo = await geoIP(ip, request);
 
             if (classification === 'human') {
                 if (!visitors.has(visitor)) {
@@ -406,9 +426,9 @@ export default {
                     '🎯 <b>Конверсия Bridge → TG: ' + conversion + '%</b>\n\n' +
                     '🕐 ' + new Date(stats.lastReset).toISOString().slice(0, 19) + ' → ' + new Date(now).toISOString().slice(0, 19);
 
-                try { await sendTG(summary); } catch (e) {}
+                // Отправляем асинхронно, чтобы не задерживать ответ пользователю
+                try { ctx.waitUntil(sendTG(summary)); } catch (e) {}
 
-                // Сбрасываем статистику
                 stats = { humans: 0, bots: 0, total: 0, uniqueVisits: 0, bridgeOpen: 0, tgOpen: 0, tgFail: 0, leadQueued: 0, bridgeExit: 0, manualClick: 0, lastReset: now };
                 visitors.clear();
             }
@@ -425,11 +445,13 @@ export default {
             msg += '\n📐 ' + screen;
             msg += '\n🗣 ' + lang;
             msg += '\n🔗 ' + ref;
-            if (details) msg += '\n📝 ' + details;
-            msg += '\n🆔 ' + visitor.substring(0, 8) + '...';
+            // Обрезка, чтобы избежать "400 Bad Request: message is too long" от Telegram API
+            if (details) msg += '\n📝 ' + String(details).substring(0, 1500);
+            msg += '\n🆔 ' + String(visitor).substring(0, 8) + '...';
             msg += '\n🕐 ' + new Date().toISOString().slice(0, 19);
 
-            try { await sendTG(msg); } catch (e) {}
+            // Отправляем асинхронно через ctx.waitUntil
+            try { ctx.waitUntil(sendTG(msg)); } catch (e) {}
 
             return new Response(null, { status: 204, headers: corsHeaders });
 
