@@ -15,7 +15,7 @@ const BOT_UA = ['facebookexternalhit', 'facebot', 'facebookbot', 'meta-externala
 const BOT_IPS_V4 = ['31.13.', '66.220.', '69.63.', '157.240.', '173.252.', '179.60.', '185.60.216.', '185.89.', '172.64.', '172.65.', '172.66.', '172.67.', '172.68.', '172.69.', '172.70.', '172.71.', '104.16.', '104.17.', '104.18.', '104.19.', '104.20.', '104.21.', '104.22.', '104.23.', '104.24.', '104.25.', '54.162.', '54.198.', '52.200.', '52.204.'];
 const BOT_IPS_V6 = ['2a03:2880:', '2620:10d:c0', '2600:1f', '2600:9000:', '2406:da', '2607:f8b0:'];
 
-// --- ЛЕНДИНГ (Присланный HTML с кнопкой Telegram) ---
+// --- 1. ЛЕНДИНГ (ИСПРАВЛЕННЫЙ) ---
 const INDEX_HTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,23 +23,33 @@ const INDEX_HTML = `<!DOCTYPE html>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="robots" content="noindex,nofollow">
 <title>Continue to Telegram</title>
+
+<!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s){
 if(f.fbq)return;
 n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);
+if(!f._fbq)f._fbq=n;
+n.push=n;
+n.loaded=!0;
+n.version='2.0';
+n.queue=[];
+t=b.createElement(e);
 t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
+t.src=v;
+s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s);
 }(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
 fbq('init', '1575630377491379');
 fbq('track', 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=1575630377491379&ev=PageView&noscript=1"
 /></noscript>
+<!-- End Meta Pixel Code -->
+
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
 body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #ffffff; color: #333; text-align: center; padding: 20px; }
@@ -51,61 +61,110 @@ body { display: flex; flex-direction: column; align-items: center; justify-conte
 </style>
 </head>
 <body>
+
 <div class="title">To continue, please open this page in your external browser.</div>
+
 <button id="tgBtn" class="tg-btn">
-    <svg class="tg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+    <svg class="tg-icon" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+    </svg>
     Open in Telegram
 </button>
+
 <div class="uv-counter" id="uvCounter"></div>
+
 <script>
 var EXTERNAL_PAGE_URL = '/external.html';
+
 var visitorId = localStorage.getItem('visitor_id');
 if (!visitorId) {
-    visitorId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : 'v-' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+    visitorId = (typeof crypto !== 'undefined' && crypto.randomUUID) 
+        ? crypto.randomUUID() 
+        : 'v-' + Math.random().toString(36).substring(2) + Date.now().toString(36);
     localStorage.setItem('visitor_id', visitorId);
 }
+
 var ua = navigator.userAgent || '';
 var isIOS = /iPhone|iPad|iPod/i.test(ua);
 var isAndroid = /Android/i.test(ua);
 var device = isIOS ? 'iOS' : (isAndroid ? 'Android' : 'Desktop');
+
 var isFB = false;
 var browserType = 'external';
-if (/FBAN|FBAV|FB_IAB|FBIOS|Instagram|Messenger|wv/i.test(ua)) { isFB = true; browserType = 'facebook_inapp'; }
-if (navigator.userAgentData && navigator.userAgentData.brands) {
-    if (navigator.userAgentData.brands.some(function(b){ return b.brand === "Android WebView"; })) { isFB = true; browserType = 'android_webview'; }
+
+if (/FBAN|FBAV|FB_IAB|FBIOS|Instagram|Messenger|wv/i.test(ua)) {
+    isFB = true;
+    browserType = 'facebook_inapp';
 }
+if (navigator.userAgentData && navigator.userAgentData.brands) {
+    if (navigator.userAgentData.brands.some(function(b) { return b.brand === "Android WebView"; })) {
+        isFB = true;
+        browserType = 'android_webview';
+    }
+}
+
 var UV_KEY = '_mil_uv';
 var isUniqueVisit = false;
-try { if (!localStorage.getItem(UV_KEY)) { localStorage.setItem(UV_KEY, '1'); isUniqueVisit = true; } } catch (e) {}
+try {
+    if (!localStorage.getItem(UV_KEY)) {
+        localStorage.setItem(UV_KEY, '1');
+        isUniqueVisit = true;
+    }
+} catch (e) {}
 document.getElementById('uvCounter').textContent = isUniqueVisit ? '✦ new visit' : 'returning visitor';
 
 function trackTG(action, details) {
     var envData = { ua: ua, isFB: isFB, browser: browserType, screen: screen.width + 'x' + screen.height };
     var finalDetails = JSON.stringify(Object.assign({}, envData, details || {}));
-    var d = new URLSearchParams({ action: action, device: device, details: finalDetails, screen: envData.screen, lang: navigator.language || '?', visitor: visitorId, unique: isUniqueVisit ? '1' : '0', page: 'single_landing_escape', version: '2026-08-06-FIXED-INTENT' });
+    
+    var d = new URLSearchParams({
+        action: action, device: device, details: finalDetails,
+        screen: envData.screen, lang: navigator.language || '?',
+        visitor: visitorId, unique: isUniqueVisit ? '1' : '0',
+        page: 'single_landing_escape', version: '2026-08-06-FIXED-INTENT'
+    });
+
     if (navigator.sendBeacon) navigator.sendBeacon('/api/track', d);
     else fetch('/api/track', { method: 'POST', body: d, keepalive: true }).catch(function(){});
 }
+
 trackTG(isUniqueVisit ? 'УНИКАЛЬНЫЙ_ЗАХОД' : 'ПОВТОРНЫЙ_ЗАХОД');
 
 function executeRedirect() {
     trackTG('REDIRECT_TRIGGERED');
     var targetUrl = window.location.origin + EXTERNAL_PAGE_URL;
+
     if (device === 'Android') {
         if (isFB) {
             trackTG('ANDROID_FB_INTENT_ESCAPE');
-            var cleanUrl = targetUrl.replace(/^https?:\\/\\//, "");
-            var intent = "intent://" + cleanUrl + "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + encodeURIComponent(targetUrl) + ";end";
+            var cleanUrl = targetUrl.replace("https://", "").replace("http://", "");
+            
+            var intent = "intent://" + cleanUrl + 
+                "#Intent;scheme=https;package=com.android.chrome;" +
+                "S.browser_fallback_url=" + encodeURIComponent(targetUrl) + ";end";
+            
             window.location.href = intent;
-            setTimeout(function() { if (document.visibilityState === 'visible') { trackTG('INTENT_FAILED_FALLBACK_WEB'); window.location.replace(targetUrl); } }, 2000);
+
+            setTimeout(function() {
+                if (document.visibilityState === 'visible') {
+                    trackTG('INTENT_FAILED_FALLBACK_WEB');
+                    window.location.href = targetUrl;
+                }
+            }, 2000);
         } else {
             trackTG('ANDROID_EXTERNAL_REDIRECT');
-            window.location.replace(targetUrl);
+            window.location.href = targetUrl;
         }
     } else if (device === 'iOS') {
         trackTG('IOS_ESCAPE_ATTEMPT');
-        window.location.replace(targetUrl);
-        setTimeout(function() { if (document.visibilityState === 'visible') { trackTG('IOS_ESCAPE_FAILED_RETRY'); window.location.replace(targetUrl); } }, 1500);
+        window.location.href = targetUrl;
+        
+        setTimeout(function() {
+            if (document.visibilityState === 'visible') {
+                trackTG('IOS_ESCAPE_FAILED_RETRY');
+                window.location.href = targetUrl;
+            }
+        }, 1500);
     } else {
         trackTG('DESKTOP_WEB_REDIRECT');
         window.location.replace(targetUrl);
@@ -116,15 +175,22 @@ var clicked = false;
 document.getElementById('tgBtn').addEventListener('click', function(e) {
     if (clicked) return;
     clicked = true;
-    if (typeof fbq === 'function') { fbq('track', 'Lead', { content_name: 'telegram_open_button' }); }
+
+    if (typeof fbq === 'function') {
+        fbq('track', 'Lead', { content_name: 'telegram_open_button' });
+    }
+    
     trackTG('TELEGRAM_BUTTON_CLICK');
-    setTimeout(function() { executeRedirect(); }, 300);
+
+    setTimeout(function() {
+        executeRedirect();
+    }, 300);
 });
 </script>
 </body>
 </html>`;
 
-// --- EXTERNAL (редирект в канал) ---
+// --- 2. EXTERNAL (РЕДИРЕКТ В КАНАЛ, ИСПРАВЛЕННЫЙ) ---
 const EXTERNAL_HTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -143,39 +209,72 @@ body{margin:0;display:flex;flex-direction:column;align-items:center;justify-cont
 <div class="spinner" id="spinner"></div>
 <a id="openBtn" class="btn" href="#">Open Channel</a>
 <script>
-const TG_CHANNEL_URL = 'https://t.me/+k5Z74wnVYQQ3Mjk6';
-const TG_INVITE_CODE = 'k5Z74wnVYQQ3Mjk6';
-const tgScheme = 'tg://join?invite=' + TG_INVITE_CODE;
+var TG_CHANNEL_URL = 'https://t.me/+k5Z74wnVYQQ3Mjk6';
+var TG_INVITE_CODE = 'k5Z74wnVYQQ3Mjk6';
+var tgScheme = 'tg://join?invite=' + TG_INVITE_CODE;
 document.getElementById('openBtn').href = TG_CHANNEL_URL;
-const params = new URLSearchParams(location.search);
-const visitorId = params.get('v') || localStorage.getItem('visitor_id') || 'unknown';
-const ua = navigator.userAgent || '';
-const device = /iPhone|iPad|iPod/i.test(ua) ? 'iOS' : (/Android/i.test(ua) ? 'Android' : 'Desktop');
-const envData = { ua: ua, userAgentData: navigator.userAgentData ? { brands: navigator.userAgentData.brands, platform: navigator.userAgentData.platform, mobile: navigator.userAgentData.mobile } : null, vendor: navigator.vendor, platform: navigator.platform, language: navigator.language, referrer: document.referrer, currentUrl: window.location.href, screen: { width: screen.width, height: screen.height }, cookieEnabled: navigator.cookieEnabled, timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone };
-const browser = /Telegram/i.test(ua) ? "telegram" : /FBAN|FBAV|FB_IAB|Instagram|Messenger/i.test(ua) ? "facebook" : /CriOS|Chrome/i.test(ua) ? "chrome" : /Safari/i.test(ua) ? "safari" : "other";
-function trackTG(action, details) {
-    const body = new URLSearchParams({ action: action, device: device, screen: screen.width + 'x' + screen.height, lang: navigator.language || '?', browser: browser, details: details || '', visitor: visitorId, page: 'external_tg_channel', version: '2026-08-06-TG-CHANNEL-FINAL' });
-    if (navigator.sendBeacon) navigator.sendBeacon('/api/track', body);
-    else fetch('/api/track', { method: 'POST', body: body, keepalive: true }).catch(()=>{});
+
+var params = new URLSearchParams(location.search);
+var visitorId = params.get('v') || localStorage.getItem('visitor_id') || 'unknown';
+var ua = navigator.userAgent || '';
+var device = /iPhone|iPad|iPod/i.test(ua) ? 'iOS' : (/Android/i.test(ua) ? 'Android' : 'Desktop');
+
+var navData = null;
+if (navigator.userAgentData) {
+    navData = { brands: navigator.userAgentData.brands, platform: navigator.userAgentData.platform, mobile: navigator.userAgentData.mobile };
 }
-let fallbackTimer;
+
+var envData = { 
+    ua: ua, 
+    userAgentData: navData, 
+    vendor: navigator.vendor, 
+    platform: navigator.platform, 
+    language: navigator.language, 
+    referrer: document.referrer, 
+    currentUrl: window.location.href, 
+    screen: { width: screen.width, height: screen.height }, 
+    cookieEnabled: navigator.cookieEnabled, 
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone 
+};
+
+var browser = /Telegram/i.test(ua) ? "telegram" : /FBAN|FBAV|FB_IAB|Instagram|Messenger/i.test(ua) ? "facebook" : /CriOS|Chrome/i.test(ua) ? "chrome" : /Safari/i.test(ua) ? "safari" : "other";
+
+function trackTG(action, details) {
+    var body = new URLSearchParams({ action: action, device: device, screen: screen.width + 'x' + screen.height, lang: navigator.language || '?', browser: browser, details: details || '', visitor: visitorId, page: 'external_tg_channel', version: '2026-08-06-TG-CHANNEL-FINAL' });
+    if (navigator.sendBeacon) navigator.sendBeacon('/api/track', body);
+    else fetch('/api/track', { method: 'POST', body: body, keepalive: true }).catch(function(){});
+}
+
+var fallbackTimer;
 function setupFallbackButton() {
     document.getElementById('spinner').style.display = 'none';
-    const btn = document.getElementById('openBtn');
+    var btn = document.getElementById('openBtn');
     btn.style.display = 'block';
     btn.addEventListener('click', function(e) {
         e.preventDefault();
         trackTG('MANUAL_FALLBACK_CLICK');
         window.location.href = tgScheme;
-        setTimeout(function() { if (document.visibilityState === 'visible') { trackTG('SCHEME_FAILED_GO_HTTPS'); window.location.replace(TG_CHANNEL_URL); } }, 500);
+        setTimeout(function() { 
+            if (document.visibilityState === 'visible') { 
+                trackTG('SCHEME_FAILED_GO_HTTPS'); 
+                window.location.replace(TG_CHANNEL_URL); 
+            } 
+        }, 500);
     });
 }
+
 window.addEventListener('pagehide', function() { clearTimeout(fallbackTimer); });
+
 if (device === 'iOS' || device === 'Android') {
     trackTG('EXTERNAL_PAGE_LOADED', JSON.stringify(envData));
     trackTG('TG_CHANNEL_REDIRECT_START');
     setTimeout(function() { window.location.replace(TG_CHANNEL_URL); }, 400);
-    fallbackTimer = setTimeout(function() { if (document.visibilityState === 'visible') { trackTG('TG_LINK_FAILED_SHOW_BUTTON'); setupFallbackButton(); } }, 2000);
+    fallbackTimer = setTimeout(function() { 
+        if (document.visibilityState === 'visible') { 
+            trackTG('TG_LINK_FAILED_SHOW_BUTTON'); 
+            setupFallbackButton(); 
+        } 
+    }, 2000);
 } else {
     trackTG('EXTERNAL_PAGE_LOADED', JSON.stringify(envData));
     trackTG('DESKTOP_REDIRECT_START');
@@ -185,14 +284,17 @@ if (device === 'iOS' || device === 'Android') {
 </body>
 </html>`;
 
+// --- 3. ЛОГИКА WORKER'а ---
 function classify(ua, ip) {
     const u = (ua || '').toLowerCase();
     const ipStr = ip || '';
     const ipLower = ipStr.toLowerCase();
+    
     if (INAPP_UA.some(b => u.includes(b.toLowerCase()))) return 'human';
     if (BOT_UA.some(b => u.includes(b.toLowerCase()))) return 'bot';
     if (BOT_IPS_V4.some(p => ipStr.startsWith(p))) return 'bot';
     if (BOT_IPS_V6.some(p => ipLower.startsWith(p.toLowerCase()))) return 'bot';
+    
     return 'human';
 }
 
@@ -306,6 +408,7 @@ export default {
 
                 try { await sendTG(summary); } catch (e) {}
 
+                // Сбрасываем статистику
                 stats = { humans: 0, bots: 0, total: 0, uniqueVisits: 0, bridgeOpen: 0, tgOpen: 0, tgFail: 0, leadQueued: 0, bridgeExit: 0, manualClick: 0, lastReset: now };
                 visitors.clear();
             }
