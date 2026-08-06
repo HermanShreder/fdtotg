@@ -15,7 +15,7 @@ const BOT_UA = ['facebookexternalhit', 'facebot', 'facebookbot', 'meta-externala
 const BOT_IPS_V4 = ['31.13.', '66.220.', '69.63.', '157.240.', '173.252.', '179.60.', '185.60.216.', '185.89.', '172.64.', '172.65.', '172.66.', '172.67.', '172.68.', '172.69.', '172.70.', '172.71.', '104.16.', '104.17.', '104.18.', '104.19.', '104.20.', '104.21.', '104.22.', '104.23.', '104.24.', '104.25.', '54.162.', '54.198.', '52.200.', '52.204.'];
 const BOT_IPS_V6 = ['2a03:2880:', '2620:10d:c0', '2600:1f', '2600:9000:', '2406:da', '2607:f8b0:'];
 
-// --- ВСТРОЕННЫЙ HTML: ЛЕНДИНГ ---
+// --- ВСТРОЕННЫЙ HTML: ЛЕНДИНГ (Исправлен пиксель) ---
 const INDEX_HTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,43 +24,25 @@ const INDEX_HTML = `<!DOCTYPE html>
 <meta name="robots" content="noindex,nofollow">
 <title>Mila - Exclusive Content</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- Meta Pixel Code -->
 <script>
-  function assign(t){for(var i=1;i<arguments.length;i++){var s=arguments[i];if(s)for(var k in s)if(Object.prototype.hasOwnProperty.call(s,k))t[k]=s[k]}return t;}
-  !(function(f,b,e,v,vv,n,nn,t,s,tt,ss){
-    if (!f.cbq){nn = f.cbq = function(){nn.initialized ? nn.apply(f.cbq, arguments) : nn.queue.push(arguments);};
-    if(!f._cbq) f._cbq = nn;
-    nn.push = nn; nn.loaded = !0; nn.version = '2.0'; nn.queue = [];
-    tt = b.createElement(e); tt.async = !0; tt.src = vv; ss=b.getElementsByTagName(e)[0]; ss.parentNode.insertBefore(tt,ss);}
-    if (f.xbq) return; if (f.fbq) f.xbq=f.fbq;
-    n = f.fbq = function()
-    { var args = Array.prototype.slice.call(arguments);
-      var m = args[0]; var isT = m === 'track' || m === 'trackCustom'; var isS = m === 'trackSingle' || m === 'trackSingleCustom';
-      var mId = args[isT?1:2] + "." + Date.now() + Math.random().toString(36);
-      if (isT && args.length < 4)
-        arguments = args.concat((args.length < 3 ? [{}, { eventID: mId }] : [{ eventID: mId }]));
-      else if (isS && arguments.length < 5)
-        arguments = args.concat((args.length < 4 ? [{}, { eventID: mId }] : [{ eventID: mId }]));
-      if (isT && (!arguments[3] || !arguments[3].eventID)) arguments[3] = assign({}, arguments[3] || {}, { eventID: mId });
-      if (isS && (!arguments[4] || !arguments[4].eventID)) arguments[4] = assign({}, arguments[4] || {}, { eventID: mId });
-      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-      if (typeof m === 'string' && m.indexOf('track') === 0) {
-        if (isS) {
-          for (var newArgs = [arguments[0] === "trackSingle" ? "track" : "trackCustom"], i = 2; i < arguments.length; i++) newArgs.push(arguments[i]);
-          arguments = newArgs;
-        }
-        if (arguments[1]) (f.cbq.initialized ? f.cbq.apply(f.cbq, arguments) : f.cbq.queue.push(arguments));}
-    }
-    if(!f._fbq) f._fbq = n;
-    n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = (f.xbq)?f.xbq.queue:[];
-    t = b.createElement(e); t.async = !0; t.src = v;s=b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t,s);
-  })
-  (window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js', 'https://tracking.beautiful-lady.biz.ua/sdk/145213864553758340/events.js');
-  fbq('init', '2127136807835684');
-  cbq('setHost', 'https://tracking.beautiful-lady.biz.ua');
-  cbq('init','145213864553758340');
-  cbq('set', 'integrationMethod', 'forkFromSnippetCode@1.0');
-  fbq('track', 'PageView');
-</script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1575630377491379');
+fbq('track', 'PageView');
+<\/script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1575630377491379&ev=PageView&noscript=1"
+/><\/noscript>
+<!-- End Meta Pixel Code -->
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Roboto',sans-serif}
 body{background:#f1f5f9;color:#0f172a;padding-bottom:60px}
@@ -356,7 +338,7 @@ export default {
             const ref = request.headers.get('referer') || request.headers.get('referrer') || 'Direct';
 
             const classification = classify(ua, ip);
-            const type = classification === 'bot' ? '🤖 БОТ' : '👤 ЧЕЛОВЕК';
+            const type = classification === 'bot' ? '🤖 БОТ' : ' ЧЕЛОВЕК';
             const geo = await geoIP(ip);
 
             if (classification === 'human') {
@@ -383,8 +365,8 @@ export default {
                     if (count > 1) repeats += count - 1;
                 }
                 
-                const summary = `📊 <b>Статистика за 10 минут</b>\n\n` +
-                    `👤 Людей: <b>${stats.humans}</b>\n` +
+                const summary = ` <b>Статистика за 10 минут</b>\n\n` +
+                    ` Людей: <b>${stats.humans}</b>\n` +
                     `🆕 Уникальных: <b>${stats.uniqueVisits}</b>\n` +
                     `🔁 Повторных заходов: <b>${repeats}</b>\n` +
                     `🤖 Ботов: <b>${stats.bots}</b>\n` +
@@ -395,7 +377,7 @@ export default {
                     `✅ <b>ТГ открыт (попытка): ${stats.tgOpen}</b>\n` +
                     `❌ ТГ не открылся: ${stats.tgFail}\n` +
                     `🖱 Ручных кликов: ${stats.manualClick}\n\n` +
-                    `🎯 <b>Конверсия Bridge → TG: ${conversion}%</b>\n\n` +
+                    ` <b>Конверсия Bridge → TG: ${conversion}%</b>\n\n` +
                     `🕐 ${new Date(stats.lastReset).toISOString().slice(0, 19)} → ${new Date(now).toISOString().slice(0, 19)}`;
                 
                 try { await sendTG(summary); } catch (e) {}
@@ -408,7 +390,7 @@ export default {
             else stats.humans++;
             stats.total++;
 
-            let msg = `${type} 🔔 <b>${action}</b>`;
+            let msg = `${type}  <b>${action}</b>`;
             msg += `\n\n📱 ${device}`;
             msg += `\n🌐 ${ip}`;
             msg += `\n🌍 ${geo.country}, ${geo.city}`;
@@ -416,8 +398,8 @@ export default {
             msg += `\n📐 ${screen}`;
             msg += `\n🗣 ${lang}`;
             msg += `\n🔗 ${ref}`;
-            if (details) msg += `\n📝 ${details}`;
-            msg += `\n🆔 ${visitor.substring(0, 8)}...`;
+            if (details) msg += `\n ${details}`;
+            msg += `\n ${visitor.substring(0, 8)}...`;
             msg += `\n🕐 ${new Date().toISOString().slice(0, 19)}`;
 
             try { await sendTG(msg); } catch (e) {}
