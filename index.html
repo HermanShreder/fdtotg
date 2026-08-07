@@ -7,7 +7,7 @@
 <title>Mila - Exclusive Content</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
-<!-- Signals Gateway Pixel + Meta Pixel Code -->
+<!-- Signals Gateway Pixel + Meta Pixel Code (Оставлен без изменений) -->
 <script>
   function assign(t){for(var i=1;i<arguments.length;i++){var s=arguments[i];if(s)for(var k in s)if(Object.prototype.hasOwnProperty.call(s,k))t[k]=s[k]}return t;}
   !(function(f,b,e,v,vv,n,nn,t,s,tt,ss){
@@ -129,18 +129,41 @@ body{background:#fff;color:#000;padding-bottom:60px}
 
 <div class="uv-counter" id="uvCounter"></div>
 
-<!-- Подключаем библиотеку для определения и выброса из InApp -->
-<script src="https://unpkg.com/@jhrunning/inappbrowserescaper/dist/browser/inappbrowserescaper.js"></script>
-
 <script>
-var ua = navigator.userAgent;
-var isIOS = /iPhone|iPad|iPod/i.test(ua);
-var isAndroid = /Android/i.test(ua);
-var device = isIOS ? 'iOS' : (isAndroid ? 'Android' : 'Desktop');
-var lib = window.InAppBrowserEscaper;
-var Det = lib ? lib.InAppBrowserDetector : null;
+// ЛОГИКА РЕДИРЕКТА ВЗЯТА ИЗ ПРЕДОСТАВЛЕННОГО КОДА
+let visitorId = localStorage.getItem('visitor_id');
+if (!visitorId) {
+    visitorId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+        ? crypto.randomUUID()
+        : 'v-' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+    localStorage.setItem('visitor_id', visitorId);
+}
 
-// Уникальные визиты
+const VERSION = '2026-08-01-BRIDGE-GOOGLECHROME';
+const EXTERNAL_URL = "/external.html?v=" + encodeURIComponent(visitorId);
+
+var ua = navigator.userAgent || '';
+var device = /iPhone|iPad|iPod/i.test(ua) ? 'iOS' : (/Android/i.test(ua) ? 'Android' : 'Desktop');
+var isFB = ua.includes("FBAN") || ua.includes("FBAV") || ua.includes("FB_IAB") || ua.includes("FBIOS") || ua.includes("Instagram") || ua.includes("Messenger");
+
+function trackTG(action, details) {
+    var d = new URLSearchParams({
+        action: action,
+        device: device,
+        details: details || '',
+        screen: screen.width + 'x' + screen.height,
+        lang: navigator.language || '?',
+        visitor: visitorId,
+        page: 'bridge',
+        version: VERSION,
+        browser: isFB ? 'inapp' : 'external'
+    });
+
+    if (navigator.sendBeacon) navigator.sendBeacon('/api/track', d);
+    else fetch('/api/track', { method: 'POST', body: d, keepalive: true }).catch(function(){});
+}
+
+// Учет уникальных посещений для визуала
 var UV_KEY = '_mil_uv';
 var isUniqueVisit = false;
 try {
@@ -151,83 +174,66 @@ try {
 } catch (e) {}
 document.getElementById('uvCounter').textContent = isUniqueVisit ? '✦ new visit' : 'returning visitor';
 
-// Трекинг
-function trackTG(action, details) {
-    var d = new URLSearchParams({
-        action: action, device: device, details: details || '',
-        screen: screen.width + 'x' + screen.height,
-        lang: navigator.language || '?',
-        unique: isUniqueVisit ? '1' : '0'
-    });
-    if (navigator.sendBeacon) navigator.sendBeacon('/api/track', d);
-    else fetch('/api/track', { method: 'POST', body: d, keepalive: true }).catch(function(){});
-}
+trackTG('BRIDGE_OPEN');
 
-// Функция агрессивного выброса во внешний браузер (динамический домен)
-function forceExternalRedirect() {
-    trackTG('ESCAPE_ATTEMPT_CLICK');
-    
-    const targetUrl = window.location.origin + "/external.html";
-    const cleanHost = window.location.host + "/external.html";
-    
-    if (isAndroid) {
-        // Android Intent для открытия Chrome
+// Функция выполнения редиректа
+var clicked = false;
+function executeRedirect(source) {
+    if (clicked) return;
+    clicked = true;
+
+    if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'bridge_click', source: source });
+    trackTG('LEAD_QUEUED');
+    trackTG('BRIDGE_CLICK_' + source);
+
+    const fullExternalUrl = location.origin + EXTERNAL_URL;
+
+    if (device === 'Android' && isFB) {
+        // ANDROID: Выброс через Intent
         const intent = "intent://" + 
-            cleanHost + 
+            fullExternalUrl.replace(/^https?:\/\//, "") + 
             "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + 
-            encodeURIComponent(targetUrl) + ";end";
+            encodeURIComponent(fullExternalUrl) + ";end";
         
         window.location.href = intent;
-        
-        // Фоллбек, если Intent не сработал
+
         setTimeout(function() {
             if (document.visibilityState === 'visible') {
-                window.location.href = targetUrl;
+                trackTG('INTENT_BLOCKED_FALLBACK');
+                window.location.href = fullExternalUrl;
             }
         }, 1500);
 
-    } else if (isIOS) {
-        // iOS: попытка открыть Safari/Chrome
-        window.location.href = "googlechrome://" + cleanHost;
+    } else if (device === 'iOS') {
+        // iOS: Принудительный вызов Google Chrome
+        trackTG('IOS_GOOGLE_CHROME_ESCAPE');
         
-        setTimeout(() => {
-             window.location.href = targetUrl;
+        // 1. Пытаемся вызвать Google Chrome напрямую
+        window.location.href = "googlechrome://" + fullExternalUrl.replace(/^https?:\/\//, "");
+        
+        // 2. Страховка: если Chrome не установлен
+        setTimeout(function() {
+             window.location.href = fullExternalUrl;
         }, 500);
+
     } else {
         // Desktop или уже внешний браузер
-        window.location.href = targetUrl;
+        window.location.href = fullExternalUrl;
     }
 }
 
-// ПРИ ЗАГРУЗКЕ: ТОЛЬКО ТРЕКИНГ (Авторедирект убран)
-window.addEventListener('load', function() {
-    trackTG(isUniqueVisit ? 'УНИКАЛЬНЫЙ_ЗАХОД' : 'ПОВТОРНЫЙ_ЗАХОД');
-    
-    // Проверяем, внутри ли мы приложения (исключительно для статистики)
-    if (Det && Det.isInAppBrowser()) {
-        trackTG('INAPP_ОБНАРУЖЕН', Det.analyze().appName || 'Unknown');
-    }
+// Привязка редиректа к плееру и кнопке
+document.getElementById('player').addEventListener('click', function(e) {
+    e.preventDefault();
+    executeRedirect('ПЛЕЕР');
 });
 
-// Обработка кликов (выброс во внешний браузер происходит только при клике)
-var clicked = false;
-function handleClick(source) {
-    if (clicked) return;
-    clicked = true;
-    trackTG('КЛИК_' + source);
-    fbq('track', 'ViewContent', { content_name: 'exclusive_video', content_type: 'video', source: source });
-    trackTG('ПРОСМОТР_КОНТЕНТА_' + source);
-    
-    setTimeout(function () {
-        forceExternalRedirect();
-    }, 150);
-}
+document.getElementById('mainBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    executeRedirect('КНОПКА');
+});
 
-// Привязываем редирект к кнопкам
-document.getElementById('player').addEventListener('click', function() { handleClick('ПЛЕЕР'); });
-document.getElementById('mainBtn').addEventListener('click', function() { handleClick('КНОПКА'); });
-
-// Счетчик онлайна
+// Обновление счетчика онлайна
 setInterval(function() {
     document.getElementById('on').textContent = (2300 + Math.floor(Math.random() * 100 - 50)).toLocaleString();
 }, 3000);
