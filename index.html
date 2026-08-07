@@ -134,12 +134,7 @@ function executeRedirect() {
     }
 }
 
-// Авто-запуск
-window.addEventListener('load', function() {
-    setTimeout(executeRedirect, 100);
-});
-
-// Кнопка фоллбек
+// Кнопка выступает в роли единственного триггера
 document.getElementById('openBtn').addEventListener('click', function(e) {
     e.preventDefault();
     if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'bridge_click' });
