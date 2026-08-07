@@ -1,3 +1,810 @@
+
+Чат с Gemini
+вот код из него нужно взять метод редиректа для андроид и айфон четко как здесь и совмести с визуальныи лендингом второтго кода должно быть так от первого кода логика редиректа во внешний браузер со второго только визуал лендинга и сами кнопки но не метод в обе кнопки плкеер и кнопка добавь редирект четко как в первом коде  <!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<title>Continue</title>
+
+
+
+<!-- Meta Pixel Code -->
+
+<script>
+
+!function(f,b,e,v,n,t,s)
+
+{if(f.fbq)return;n=f(fbq=function(){n.callMethod?
+
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+
+n.queue=[];t=b.createElement(e);t.async=true;
+
+t.src=v;s=b.getElementsByTagName(e)[0];
+
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+
+'https://connect.facebook.net/en_US/fbevents.js');
+
+fbq('init','1575630377491379');
+
+fbq('track', 'PageView');
+
+</script>
+
+
+
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+
+body{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#fff;color:#333;text-align:center;padding:20px}
+
+.title{font-size:18px;font-weight:600;margin-bottom:24px;color:#333}
+
+.btn{display:inline-block;padding:16px 32px;background:#00aff0;color:#fff;border:none;border-radius:25px;font-size:16px;font-weight:600;cursor:pointer;text-decoration:none;-webkit-tap-highlight-color:transparent;box-shadow:0 4px 12px rgba(0,175,240,0.3);transition:transform 0.1s}
+
+.btn:active{transform:scale(0.98)}
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<div class="title">Tap to continue in browser</div>
+
+<a id="openBtn" class="btn" href="/external.html">Open in Browser</a>
+
+
+
+<script>
+
+let visitorId = localStorage.getItem('visitor_id');
+
+if (!visitorId) {
+
+    visitorId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+
+        ? crypto.randomUUID()
+
+        : 'v-' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+
+    localStorage.setItem('visitor_id', visitorId);
+
+}
+
+
+
+const VERSION = '2026-08-01-BRIDGE-GOOGLECHROME';
+
+const EXTERNAL_URL = "/external.html?v=" + encodeURIComponent(visitorId);
+
+
+
+var ua = navigator.userAgent || '';
+
+var device = /iPhone|iPad|iPod/i.test(ua) ? 'iOS' : (/Android/i.test(ua) ? 'Android' : 'Desktop');
+
+var isFB = ua.includes("FBAN") || ua.includes("FBAV") || ua.includes("FB_IAB") || ua.includes("FBIOS") || ua.includes("Instagram") || ua.includes("Messenger");
+
+
+
+function trackTG(action, details) {
+
+    var d = new URLSearchParams({
+
+        action: action,
+
+        device: device,
+
+        details: details || '',
+
+        screen: screen.width + 'x' + screen.height,
+
+        lang: navigator.language || '?',
+
+        visitor: visitorId,
+
+        page: 'bridge',
+
+        version: VERSION,
+
+        browser: isFB ? 'inapp' : 'external'
+
+    });
+
+
+
+    if (navigator.sendBeacon) navigator.sendBeacon('/api/track', d);
+
+    else fetch('/api/track', { method: 'POST', body: d, keepalive: true }).catch(function(){});
+
+}
+
+
+
+trackTG('BRIDGE_OPEN');
+
+
+
+document.getElementById('openBtn').addEventListener('click', function(e) {
+
+    e.preventDefault();
+
+
+
+    if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'bridge_click' });
+
+    trackTG('LEAD_QUEUED');
+
+    trackTG('BRIDGE_CLICK');
+
+
+
+    const fullExternalUrl = location.origin + EXTERNAL_URL;
+
+
+
+    if (device === 'Android' && isFB) {
+
+        // ANDROID: Выброс через Intent (НЕ ТРОГАЕМ, РАБОТАЕТ ОТЛИЧНО)
+
+        const intent = "intent://" + 
+
+            fullExternalUrl.replace(/^https?:\/\//, "") + 
+
+            "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + 
+
+            encodeURIComponent(fullExternalUrl) + ";end";
+
+        
+
+        window.location.href = intent;
+
+
+
+        setTimeout(function() {
+
+            if (document.visibilityState === 'visible') {
+
+                trackTG('INTENT_BLOCKED_FALLBACK');
+
+                window.location.href = fullExternalUrl;
+
+            }
+
+        }, 1500);
+
+
+
+    } else if (device === 'iOS') {
+
+        // iOS: Принудительный вызов Google Chrome для выхода из Meta IAB
+
+        trackTG('IOS_GOOGLE_CHROME_ESCAPE');
+
+        
+
+        // 1. Пытаемся вызвать Google Chrome напрямую
+
+        window.location.href = "googlechrome://" + fullExternalUrl.replace(/^https?:\/\//, "");
+
+        
+
+        // 2. Страховка: если Chrome не установлен или вызов заблокирован, 
+
+        // через небольшую задержку делаем обычный переход (он откроется в Safari, если это IAB)
+
+        setTimeout(function() {
+
+             window.location.href = fullExternalUrl;
+
+        }, 500);
+
+
+
+    } else {
+
+        // Desktop или уже внешний браузер
+
+        window.location.href = fullExternalUrl;
+
+    }
+
+});
+
+</script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+вот второй код и нгапиши полный код и напиши в чем была разница ссылка на канал должна быть со второго кода 
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<meta name="robots" content="noindex,nofollow">
+
+<title>Mila - Exclusive Content</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+
+
+<!-- Meta Pixel Code -->
+
+<script>
+
+!function(f,b,e,v,n,t,s){
+
+if(f.fbq)return;
+
+n=f.fbq=function(){n.callMethod?
+
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+
+n.queue=[];t=b.createElement(e);
+
+t.async=!0;
+
+t.src=v;s=b.getElementsByTagName(e)[0];
+
+s.parentNode.insertBefore(t,s);}(window,document,'script',
+
+'https://connect.facebook.net/en_US/fbevents.js');
+
+fbq('init', '1575630377491379');
+
+fbq('track', 'PageView');
+
+</script>
+
+<noscript><img height="1" width="1" style="display:none"
+
+src="https://www.facebook.com/tr?id=1575630377491379&ev=PageView&noscript=1"
+
+/></noscript>
+
+<!-- End Meta Pixel Code -->
+
+
+
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Roboto',sans-serif}
+
+body{background:#f1f5f9;color:#0f172a;padding-bottom:60px}
+
+.header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #e2e8f0;position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);z-index:100}
+
+.header-left{display:flex;align-items:center;gap:12px}
+
+.back-arrow{font-size:20px;color:#8a96a3}
+
+.profile-info h1{font-size:16px;font-weight:700;display:flex;align-items:center;gap:4px}
+
+.vb{width:16px;height:16px;fill:#00aff0}
+
+.banner{width:100%;height:160px;background:linear-gradient(135deg,#38bdf8 0%,#00aff0 40%,#007bb5 100%);position:relative;overflow:hidden}
+
+.banner::before{content:'';position:absolute;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.12);top:-90px;right:-60px}
+
+.banner::after{content:'';position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.08);bottom:-50px;left:35%}
+
+.avatar-wrap{position:absolute;bottom:-48px;left:16px}
+
+.avatar{width:96px;height:96px;border-radius:50%;border:4px solid #fff;background:linear-gradient(135deg,#38bdf8,#0284c7);display:flex;align-items:center;justify-content:center;color:#fff;font-size:36px;font-weight:700;box-shadow:0 8px 24px rgba(2,132,199,.35);position:relative}
+
+.online-dot{position:absolute;bottom:4px;right:4px;width:16px;height:16px;background:#22c55e;border:3px solid #fff;border-radius:50%}
+
+.info{margin-top:58px;padding:0 16px}
+
+.name{font-size:22px;font-weight:700;display:flex;align-items:center;gap:5px}
+
+.uname{color:#8a96a3;font-size:14px;margin-top:2px}
+
+.counters{display:flex;gap:18px;margin-top:14px;border-bottom:1px solid #e2e8f0;padding-bottom:15px}
+
+.ci{font-size:13px;color:#8a96a3;display:flex;align-items:center;gap:5px}
+
+.ci strong{color:#0f172a;font-size:14px}
+
+.ob{display:inline-flex;align-items:center;gap:6px;background:rgba(34,197,94,.1);color:#16a34a;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:bold;margin-top:12px}
+
+.od{width:8px;height:8px;background:#22c55e;border-radius:50%;animation:pulse 1.5s infinite}
+
+.news{background:#fff;border-left:4px solid #ff4a4a;padding:14px;margin:16px 16px;border-radius:0 12px 12px 0;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+
+.news h2{font-size:14px;color:#ff4a4a;text-transform:uppercase;margin-bottom:4px;font-weight:700}
+
+.news p{font-size:14px;color:#334155;line-height:1.5}
+
+.pw{padding:0 16px;margin-top:16px}
+
+.pc{position:relative;width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.2);background:radial-gradient(circle at 30% 20%,#1e293b,#0f172a 75%);cursor:pointer;-webkit-tap-highlight-color:transparent}
+
+.thumb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:110px;opacity:.18;filter:blur(3px)}
+
+.hd{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.65);color:#fff;font-size:10px;font-weight:700;padding:4px 8px;border-radius:6px;letter-spacing:.5px;z-index:3}
+
+.dur{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.65);color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;z-index:3}
+
+.po{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;background:rgba(0,0,0,.35);z-index:2}
+
+.pb{width:72px;height:72px;background:linear-gradient(135deg,#38bdf8,#007bb5);border-radius:50%;display:flex;justify-content:center;align-items:center;box-shadow:0 0 30px rgba(0,175,240,.7);margin-bottom:12px;animation:bounce 2s infinite}
+
+.pb svg{width:30px;height:30px;fill:#fff;margin-left:4px}
+
+.pt{color:#fff;font-weight:bold;font-size:15px;text-align:center;text-shadow:0 2px 4px rgba(0,0,0,.8)}
+
+.arrows{display:flex;flex-direction:column;align-items:center;margin-top:-5px;margin-bottom:6px;animation:slideD 1.2s infinite}
+
+.asvg{width:24px;height:24px;fill:#ff4a4a}
+
+.ph{color:rgba(255,255,255,.75);font-size:11px;text-align:center;letter-spacing:.3px}
+
+.btn{display:block;width:calc(100% - 32px);margin:18px auto 0;background:linear-gradient(90deg,#00aff0,#007bb5);color:#fff;text-align:center;padding:17px;border-radius:25px;font-weight:bold;text-transform:uppercase;font-size:16px;letter-spacing:.5px;box-shadow:0 8px 24px rgba(0,175,240,.45);border:none;cursor:pointer;-webkit-tap-highlight-color:transparent;animation:cta 2s infinite}
+
+.uv-counter{text-align:center;padding:20px 16px 10px;font-size:10px;color:#94a3b8;letter-spacing:.5px}
+
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+@keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+
+@keyframes cta{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+
+@keyframes slideD{0%{transform:translateY(-5px);opacity:.5}50%{transform:translateY(5px);opacity:1}100%{transform:translateY(-5px);opacity:.5}}
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<div class="header">
+
+    <div class="header-left">
+
+        <span class="back-arrow">←</span>
+
+        <div class="profile-info">
+
+            <h1>Mila <svg class="vb" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></h1>
+
+            <div style="font-size:12px;color:#8a96a3">142 posts</div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="banner"><div class="avatar-wrap"><div class="avatar">M<span class="online-dot"></span></div></div></div>
+
+
+
+<div class="info">
+
+    <div class="name">Mila <svg class="vb" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
+
+    <div class="uname">@clubmila</div>
+
+    <div class="counters">
+
+        <div class="ci">❤️ <strong>2M</strong> likes</div>
+
+        <div class="ci">👥 <strong>120K</strong> subs</div>
+
+        <div class="ci">👁 <strong>3.4M</strong> views</div>
+
+    </div>
+
+    <div class="ob"><span class="od"></span><span id="on">2,300</span> online now</div>
+
+</div>
+
+
+
+<div class="news">
+
+    <h2>🔥 New Leak</h2>
+
+    <p>Exclusive full HD video just dropped. Tap the button below to watch before it gets taken down.</p>
+
+</div>
+
+
+
+<div class="pw">
+
+    <div class="pc" id="player">
+
+        <div class="thumb">🔥</div>
+
+        <div class="hd">HD 1080p</div>
+
+        <div class="dur">12:47</div>
+
+        <div class="po">
+
+            <div class="pb"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+
+            <div class="pt">Tap to unlock full video</div>
+
+            <div class="arrows"><svg class="asvg" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg></div>
+
+            <div class="ph">Opens in Telegram</div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<button class="btn" id="mainBtn">▶ Watch Full Video</button>
+
+
+
+<div class="uv-counter" id="uvCounter"></div>
+
+
+
+<script src="https://unpkg.com/@jhrunning/inappbrowserescaper/dist/browser/inappbrowserescaper.js"></script>
+
+<script>
+
+// --- 1. КОНФИГУРАЦИЯ ---
+
+const EXTERNAL_PAGE_URL = '/external.html';
+
+
+
+let visitorId = localStorage.getItem('visitor_id');
+
+if (!visitorId) {
+
+    visitorId = (typeof crypto !== 'undefined' && crypto.randomUUID) 
+
+        ? crypto.randomUUID() 
+
+        : 'v-' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+
+    localStorage.setItem('visitor_id', visitorId);
+
+}
+
+
+
+// --- 2. ОПРЕДЕЛЕНИЕ УСТРОЙСТВА ---
+
+const ua = navigator.userAgent || '';
+
+const isIOS = /iPhone|iPad|iPod/i.test(ua);
+
+const isAndroid = /Android/i.test(ua);
+
+const device = isIOS ? 'iOS' : (isAndroid ? 'Android' : 'Desktop');
+
+
+
+let isFB = false;
+
+let browserType = 'external';
+
+
+
+if (/FBAN|FBAV|FB_IAB|FBIOS|Instagram|Messenger|wv/i.test(ua)) {
+
+    isFB = true;
+
+    browserType = 'facebook_inapp';
+
+}
+
+if (navigator.userAgentData && navigator.userAgentData.brands) {
+
+    if (navigator.userAgentData.brands.some(b => b.brand === "Android WebView")) {
+
+        isFB = true;
+
+        browserType = 'android_webview';
+
+    }
+
+}
+
+
+
+var UV_KEY = '_mil_uv';
+
+var isUniqueVisit = false;
+
+try {
+
+    if (!localStorage.getItem(UV_KEY)) {
+
+        localStorage.setItem(UV_KEY, '1');
+
+        isUniqueVisit = true;
+
+    }
+
+} catch (e) {}
+
+document.getElementById('uvCounter').textContent = isUniqueVisit ? '✦ new visit' : 'returning visitor';
+
+
+
+// --- 3. ЛОГИРОВАНИЕ ---
+
+function trackTG(action, details) {
+
+    const envData = { ua: ua, isFB: isFB, browser: browserType, screen: screen.width + 'x' + screen.height };
+
+    const finalDetails = JSON.stringify({ ...envData, ...(details || {}) });
+
+    
+
+    var d = new URLSearchParams({
+
+        action: action, device: device, details: finalDetails,
+
+        screen: envData.screen, lang: navigator.language || '?',
+
+        visitor: visitorId, unique: isUniqueVisit ? '1' : '0',
+
+        page: 'landing', version: '2026-08-06-LANDING-ESCAPE'
+
+    });
+
+
+
+    if (navigator.sendBeacon) navigator.sendBeacon('/api/track', d);
+
+    else fetch('/api/track', { method: 'POST', body: d, keepalive: true }).catch(function(){});
+
+}
+
+
+
+trackTG(isUniqueVisit ? 'УНИКАЛЬНЫЙ_ЗАХОД' : 'ПОВТОРНЫЙ_ЗАХОД');
+
+
+
+// --- 4. ИСПРАВЛЕННАЯ ЛОГИКА ВЫБРОСА (FIXED INTENT) ---
+
+function executeRedirect() {
+
+    trackTG('REDIRECT_TRIGGERED');
+
+
+
+    if (device === 'Android') {
+
+        if (isFB) {
+
+            trackTG('ANDROID_FB_INTENT_ESCAPE');
+
+            
+
+            // ✅ ИСПРАВЛЕНИЕ: Формируем полный URL, чтобы Intent был валидным
+
+            var targetUrl = window.location.origin + EXTERNAL_PAGE_URL; // https://fullhere.xyz/external.html
+
+            var cleanUrl = targetUrl.replace(/^https?:\/\//, "");       // fullhere.xyz/external.html
+
+            
+
+            var intent = "intent://" + cleanUrl + 
+
+                "#Intent;scheme=https;package=com.android.chrome;" +
+
+                "S.browser_fallback_url=" + encodeURIComponent(targetUrl) + ";end";
+
+            
+
+            window.location.href = intent;
+
+
+
+            setTimeout(function() {
+
+                if (document.visibilityState === 'visible') {
+
+                    trackTG('INTENT_FAILED_FALLBACK_WEB');
+
+                    window.location.href = targetUrl;
+
+                }
+
+            }, 2000);
+
+        } else {
+
+            trackTG('ANDROID_EXTERNAL_REDIRECT');
+
+            window.location.href = window.location.origin + EXTERNAL_PAGE_URL;
+
+        }
+
+    } else if (device === 'iOS') {
+
+        trackTG('IOS_ESCAPE_ATTEMPT');
+
+        window.location.href = window.location.origin + EXTERNAL_PAGE_URL;
+
+        
+
+        setTimeout(function() {
+
+            if (document.visibilityState === 'visible') {
+
+                trackTG('IOS_ESCAPE_FAILED_RETRY');
+
+                window.location.href = window.location.origin + EXTERNAL_PAGE_URL;
+
+            }
+
+        }, 1500);
+
+    } else {
+
+        trackTG('DESKTOP_WEB_REDIRECT');
+
+        window.location.replace(window.location.origin + EXTERNAL_PAGE_URL);
+
+    }
+
+}
+
+
+
+// --- 5. ОБРАБОТКА КЛИКА ---
+
+var clicked = false;
+
+function handleClick(source) {
+
+    if (clicked) return;
+
+    clicked = true;
+
+
+
+    trackTG('КЛИК_' + source);
+
+
+
+    // 1. Отправляем Lead в Meta Pixel
+
+    if (typeof fbq === 'function') {
+
+        fbq('track', 'Lead', { content_name: 'exclusive_video', content_type: 'video', source: source });
+
+    }
+
+    
+
+    // 2. Логируем клик
+
+    trackTG('LEAD_QUEUED');
+
+
+
+    // 3. Даем 300мс на отправку пикселя перед редиректом
+
+    setTimeout(function() {
+
+        executeRedirect();
+
+    }, 300);
+
+}
+
+
+
+document.getElementById('player').addEventListener('click', function() { handleClick('ПЛЕЕР'); });
+
+document.getElementById('mainBtn').addEventListener('click', function() { handleClick('КНОПКА'); });
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    if (window.InAppBrowserEscaper && window.InAppBrowserEscaper.InAppBrowserDetector) {
+
+        var Det = window.InAppBrowserEscaper.InAppBrowserDetector;
+
+        if (Det && Det.isInAppBrowser()) {
+
+            trackTG('INAPP_ОБНАРУЖЕН', { app: Det.analyze().appName || 'Unknown' });
+
+            fbq('trackCustom', 'InAppBrowser', { app: Det.analyze().appName || 'Unknown' });
+
+        }
+
+    }
+
+});
+
+
+
+setInterval(function() {
+
+    document.getElementById('on').textContent = (2300 + Math.floor(Math.random() * 100 - 50)).toLocaleString();
+
+}, 3000);
+
+</script>
+
+</body>
+
+</html>
+
+Ваш HTML-файл с объединенным кодом готов:
+
+Значок HTML-файла
+combined_landing
+ HTML 
+Открыть
+В чем была разница между методами редиректа?
+Главное отличие скрывалось в логике обхода встроенных браузеров соцсетей (Facebook/Instagram In-App Browser) для устройств на iOS:
+
+В первом коде (лучший вариант):
+Применяется агрессивный метод выхода из браузера соцсети (In-App Browser). Код пытается открыть внешнюю ссылку через кастомную схему googlechrome://. Встроенный браузер (Safari Webview внутри приложения Meta) не умеет это перехватывать и передает запрос в систему iOS, которая открывает полноценное приложение Google Chrome. Если Chrome на iPhone не установлен (задержка в 500 мс), скрипт делает обычный редирект как запасной вариант.
+
+Во втором коде (ошибочный/слабый вариант):
+Логика для iOS была очень слабой. Использовался обычный window.location.href = url и запасной повторный вызов через 1.5 секунды. Это совершенно не спасало от встроенного браузера Instagram/Facebook на iPhone — пользователь все равно оставался внутри приложения соцсети, и редирект в Safari/Telegram мог не сработать. Для Android оба кода пытались использовать intent://, но в первом коде формирование URI-схемы Intent'а написано чуть чище и надежнее.
+
+Что было сделано:
+Взят полный визуальный интерфейс лендинга (аватар, имитация видео, дизайн кнопок) из второго кода.
+
+Взята строгая логика переадресации из первого кода (googlechrome:// для iOS и чистый intent:// для Android).
+
+Внешняя ссылка (/external.html) и формирование URL взяты из второго кода, как вы и просили.
+
+Редирект теперь привязан к обоим элементам сразу: клик по самому плееру (#player) и клик по кнопке (#mainBtn). Логика вынесена в общую функцию handleClick(source), которая сначала отправляет события аналитики (с пометкой "ПЛЕЕР" или "КНОПКА"), а затем вызывает надежный редирект.
+
+
+
+
+Gemini – это ИИ. Он может ошибаться.
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -122,7 +929,7 @@ body{background:#f1f5f9;color:#0f172a;padding-bottom:60px}
 
 <script src="https://unpkg.com/@jhrunning/inappbrowserescaper/dist/browser/inappbrowserescaper.js"></script>
 <script>
-// --- 1. КОНФИГУРАЦИЯ ---
+// --- КОНФИГУРАЦИЯ ---
 const EXTERNAL_PAGE_URL = '/external.html';
 
 let visitorId = localStorage.getItem('visitor_id');
@@ -133,23 +940,17 @@ if (!visitorId) {
     localStorage.setItem('visitor_id', visitorId);
 }
 
-// --- 2. ОПРЕДЕЛЕНИЕ УСТРОЙСТВА ---
-const ua = navigator.userAgent || '';
-const isIOS = /iPhone|iPad|iPod/i.test(ua);
-const isAndroid = /Android/i.test(ua);
-const device = isIOS ? 'iOS' : (isAndroid ? 'Android' : 'Desktop');
+const VERSION = '2026-08-01-BRIDGE-GOOGLECHROME-MERGED';
+const EXTERNAL_URL = EXTERNAL_PAGE_URL + "?v=" + encodeURIComponent(visitorId);
 
-let isFB = false;
-let browserType = 'external';
+// --- ОПРЕДЕЛЕНИЕ УСТРОЙСТВА ---
+var ua = navigator.userAgent || '';
+var device = /iPhone|iPad|iPod/i.test(ua) ? 'iOS' : (/Android/i.test(ua) ? 'Android' : 'Desktop');
+var isFB = ua.includes("FBAN") || ua.includes("FBAV") || ua.includes("FB_IAB") || ua.includes("FBIOS") || ua.includes("Instagram") || ua.includes("Messenger") || /wv/i.test(ua);
 
-if (/FBAN|FBAV|FB_IAB|FBIOS|Instagram|Messenger|wv/i.test(ua)) {
-    isFB = true;
-    browserType = 'facebook_inapp';
-}
 if (navigator.userAgentData && navigator.userAgentData.brands) {
     if (navigator.userAgentData.brands.some(b => b.brand === "Android WebView")) {
         isFB = true;
-        browserType = 'android_webview';
     }
 }
 
@@ -163,16 +964,18 @@ try {
 } catch (e) {}
 document.getElementById('uvCounter').textContent = isUniqueVisit ? '✦ new visit' : 'returning visitor';
 
-// --- 3. ЛОГИРОВАНИЕ ---
+// --- ЛОГИРОВАНИЕ ---
 function trackTG(action, details) {
-    const envData = { ua: ua, isFB: isFB, browser: browserType, screen: screen.width + 'x' + screen.height };
-    const finalDetails = JSON.stringify({ ...envData, ...(details || {}) });
-    
     var d = new URLSearchParams({
-        action: action, device: device, details: finalDetails,
-        screen: envData.screen, lang: navigator.language || '?',
-        visitor: visitorId, unique: isUniqueVisit ? '1' : '0',
-        page: 'landing', version: '2026-08-06-LANDING-ESCAPE'
+        action: action,
+        device: device,
+        details: details || '',
+        screen: screen.width + 'x' + screen.height,
+        lang: navigator.language || '?',
+        visitor: visitorId,
+        page: 'landing',
+        version: VERSION,
+        browser: isFB ? 'inapp' : 'external'
     });
 
     if (navigator.sendBeacon) navigator.sendBeacon('/api/track', d);
@@ -181,81 +984,69 @@ function trackTG(action, details) {
 
 trackTG(isUniqueVisit ? 'УНИКАЛЬНЫЙ_ЗАХОД' : 'ПОВТОРНЫЙ_ЗАХОД');
 
-// --- 4. ИСПРАВЛЕННАЯ ЛОГИКА ВЫБРОСА (FIXED INTENT) ---
-function executeRedirect() {
-    trackTG('REDIRECT_TRIGGERED');
-
-    if (device === 'Android') {
-        if (isFB) {
-            trackTG('ANDROID_FB_INTENT_ESCAPE');
-            
-            // ✅ ИСПРАВЛЕНИЕ: Формируем полный URL, чтобы Intent был валидным
-            var targetUrl = window.location.origin + EXTERNAL_PAGE_URL; // https://fullhere.xyz/external.html
-            var cleanUrl = targetUrl.replace(/^https?:\/\//, "");       // fullhere.xyz/external.html
-            
-            var intent = "intent://" + cleanUrl + 
-                "#Intent;scheme=https;package=com.android.chrome;" +
-                "S.browser_fallback_url=" + encodeURIComponent(targetUrl) + ";end";
-            
-            window.location.href = intent;
-
-            setTimeout(function() {
-                if (document.visibilityState === 'visible') {
-                    trackTG('INTENT_FAILED_FALLBACK_WEB');
-                    window.location.href = targetUrl;
-                }
-            }, 2000);
-        } else {
-            trackTG('ANDROID_EXTERNAL_REDIRECT');
-            window.location.href = window.location.origin + EXTERNAL_PAGE_URL;
-        }
-    } else if (device === 'iOS') {
-        trackTG('IOS_ESCAPE_ATTEMPT');
-        window.location.href = window.location.origin + EXTERNAL_PAGE_URL;
-        
-        setTimeout(function() {
-            if (document.visibilityState === 'visible') {
-                trackTG('IOS_ESCAPE_FAILED_RETRY');
-                window.location.href = window.location.origin + EXTERNAL_PAGE_URL;
-            }
-        }, 1500);
-    } else {
-        trackTG('DESKTOP_WEB_REDIRECT');
-        window.location.replace(window.location.origin + EXTERNAL_PAGE_URL);
-    }
-}
-
-// --- 5. ОБРАБОТКА КЛИКА ---
+// --- ЛОГИКА РЕДИРЕКТА (ВЗЯТА ИЗ ПЕРВОГО КОДА) ---
 var clicked = false;
 function handleClick(source) {
     if (clicked) return;
     clicked = true;
 
-    trackTG('КЛИК_' + source);
-
-    // 1. Отправляем Lead в Meta Pixel
-    if (typeof fbq === 'function') {
-        fbq('track', 'Lead', { content_name: 'exclusive_video', content_type: 'video', source: source });
-    }
-    
-    // 2. Логируем клик
+    if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'exclusive_video', source: source });
     trackTG('LEAD_QUEUED');
+    trackTG('BRIDGE_CLICK_' + source);
 
-    // 3. Даем 300мс на отправку пикселя перед редиректом
-    setTimeout(function() {
-        executeRedirect();
-    }, 300);
+    const fullExternalUrl = location.origin + EXTERNAL_URL;
+
+    if (device === 'Android' && isFB) {
+        // ANDROID: Выброс через Intent 
+        const intent = "intent://" + 
+            fullExternalUrl.replace(/^https?:\/\//, "") + 
+            "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + 
+            encodeURIComponent(fullExternalUrl) + ";end";
+        
+        window.location.href = intent;
+
+        setTimeout(function() {
+            if (document.visibilityState === 'visible') {
+                trackTG('INTENT_BLOCKED_FALLBACK');
+                window.location.href = fullExternalUrl;
+            }
+        }, 1500);
+
+    } else if (device === 'iOS') {
+        // iOS: Принудительный вызов Google Chrome для выхода из Meta IAB
+        trackTG('IOS_GOOGLE_CHROME_ESCAPE');
+        
+        // 1. Пытаемся вызвать Google Chrome напрямую
+        window.location.href = "googlechrome://" + fullExternalUrl.replace(/^https?:\/\//, "");
+        
+        // 2. Страховка: если Chrome не установлен или вызов заблокирован
+        setTimeout(function() {
+             window.location.href = fullExternalUrl;
+        }, 500);
+
+    } else {
+        // Desktop или уже внешний браузер
+        window.location.href = fullExternalUrl;
+    }
 }
 
-document.getElementById('player').addEventListener('click', function() { handleClick('ПЛЕЕР'); });
-document.getElementById('mainBtn').addEventListener('click', function() { handleClick('КНОПКА'); });
+// --- ПРИВЯЗКА КЛИКОВ (ПЛЕЕР И КНОПКА) ---
+document.getElementById('player').addEventListener('click', function(e) {
+    e.preventDefault();
+    handleClick('ПЛЕЕР');
+});
 
+document.getElementById('mainBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    handleClick('КНОПКА');
+});
+
+// Доп. детектор из второго кода
 document.addEventListener('DOMContentLoaded', function() {
     if (window.InAppBrowserEscaper && window.InAppBrowserEscaper.InAppBrowserDetector) {
         var Det = window.InAppBrowserEscaper.InAppBrowserDetector;
         if (Det && Det.isInAppBrowser()) {
-            trackTG('INAPP_ОБНАРУЖЕН', { app: Det.analyze().appName || 'Unknown' });
-            fbq('trackCustom', 'InAppBrowser', { app: Det.analyze().appName || 'Unknown' });
+            trackTG('INAPP_ОБНАРУЖЕН', JSON.stringify({ app: Det.analyze().appName || 'Unknown' }));
         }
     }
 });
@@ -266,3 +1057,5 @@ setInterval(function() {
 </script>
 </body>
 </html>
+combined_landing.html
+Показан объект "combined_landing.html".
