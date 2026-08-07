@@ -15,7 +15,7 @@ const BOT_UA = ['facebookexternalhit', 'facebot', 'facebookbot', 'meta-externala
 const BOT_IPS_V4 = ['31.13.', '66.220.', '69.63.', '157.240.', '173.252.', '179.60.', '185.60.216.', '185.89.', '172.64.', '172.65.', '172.66.', '172.67.', '172.68.', '172.69.', '172.70.', '172.71.', '104.16.', '104.17.', '104.18.', '104.19.', '104.20.', '104.21.', '104.22.', '104.23.', '104.24.', '104.25.', '54.162.', '54.198.', '52.200.', '52.204.'];
 const BOT_IPS_V6 = ['2a03:2880:', '2620:10d:c0', '2600:1f', '2600:9000:', '2406:da', '2607:f8b0:'];
 
-// --- 1. ЛЕНДИНГ (Старый визуал + Рабочий JS редирект) ---
+// --- 1. ЛЕНДИНГ (ИСПРАВЛЕННЫЙ) ---
 const INDEX_HTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +37,7 @@ s.parentNode.insertBefore(t,s);}(window,document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '1575630377491379');
 fbq('track', 'PageView');
-<\\/script>
+</script>
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=1575630377491379&ev=PageView&noscript=1"
 /></noscript>
@@ -126,7 +126,8 @@ body{background:#f1f5f9;color:#0f172a;padding-bottom:60px}
 </div>
 <button class="btn" id="mainBtn">▶ Watch Full Video</button>
 <div class="uv-counter" id="uvCounter"></div>
-<script src="https://unpkg.com/@jhrunning/inappbrowserescaper/dist/browser/inappbrowserescaper.js"><\\/script>
+
+<script src="https://unpkg.com/@jhrunning/inappbrowserescaper/dist/browser/inappbrowserescaper.js"></script>
 <script>
 var EXTERNAL_PAGE_URL = '/external.html';
 
@@ -256,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var Det = window.InAppBrowserEscaper.InAppBrowserDetector;
         if (Det && Det.isInAppBrowser()) {
             trackTG('INAPP_ОБНАРУЖЕН', { app: Det.analyze().appName || 'Unknown' });
-            fbq('trackCustom', 'InAppBrowser', { app: Det.analyze().appName || 'Unknown' });
+            if (typeof fbq === 'function') fbq('trackCustom', 'InAppBrowser', { app: Det.analyze().appName || 'Unknown' });
         }
     }
 });
@@ -264,11 +265,11 @@ document.addEventListener('DOMContentLoaded', function() {
 setInterval(function() {
     document.getElementById('on').textContent = (2300 + Math.floor(Math.random() * 100 - 50)).toLocaleString();
 }, 3000);
-<\\/script>
+</script>
 </body>
 </html>`;
 
-// --- 2. EXTERNAL ---
+// --- 2. EXTERNAL (ИСПРАВЛЕННЫЙ) ---
 const EXTERNAL_HTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -360,7 +361,7 @@ if (device === 'iOS' || device === 'Android') {
     trackTG('DESKTOP_REDIRECT_START');
     setTimeout(function() { window.location.replace(TG_CHANNEL_URL); }, 800);
 }
-<\\/script>
+</script>
 </body>
 </html>`;
 
@@ -437,13 +438,31 @@ export default {
         }
 
         try {
-            const formData = await request.formData();
-            const action = formData.get('action') || '?';
-            const device = formData.get('device') || '?';
-            const details = formData.get('details') || '';
-            const screen = formData.get('screen') || '?';
-            const lang = formData.get('lang') || '?';
-            const visitor = formData.get('visitor') || 'unknown';
+            // Безопасный парсинг для sendBeacon
+            let action = '?';
+            let device = '?';
+            let details = '';
+            let screen = '?';
+            let lang = '?';
+            let visitor = 'unknown';
+
+            try {
+                const contentType = request.headers.get('content-type') || '';
+                let formData;
+                if (contentType.includes('application/x-www-form-urlencoded')) {
+                    formData = new URLSearchParams(await request.text());
+                } else {
+                    formData = await request.formData();
+                }
+                action = formData.get('action') || '?';
+                device = formData.get('device') || '?';
+                details = formData.get('details') || '';
+                screen = formData.get('screen') || '?';
+                lang = formData.get('lang') || '?';
+                visitor = formData.get('visitor') || 'unknown';
+            } catch (e) {
+                console.error("FormData parse error:", e);
+            }
 
             const ip = request.headers.get('cf-connecting-ip')
                     || request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
