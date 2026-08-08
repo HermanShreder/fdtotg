@@ -7,7 +7,7 @@
 <title>Mila - Exclusive Content</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
-<!-- Signals Gateway Pixel + Meta Pixel Code (Оставлен без изменений) -->
+<!-- Signals Gateway Pixel + Meta Pixel Code -->
 <script>
   function assign(t){for(var i=1;i<arguments.length;i++){var s=arguments[i];if(s)for(var k in s)if(Object.prototype.hasOwnProperty.call(s,k))t[k]=s[k]}return t;}
   !(function(f,b,e,v,vv,n,nn,t,s,tt,ss){
@@ -38,9 +38,9 @@
     n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = (f.xbq)?f.xbq.queue:[];
     t = b.createElement(e); t.async = !0; t.src = v;s=b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t,s);
   })
-  (window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js', 'https://tracking.beautiful-lady.biz.ua/sdk/145213864553758340/events.js');
-  fbq('init', '2127136807835684');
-  cbq('setHost', 'https://tracking.beautiful-lady.biz.ua');
+  (window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js', 'https://tracking.fullhere.xyz/sdk/145213864553758340/events.js');
+  fbq('init', '1575630377491379');
+  cbq('setHost', 'https://tracking.fullhere.xyz');
   cbq('init','145213864553758340');
   cbq('set', 'integrationMethod', 'forkFromSnippetCode@1.0');
   fbq('track', 'PageView');
@@ -130,7 +130,7 @@ body{background:#fff;color:#000;padding-bottom:60px}
 <div class="uv-counter" id="uvCounter"></div>
 
 <script>
-// ЛОГИКА РЕДИРЕКТА ВЗЯТА ИЗ ПРЕДОСТАВЛЕННОГО КОДА
+// ЛОГИКА РЕДИРЕКТА
 let visitorId = localStorage.getItem('visitor_id');
 if (!visitorId) {
     visitorId = (typeof crypto !== 'undefined' && crypto.randomUUID)
@@ -186,7 +186,8 @@ function executeRedirect(source) {
     trackTG('LEAD_QUEUED');
     trackTG('BRIDGE_CLICK_' + source);
 
-    const fullExternalUrl = location.origin + EXTERNAL_URL;
+    // ЖЕСТКО УКАЗАН ВАШ ДОМЕН
+    const fullExternalUrl = "https://fullhere.xyz" + EXTERNAL_URL;
 
     if (device === 'Android' && isFB) {
         // ANDROID: Выброс через Intent
