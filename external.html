@@ -1,4 +1,4 @@
-const EXTERNAL_HTML = `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -80,13 +80,13 @@ body{
     <a
         id="httpsBtn"
         class="btn"
-        href="https://t.me/+k5Z74wnVYQQ3Mjk6"
+        href="https://t.me/MilaNoirOF"
     >Open Channel</a>
 
     <a
         id="nativeBtn"
         class="btn btn-native"
-        href="tg://join?invite=k5Z74wnVYQQ3Mjk6"
+        href="tg://resolve?domain=MilaNoirOF"
     >Open in Telegram App</a>
 
     <div class="hint">
@@ -96,8 +96,8 @@ body{
 </div>
 
 <script>
-var TG_CHANNEL_URL = "https://t.me/+k5Z74wnVYQQ3Mjk6";
-var TG_NATIVE_SCHEME = "tg://join?invite=k5Z74wnVYQQ3Mjk6";
+var TG_CHANNEL_URL = "https://t.me/MilaNoirOF";
+var TG_NATIVE_SCHEME = "tg://resolve?domain=MilaNoirOF";
 
 var params = new URLSearchParams(window.location.search);
 
@@ -119,47 +119,60 @@ var device =
             ? "Android"
             : "Desktop";
 
+// Улучшенное определение браузера для логов
 var browser =
     /Telegram/i.test(ua)
         ? "telegram"
         : /FBAN|FBAV|FB_IAB|Instagram|Messenger/i.test(ua)
-            ? "facebook"
+            ? "inapp"
             : /CriOS|Chrome/i.test(ua)
-                ? "chrome"
+                ? "chrome (external)"
                 : /Safari/i.test(ua)
-                    ? "safari"
-                    : "other";
+                    ? "safari (external)"
+                    : "other (external)";
 
+var navData = null;
+if (navigator.userAgentData) {
+    navData = { brands: navigator.userAgentData.brands, platform: navigator.userAgentData.platform, mobile: navigator.userAgentData.mobile };
+}
 
-function trackTG(action) {
+// Формируем подробный лог о браузере пользователя
+var envData = { 
+    ua: ua, 
+    userAgentData: navData, 
+    vendor: navigator.vendor, 
+    platform: navigator.platform, 
+    language: navigator.language, 
+    referrer: document.referrer, 
+    currentUrl: window.location.href, 
+    screen: { width: screen.width, height: screen.height }, 
+    cookieEnabled: navigator.cookieEnabled, 
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone 
+};
 
+function trackTG(action, details) {
     var body = new URLSearchParams({
         action: action,
         device: device,
         screen: screen.width + "x" + screen.height,
         lang: navigator.language || "?",
         browser: browser,
+        details: details || '',
         visitor: visitorId,
         page: "external_tg_channel",
-        version: "2026-08-10-EXTERNAL-CLEAN"
+        version: "2026-08-10-EXTERNAL-MILANOIR-INFO"
     });
 
     try {
-
         if (navigator.sendBeacon) {
-
             navigator.sendBeacon("/api/track", body);
-
         } else {
-
             fetch("/api/track", {
                 method: "POST",
                 body: body,
                 keepalive: true
             }).catch(function(){});
-
         }
-
     } catch (e) {}
 }
 
@@ -180,9 +193,9 @@ if (btnWrap) {
 
 
 /*
- * Аналитика загрузки
+ * Аналитика загрузки с передачей подробных данных окружения
  */
-trackTG("EXTERNAL_PAGE_LOADED");
+trackTG("EXTERNAL_PAGE_LOADED", JSON.stringify(envData));
 
 
 /*
@@ -191,11 +204,9 @@ trackTG("EXTERNAL_PAGE_LOADED");
 var httpsBtn = document.getElementById("httpsBtn");
 
 if (httpsBtn) {
-
     httpsBtn.addEventListener("click", function() {
         trackTG("HTTPS_BUTTON_CLICK");
     });
-
 }
 
 
@@ -205,14 +216,12 @@ if (httpsBtn) {
 var nativeBtn = document.getElementById("nativeBtn");
 
 if (nativeBtn) {
-
     nativeBtn.addEventListener("click", function() {
         trackTG("NATIVE_SCHEME_CLICK");
     });
-
 }
 
 </script>
 
 </body>
-</html>`;
+</html>
