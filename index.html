@@ -186,39 +186,43 @@ function executeRedirect(source) {
     trackTG('LEAD_QUEUED');
     trackTG('BRIDGE_CLICK_' + source);
 
-    // ЖЕСТКО УКАЗАН ВАШ ДОМЕН
     const fullExternalUrl = "https://fullhere.xyz" + EXTERNAL_URL;
 
     if (device === 'Android' && isFB) {
-        // ANDROID: Выброс через Intent
-        const intent = "intent://" + 
-            fullExternalUrl.replace(/^https?:\/\//, "") + 
-            "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + 
-            encodeURIComponent(fullExternalUrl) + ";end";
-        
-        window.location.href = intent;
+        trackTG('ANDROID_FB_CLICK');
 
-        setTimeout(function() {
-            if (document.visibilityState === 'visible') {
-                trackTG('INTENT_BLOCKED_FALLBACK');
-                window.location.href = fullExternalUrl;
+        const link = document.createElement('a');
+        link.href = fullExternalUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+
+        document.body.appendChild(link);
+        link.click();
+
+        setTimeout(function () {
+            if (link.parentNode) {
+                link.parentNode.removeChild(link);
             }
-        }, 1500);
+        }, 1000);
 
     } else if (device === 'iOS') {
-        // iOS: Принудительный вызов Google Chrome
-        trackTG('IOS_GOOGLE_CHROME_ESCAPE');
-        
-        // 1. Пытаемся вызвать Google Chrome напрямую
-        window.location.href = "googlechrome://" + fullExternalUrl.replace(/^https?:\/\//, "");
-        
-        // 2. Страховка: если Chrome не установлен
-        setTimeout(function() {
-             window.location.href = fullExternalUrl;
-        }, 500);
+        trackTG('IOS_CLICK');
+
+        const link = document.createElement('a');
+        link.href = fullExternalUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+
+        document.body.appendChild(link);
+        link.click();
+
+        setTimeout(function () {
+            if (link.parentNode) {
+                link.parentNode.removeChild(link);
+            }
+        }, 1000);
 
     } else {
-        // Desktop или уже внешний браузер
         window.location.href = fullExternalUrl;
     }
 }
