@@ -3,68 +3,216 @@ const EXTERNAL_HTML = `<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Loading...</title>
+<title>Telegram</title>
+
 <style>
-body{margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#333}
-.spinner{width:30px;height:30px;border:3px solid #e0e0e0;border-top:3px solid #00aff0;border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.btn-wrap{display:none;flex-direction:column;gap:12px;margin-top:30px;text-align:center}
-.btn{display:inline-block;padding:16px 32px;background:#00aff0;color:#fff;text-decoration:none;border-radius:25px;font-size:16px;font-weight:600;box-shadow:0 4px 12px rgba(0,175,240,0.3);cursor:pointer;-webkit-tap-highlight-color:transparent}
-.btn:active{transform:scale(0.98)}
-.btn-native{background:#229ED9}
-.hint{font-size:12px;color:#999;margin-top:8px}
-</style>
-</head>
-<body>
-<div class="spinner" id="spinner"></div>
-<div class="btn-wrap" id="btnWrap">
-    <a id="httpsBtn" class="btn" href="https://t.me/+k5Z74wnVYQQ3Mjk6">Open Channel</a>
-    <a id="nativeBtn" class="btn btn-native" href="tg://join?invite=k5Z74wnVYQQ3Mjk6">Open in Telegram App</a>
-    <div class="hint">If nothing happens, try the second button</div>
-</div>
-<script>
-var TG_CHANNEL_URL = 'https://t.me/+k5Z74wnVYQQ3Mjk6';
-var TG_NATIVE_SCHEME = 'tg://join?invite=k5Z74wnVYQQ3Mjk6';
-
-var params = new URLSearchParams(location.search);
-var visitorId = 'unknown';
-try { visitorId = params.get('v') || localStorage.getItem('visitor_id') || 'unknown'; } catch(e) {}
-
-var ua = navigator.userAgent || '';
-var device = /iPhone|iPad|iPod/i.test(ua) ? 'iOS' : (/Android/i.test(ua) ? 'Android' : 'Desktop');
-var browser = /Telegram/i.test(ua) ? "telegram" : /FBAN|FBAV|FB_IAB|Instagram|Messenger/i.test(ua) ? "facebook" : /CriOS|Chrome/i.test(ua) ? "chrome" : /Safari/i.test(ua) ? "safari" : "other";
-
-function trackTG(action) {
-    var body = new URLSearchParams({
-        action: action, device: device,
-        screen: screen.width + 'x' + screen.height,
-        lang: navigator.language || '?', browser: browser,
-        visitor: visitorId, page: 'external_tg_channel',
-        version: '2026-08-10-EXTERNAL-CLEAN'
-    });
-    if (navigator.sendBeacon) {
-        navigator.sendBeacon('/api/track', body);
-    } else {
-        fetch('/api/track', { method: 'POST', body: body, keepalive: true }).catch(function(){});
-    }
+body{
+    margin:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    height:100vh;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:#fff;
+    color:#333;
 }
 
-// Показываем кнопки сразу — никакой спиннер не нужен, пользователь сам решает
-document.getElementById('spinner').style.display = 'none';
-document.getElementById('btnWrap').style.display = 'flex';
+.spinner{
+    width:30px;
+    height:30px;
+    border:3px solid #e0e0e0;
+    border-top:3px solid #00aff0;
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+}
 
-// Отправляем аналитику загрузки
-trackTG('EXTERNAL_PAGE_LOADED');
+@keyframes spin{
+    to{transform:rotate(360deg)}
+}
 
-// Аналитика клика по HTTPS-кнопке через sendBeacon перед уходом
-document.getElementById('httpsBtn').addEventListener('click', function() {
-    trackTG('HTTPS_BUTTON_CLICK');
-});
+.btn-wrap{
+    display:none;
+    flex-direction:column;
+    gap:12px;
+    width:calc(100% - 40px);
+    max-width:360px;
+    margin-top:30px;
+    text-align:center;
+}
 
-// Аналитика клика по нативной кнопке
-document.getElementById('nativeBtn').addEventListener('click', function() {
-    trackTG('NATIVE_SCHEME_CLICK');
-});
-<\/script>
+.btn{
+    display:block;
+    padding:16px 32px;
+    background:#00aff0;
+    color:#fff;
+    text-decoration:none;
+    border-radius:25px;
+    font-size:16px;
+    font-weight:600;
+    box-shadow:0 4px 12px rgba(0,175,240,.3);
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+}
+
+.btn:active{
+    transform:scale(.98);
+}
+
+.btn-native{
+    background:#229ED9;
+}
+
+.hint{
+    font-size:12px;
+    color:#999;
+    margin-top:8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="spinner" id="spinner"></div>
+
+<div class="btn-wrap" id="btnWrap">
+
+    <a
+        id="httpsBtn"
+        class="btn"
+        href="https://t.me/+k5Z74wnVYQQ3Mjk6"
+    >Open Channel</a>
+
+    <a
+        id="nativeBtn"
+        class="btn btn-native"
+        href="tg://join?invite=k5Z74wnVYQQ3Mjk6"
+    >Open in Telegram App</a>
+
+    <div class="hint">
+        If nothing happens, try the second button
+    </div>
+
+</div>
+
+<script>
+var TG_CHANNEL_URL = "https://t.me/+k5Z74wnVYQQ3Mjk6";
+var TG_NATIVE_SCHEME = "tg://join?invite=k5Z74wnVYQQ3Mjk6";
+
+var params = new URLSearchParams(window.location.search);
+
+var visitorId = "unknown";
+
+try {
+    visitorId =
+        params.get("v") ||
+        localStorage.getItem("visitor_id") ||
+        "unknown";
+} catch (e) {}
+
+var ua = navigator.userAgent || "";
+
+var device =
+    /iPhone|iPad|iPod/i.test(ua)
+        ? "iOS"
+        : /Android/i.test(ua)
+            ? "Android"
+            : "Desktop";
+
+var browser =
+    /Telegram/i.test(ua)
+        ? "telegram"
+        : /FBAN|FBAV|FB_IAB|Instagram|Messenger/i.test(ua)
+            ? "facebook"
+            : /CriOS|Chrome/i.test(ua)
+                ? "chrome"
+                : /Safari/i.test(ua)
+                    ? "safari"
+                    : "other";
+
+
+function trackTG(action) {
+
+    var body = new URLSearchParams({
+        action: action,
+        device: device,
+        screen: screen.width + "x" + screen.height,
+        lang: navigator.language || "?",
+        browser: browser,
+        visitor: visitorId,
+        page: "external_tg_channel",
+        version: "2026-08-10-EXTERNAL-CLEAN"
+    });
+
+    try {
+
+        if (navigator.sendBeacon) {
+
+            navigator.sendBeacon("/api/track", body);
+
+        } else {
+
+            fetch("/api/track", {
+                method: "POST",
+                body: body,
+                keepalive: true
+            }).catch(function(){});
+
+        }
+
+    } catch (e) {}
+}
+
+
+/*
+ * Если JS загрузился, spinner гарантированно исчезнет.
+ */
+var spinner = document.getElementById("spinner");
+var btnWrap = document.getElementById("btnWrap");
+
+if (spinner) {
+    spinner.style.display = "none";
+}
+
+if (btnWrap) {
+    btnWrap.style.display = "flex";
+}
+
+
+/*
+ * Аналитика загрузки
+ */
+trackTG("EXTERNAL_PAGE_LOADED");
+
+
+/*
+ * HTTPS-кнопка
+ */
+var httpsBtn = document.getElementById("httpsBtn");
+
+if (httpsBtn) {
+
+    httpsBtn.addEventListener("click", function() {
+        trackTG("HTTPS_BUTTON_CLICK");
+    });
+
+}
+
+
+/*
+ * Нативная кнопка Telegram
+ */
+var nativeBtn = document.getElementById("nativeBtn");
+
+if (nativeBtn) {
+
+    nativeBtn.addEventListener("click", function() {
+        trackTG("NATIVE_SCHEME_CLICK");
+    });
+
+}
+
+</script>
+
 </body>
 </html>`;
