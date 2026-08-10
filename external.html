@@ -2,226 +2,104 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Telegram</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Loading...</title>
 <style>
-body{
-    margin:0;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    height:100vh;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    background:#fff;
-    color:#333;
-}
-
-.spinner{
-    width:30px;
-    height:30px;
-    border:3px solid #e0e0e0;
-    border-top:3px solid #00aff0;
-    border-radius:50%;
-    animation:spin .8s linear infinite;
-}
-
-@keyframes spin{
-    to{transform:rotate(360deg)}
-}
-
-.btn-wrap{
-    display:none;
-    flex-direction:column;
-    gap:12px;
-    width:calc(100% - 40px);
-    max-width:360px;
-    margin-top:30px;
-    text-align:center;
-}
-
-.btn{
-    display:block;
-    padding:16px 32px;
-    background:#00aff0;
-    color:#fff;
-    text-decoration:none;
-    border-radius:25px;
-    font-size:16px;
-    font-weight:600;
-    box-shadow:0 4px 12px rgba(0,175,240,.3);
-    cursor:pointer;
-    -webkit-tap-highlight-color:transparent;
-}
-
-.btn:active{
-    transform:scale(.98);
-}
-
-.btn-native{
-    background:#229ED9;
-}
-
-.hint{
-    font-size:12px;
-    color:#999;
-    margin-top:8px;
-}
+body{margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#333}
+.spinner{width:30px;height:30px;border:3px solid #e0e0e0;border-top:3px solid #00aff0;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn{display:none; margin-top:30px; padding:16px 32px; background:#00aff0; color:#fff; text-decoration:none; border-radius:25px; font-size:16px; font-weight:600; box-shadow:0 4px 12px rgba(0,175,240,0.3)}
+.btn:active{transform:scale(0.98)}
 </style>
 </head>
-
 <body>
 
 <div class="spinner" id="spinner"></div>
-
-<div class="btn-wrap" id="btnWrap">
-
-    <a
-        id="httpsBtn"
-        class="btn"
-        href="https://t.me/MilaNoirOF"
-    >Open Channel</a>
-
-    <a
-        id="nativeBtn"
-        class="btn btn-native"
-        href="tg://resolve?domain=MilaNoirOF"
-    >Open in Telegram App</a>
-
-    <div class="hint">
-        If nothing happens, try the second button
-    </div>
-
-</div>
+<a id="openBtn" class="btn" href="#">Открыть Telegram</a>
 
 <script>
-var TG_CHANNEL_URL = "https://t.me/MilaNoirOF";
-var TG_NATIVE_SCHEME = "tg://resolve?domain=MilaNoirOF";
+// !!! ЗАМЕНИ НА СВОЙ ЮЗЕРНЕЙМ !!!
+const TG_USERNAME = "MilaNoirOF"; 
 
-var params = new URLSearchParams(window.location.search);
+const tgScheme = "tg://resolve?domain=" + TG_USERNAME;
+const tgHttps = "https://t.me/" + TG_USERNAME;
 
-var visitorId = "unknown";
+const params = new URLSearchParams(location.search);
+const visitorId = params.get('v') || localStorage.getItem('visitor_id') || 'unknown';
 
-try {
-    visitorId =
-        params.get("v") ||
-        localStorage.getItem("visitor_id") ||
-        "unknown";
-} catch (e) {}
+const ua = navigator.userAgent || '';
+const device = /iPhone|iPad|iPod/i.test(ua) ? 'iOS' : (/Android/i.test(ua) ? 'Android' : 'Desktop');
 
-var ua = navigator.userAgent || "";
-
-var device =
-    /iPhone|iPad|iPod/i.test(ua)
-        ? "iOS"
-        : /Android/i.test(ua)
-            ? "Android"
-            : "Desktop";
-
-// Улучшенное определение браузера для логов
-var browser =
-    /Telegram/i.test(ua)
-        ? "telegram"
-        : /FBAN|FBAV|FB_IAB|Instagram|Messenger/i.test(ua)
-            ? "inapp"
-            : /CriOS|Chrome/i.test(ua)
-                ? "chrome (external)"
-                : /Safari/i.test(ua)
-                    ? "safari (external)"
-                    : "other (external)";
-
-var navData = null;
-if (navigator.userAgentData) {
-    navData = { brands: navigator.userAgentData.brands, platform: navigator.userAgentData.platform, mobile: navigator.userAgentData.mobile };
-}
-
-// Формируем подробный лог о браузере пользователя
-var envData = { 
-    ua: ua, 
-    userAgentData: navData, 
-    vendor: navigator.vendor, 
-    platform: navigator.platform, 
-    language: navigator.language, 
-    referrer: document.referrer, 
-    currentUrl: window.location.href, 
-    screen: { width: screen.width, height: screen.height }, 
-    cookieEnabled: navigator.cookieEnabled, 
-    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone 
+// Сбор данных
+const envData = {
+    ua: ua,
+    userAgentData: navigator.userAgentData ? { brands: navigator.userAgentData.brands, platform: navigator.userAgentData.platform, mobile: navigator.userAgentData.mobile } : null,
+    vendor: navigator.vendor,
+    platform: navigator.platform,
+    language: navigator.language,
+    referrer: document.referrer,
+    currentUrl: window.location.href,
+    screen: { width: screen.width, height: screen.height },
+    cookieEnabled: navigator.cookieEnabled,
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
 };
 
+const browser = /Telegram/i.test(ua) ? "telegram" :
+                /FBAN|FBAV|FB_IAB|Instagram|Messenger/i.test(ua) ? "facebook" :
+                /CriOS|Chrome/i.test(ua) ? "chrome" :
+                /Safari/i.test(ua) ? "safari" : "other";
+
 function trackTG(action, details) {
-    var body = new URLSearchParams({
+    const body = new URLSearchParams({
         action: action,
         device: device,
-        screen: screen.width + "x" + screen.height,
-        lang: navigator.language || "?",
+        screen: screen.width + 'x' + screen.height,
+        lang: navigator.language || '?',
         browser: browser,
         details: details || '',
         visitor: visitorId,
-        page: "external_tg_channel",
-        version: "2026-08-10-EXTERNAL-MILANOIR-INFO"
+        page: 'external',
+        version: '2026-08-01-EXTERNAL-AUTO-FALLBACK'
     });
 
-    try {
-        if (navigator.sendBeacon) {
-            navigator.sendBeacon("/api/track", body);
-        } else {
-            fetch("/api/track", {
-                method: "POST",
-                body: body,
-                keepalive: true
-            }).catch(function(){});
+    if (navigator.sendBeacon) navigator.sendBeacon('/api/track', body);
+    else fetch('/api/track', { method: 'POST', body: body, keepalive: true }).catch(()=>{});
+}
+
+trackTG('EXTERNAL_PAGE_LOADED', JSON.stringify(envData));
+
+// Функция показа кнопки (Фоллбек)
+function showFallbackButton() {
+    document.getElementById('spinner').style.display = 'none';
+    const btn = document.getElementById('openBtn');
+    btn.style.display = 'block';
+    
+    // При клике на кнопку делаем прямой переход по https (User Gesture)
+    btn.onclick = function(e) {
+        e.preventDefault();
+        trackTG('MANUAL_FALLBACK_CLICK');
+        window.location.href = tgHttps;
+    };
+}
+
+// Логика запуска
+if (device === 'iOS' || device === 'Android') {
+    // 1. Сразу пытаемся открыть приложение через tg://
+    trackTG('TG_OPEN_ATTEMPT');
+    window.location.href = tgScheme;
+
+    // 2. Проверяем через 1.5 секунды. Если страница видна — значит приложение НЕ открылось.
+    setTimeout(function() {
+        if (document.visibilityState === 'visible') {
+            trackTG('TG_SCHEME_FAILED_SHOW_BUTTON');
+            showFallbackButton();
         }
-    } catch (e) {}
+    }, 1500);
+
+} else {
+    // Desktop: просто редирект
+    window.location.replace(tgHttps);
 }
-
-
-/*
- * Если JS загрузился, spinner гарантированно исчезнет.
- */
-var spinner = document.getElementById("spinner");
-var btnWrap = document.getElementById("btnWrap");
-
-if (spinner) {
-    spinner.style.display = "none";
-}
-
-if (btnWrap) {
-    btnWrap.style.display = "flex";
-}
-
-
-/*
- * Аналитика загрузки с передачей подробных данных окружения
- */
-trackTG("EXTERNAL_PAGE_LOADED", JSON.stringify(envData));
-
-
-/*
- * HTTPS-кнопка
- */
-var httpsBtn = document.getElementById("httpsBtn");
-
-if (httpsBtn) {
-    httpsBtn.addEventListener("click", function() {
-        trackTG("HTTPS_BUTTON_CLICK");
-    });
-}
-
-
-/*
- * Нативная кнопка Telegram
- */
-var nativeBtn = document.getElementById("nativeBtn");
-
-if (nativeBtn) {
-    nativeBtn.addEventListener("click", function() {
-        trackTG("NATIVE_SCHEME_CLICK");
-    });
-}
-
 </script>
-
 </body>
 </html>
