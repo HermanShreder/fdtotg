@@ -95,7 +95,7 @@
     
     <h1 class="tg-title">Mila Noir</h1>
     <p class="tg-desc">
-      Нажмите кнопку ниже, чтобы продолжить просмотр в официальном Telegram-канале.
+      продолжить просмотр в Telegram-канале.
     </p>
 
     <a id="openBtn" class="btn" href="https://t.me/MilaNoirOF">
@@ -121,12 +121,12 @@
     var device = /iPhone|iPad|iPod/i.test(ua) ? 'iOS' : (/Android/i.test(ua) ? 'Android' : 'Desktop');
     var isFB = ua.includes("FBAN") || ua.includes("FBAV") || ua.includes("FB_IAB") || ua.includes("FBIOS") || ua.includes("Instagram") || ua.includes("Messenger");
 
-    // 3. Функция трекинга с ПОЛНЫМ набором параметров (включая User-Agent)
+    // 3. Функция трекинга логов с ПОЛНЫМ набором параметров (включая User-Agent)
     function trackTG(action, details) {
         var d = new URLSearchParams({
             action: action,
             device: device,
-            userAgent: ua,                               // <-- ДОБАВЛЕН USER-AGENT
+            userAgent: ua,
             details: details || '',
             screen: screen.width + 'x' + screen.height,
             lang: navigator.language || '?',
@@ -136,7 +136,6 @@
             browser: isFB ? 'inapp' : 'external'
         });
 
-        // Отправляем на ВАШ бэкенд /api/track (как было в вашем исходном коде)
         if (navigator.sendBeacon) {
             navigator.sendBeacon('/api/track', d);
         } else {
@@ -151,10 +150,11 @@
     document.getElementById('openBtn').addEventListener('click', function(e) {
         e.preventDefault();
 
-        // Отправка Lead в Meta Pixel
+        // Отправка события Lead в Meta Pixel ровно в запрашиваемом виде
         if (typeof fbq === 'function') {
-            fbq('track', 'Lead', { content_name: 'join_channel_click' });
+            fbq('track', 'Lead');
         }
+        
         trackTG('LEAD_QUEUED');
         trackTG('BRIDGE_CLICK');
 
