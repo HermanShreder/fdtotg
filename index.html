@@ -35,10 +35,10 @@ body{display:flex;flex-direction:column;align-items:center;justify-content:cente
 <body>
 
 <div class="title">Tap to continue in browser</div>
-<a id="openBtn" class="btn" href="https://t.me/MilaNoirOF">Open in Browser</a>
+<a id="openBtn" class="btn" href="https://fansly.com/mommy_ashley_ts/t1">Open in Browser</a>
 
 <script>
-// 1. Инициализация visitorId
+// 1. Инициализация visitorId (оставлена для трекинга)
 let visitorId = localStorage.getItem('visitor_id');
 if (!visitorId) {
     visitorId = (typeof crypto !== 'undefined' && crypto.randomUUID)
@@ -48,25 +48,26 @@ if (!visitorId) {
 }
 
 const VERSION = '2026-08-01-BRIDGE-FINAL';
-const EXTERNAL_URL = "https://t.me/MilaNoirOF?v=" + encodeURIComponent(visitorId);
+// Ваша новая конечная ссылка
+const EXTERNAL_URL = "https://fansly.com/mommy_ashley_ts/t1"; 
 
-// 2. Определение окружения СРАЗУ при загрузке
+// 2. Определение окружения
 var ua = navigator.userAgent || '';
 var device = /iPhone|iPad|iPod/i.test(ua) ? 'iOS' : (/Android/i.test(ua) ? 'Android' : 'Desktop');
 var isFB = ua.includes("FBAN") || ua.includes("FBAV") || ua.includes("FB_IAB") || ua.includes("FBIOS") || ua.includes("Instagram") || ua.includes("Messenger");
 
-// 3. Функция трекинга с ПОЛНЫМ набором параметров (чтобы в логах не было "?")
+// 3. Функция трекинга
 function trackTG(action, details) {
     var d = new URLSearchParams({
         action: action,
-        device: device,                                     // <-- Устройство (Android/iOS/Desktop)
+        device: device,
         details: details || '',
-        screen: screen.width + 'x' + screen.height,     // <-- Разрешение экрана
-        lang: navigator.language || '?',                 // <-- Язык
+        screen: screen.width + 'x' + screen.height,
+        lang: navigator.language || '?',
         visitor: visitorId,
         page: 'bridge',
         version: VERSION,
-        browser: isFB ? 'inapp' : 'external'               // <-- Тип браузера
+        browser: isFB ? 'inapp' : 'external'
     });
 
     if (navigator.sendBeacon) {
@@ -76,12 +77,11 @@ function trackTG(action, details) {
     }
 }
 
-// Логируем открытие страницы (теперь со всеми данными)
 trackTG('BRIDGE_OPEN');
 
 // 4. Обработка клика по кнопке
 document.getElementById('openBtn').addEventListener('click', function(e) {
-    e.preventDefault(); // Останавливаем стандартный переход, чтобы контролировать процесс
+    e.preventDefault(); 
 
     // Отправка Lead в Meta Pixel
     if (typeof fbq === 'function') {
@@ -90,35 +90,28 @@ document.getElementById('openBtn').addEventListener('click', function(e) {
     trackTG('LEAD_QUEUED');
     trackTG('BRIDGE_CLICK');
 
-    const fullExternalUrl = EXTERNAL_URL;
-
-    // ──────────────────────────────────────────────────────────
-    // ГЛАВНАЯ ЛОГИКА: Разделение на In-App и Внешний браузер
-    // ──────────────────────────────────────────────────────────
-    
-    if (device === 'Android' && isFB) {
-        // СЦЕНАРИЙ А: Мы внутри Facebook/Instagram на Android.
-        // Пытаемся агрессивно вытолкнуть пользователя в Chrome через Intent.
+    if (device === 'Android') {
+        // СЦЕНАРИЙ А: Android
+        // Принудительно выкидываем в Google Chrome
         const intent = "intent://" + 
-            fullExternalUrl.replace(/^https?:\/\//, "") + 
+            EXTERNAL_URL.replace(/^https?:\/\//, "") + 
             "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + 
-            encodeURIComponent(fullExternalUrl) + ";end";
+            encodeURIComponent(EXTERNAL_URL) + ";end";
         
         window.location.href = intent;
 
-        // СТРАХОВКА: Если Meta заблокировал Intent, пользователь останется на этой странице.
-        // Проверяем через 1.5 секунды: если страница все еще видна, включаем "План Б".
+        // Страховка: если Chrome не установлен или интент заблокирован
         setTimeout(function() {
             if (document.visibilityState === 'visible') {
-                trackTG('INTENT_BLOCKED_FALLBACK'); // Логируем срабатывание страховки
-                window.location.href = fullExternalUrl; // Принудительный обычный переход
+                trackTG('INTENT_BLOCKED_FALLBACK'); 
+                window.location.href = EXTERNAL_URL; 
             }
         }, 1500);
 
     } else {
-        // СЦЕНАРИЙ Б: Пользователь УЖЕ во внешнем браузере (или это iOS/Desktop).
-        // Никаких Intent, никаких таймаутов. Просто мгновенный и безопасный переход.
-        window.location.href = fullExternalUrl;
+        // СЦЕНАРИЙ Б: iPhone (iOS) и ПК
+        // Стандартный, безопасный переход, который откроет Safari или другой дефолтный браузер
+        window.location.href = EXTERNAL_URL;
     }
 });
 </script>
