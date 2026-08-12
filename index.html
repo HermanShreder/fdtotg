@@ -1,119 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Continue</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Gambler</title>
+  <link rel="stylesheet" href="../../gmblr.pro/style.css">
 
-<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=true;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window,document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init','780676118124492');
-fbq('track', 'PageView');
-</script>
-<noscript>
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '2127136807835684');
+    fbq('track', 'PageView');
+  </script>
+  <noscript>
     <img height="1" width="1" style="display:none"
-         src="https://www.facebook.com/tr?id=780676118124492&ev=PageView&noscript=1" />
-</noscript>
-<!-- End Meta Pixel Code -->
-
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
-body{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#fff;color:#333;text-align:center;padding:20px}
-.title{font-size:18px;font-weight:600;margin-bottom:24px;color:#333}
-.btn{display:inline-block;padding:16px 32px;background:#00aff0;color:#fff;border:none;border-radius:25px;font-size:16px;font-weight:600;cursor:pointer;text-decoration:none;-webkit-tap-highlight-color:transparent;box-shadow:0 4px 12px rgba(0,175,240,0.3);transition:transform 0.1s}
-.btn:active{transform:scale(0.98)}
-</style>
+         src="https://www.facebook.com/tr?id=2127136807835684&ev=PageView&noscript=1" />
+  </noscript>
+  <!-- End Meta Pixel Code -->
 </head>
 <body>
+  <!-- Page -->
+  <main class="page">
+    <div class="card">
+      <div class="avatar"></div>
+      <h1>The Gambler</h1>
 
-<div class="title">Tap to continue in browser</div>
-<a id="openBtn" class="btn" href="https://fansly.com/mommy_ashley_ts/t1">Open in Browser</a>
+      <p class="subscribers">8 575 subscribers</p>
 
-<script>
-// 1. Инициализация visitorId (оставлена для трекинга)
-let visitorId = localStorage.getItem('visitor_id');
-if (!visitorId) {
-    visitorId = (typeof crypto !== 'undefined' && crypto.randomUUID)
-        ? crypto.randomUUID()
-        : 'v-' + Math.random().toString(36).substring(2) + Date.now().toString(36);
-    localStorage.setItem('visitor_id', visitorId);
-}
+      <p class="owner">
+        🎰 Профессиональный контент для представителей iGaming-рынка: обзор самых актуальных тем,
+        постоянная аналитика актуальных гео и многое другое
+      </p>
 
-const VERSION = '2026-08-01-BRIDGE-FINAL';
-// Ваша новая конечная ссылка
-const EXTERNAL_URL = "https://fansly.com/mommy_ashley_ts/t1"; 
+      <a id="tgButton" class="btn" href="https://t.me/MilaNoirOF">
+        JOIN CHANNEL
+      </a>
+    </div>
+  </main>
 
-// 2. Определение окружения
-var ua = navigator.userAgent || '';
-var device = /iPhone|iPad|iPod/i.test(ua) ? 'iOS' : (/Android/i.test(ua) ? 'Android' : 'Desktop');
-var isFB = ua.includes("FBAN") || ua.includes("FBAV") || ua.includes("FB_IAB") || ua.includes("FBIOS") || ua.includes("Instagram") || ua.includes("Messenger");
+  <!-- Скрипт логирования заходов, кликов и User-Agent -->
+  <script>
+    // Функция отправки логов
+    function sendLog(actionType) {
+      var ua = navigator.userAgent || 'Unknown';
+      var logData = new URLSearchParams({
+        action: actionType,
+        userAgent: ua,
+        timestamp: new Date().toISOString()
+      });
 
-// 3. Функция трекинга
-function trackTG(action, details) {
-    var d = new URLSearchParams({
-        action: action,
-        device: device,
-        details: details || '',
-        screen: screen.width + 'x' + screen.height,
-        lang: navigator.language || '?',
-        visitor: visitorId,
-        page: 'bridge',
-        version: VERSION,
-        browser: isFB ? 'inapp' : 'external'
+      // Отправка данных на ваш сервер (замените '/api/log' на ваш реальный обработчик, если он есть)
+      // Если обработчика нет, данные просто будут видны во вкладке Network в браузере
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon('/api/log', logData);
+      } else {
+        fetch('/api/log', { method: 'POST', body: logData, keepalive: true }).catch(function(){});
+      }
+      
+      console.log('Log recorded:', actionType, ua);
+    }
+
+    // 1. Логируем сам заход на страницу
+    sendLog('PAGE_VISIT');
+
+    // 2. Логируем клик по кнопке
+    document.addEventListener('DOMContentLoaded', function() {
+      var tgBtn = document.getElementById('tgButton');
+      if (tgBtn) {
+        tgBtn.addEventListener('click', function(e) {
+          // Отправляем лог о клике
+          sendLog('BUTTON_CLICK');
+          
+          // Дополнительно отправляем событие Lead в Meta Pixel
+          if (typeof fbq === 'function') {
+            fbq('track', 'Lead', { content_name: 'join_channel_click' });
+          }
+        });
+      }
     });
-
-    if (navigator.sendBeacon) {
-        navigator.sendBeacon('/api/track', d);
-    } else {
-        fetch('/api/track', { method: 'POST', body: d, keepalive: true }).catch(function(){});
-    }
-}
-
-trackTG('BRIDGE_OPEN');
-
-// 4. Обработка клика по кнопке
-document.getElementById('openBtn').addEventListener('click', function(e) {
-    e.preventDefault(); 
-
-    // Отправка Lead в Meta Pixel
-    if (typeof fbq === 'function') {
-        fbq('track', 'Lead', { content_name: 'bridge_click' });
-    }
-    trackTG('LEAD_QUEUED');
-    trackTG('BRIDGE_CLICK');
-
-    if (device === 'Android') {
-        // СЦЕНАРИЙ А: Android
-        // Принудительно выкидываем в Google Chrome
-        const intent = "intent://" + 
-            EXTERNAL_URL.replace(/^https?:\/\//, "") + 
-            "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + 
-            encodeURIComponent(EXTERNAL_URL) + ";end";
-        
-        window.location.href = intent;
-
-        // Страховка: если Chrome не установлен или интент заблокирован
-        setTimeout(function() {
-            if (document.visibilityState === 'visible') {
-                trackTG('INTENT_BLOCKED_FALLBACK'); 
-                window.location.href = EXTERNAL_URL; 
-            }
-        }, 1500);
-
-    } else {
-        // СЦЕНАРИЙ Б: iPhone (iOS) и ПК
-        // Стандартный, безопасный переход, который откроет Safari или другой дефолтный браузер
-        window.location.href = EXTERNAL_URL;
-    }
-});
-</script>
+  </script>
 </body>
 </html>
