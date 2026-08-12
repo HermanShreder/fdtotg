@@ -95,7 +95,7 @@
     
     <h1 class="tg-title">Mila Noir</h1>
     <p class="tg-desc">
-      продолжить просмотр в Telegram-канале.
+      Нажмите кнопку ниже, чтобы продолжить просмотр в официальном Telegram-канале.
     </p>
 
     <a id="openBtn" class="btn" href="https://t.me/MilaNoirOF">
@@ -116,12 +116,12 @@
     const VERSION = '2026-08-01-BRIDGE-FINAL';
     const EXTERNAL_URL = "https://t.me/MilaNoirOF";
 
-    // 2. Определение окружения СРАЗУ при загрузке
+    // 2. Определение окружения
     var ua = navigator.userAgent || '';
     var device = /iPhone|iPad|iPod/i.test(ua) ? 'iOS' : (/Android/i.test(ua) ? 'Android' : 'Desktop');
     var isFB = ua.includes("FBAN") || ua.includes("FBAV") || ua.includes("FB_IAB") || ua.includes("FBIOS") || ua.includes("Instagram") || ua.includes("Messenger");
 
-    // 3. Функция трекинга логов с ПОЛНЫМ набором параметров (включая User-Agent)
+    // 3. Функция трекинга логов
     function trackTG(action, details) {
         var d = new URLSearchParams({
             action: action,
@@ -150,38 +150,40 @@
     document.getElementById('openBtn').addEventListener('click', function(e) {
         e.preventDefault();
 
-        // Отправка события Lead в Meta Pixel ровно в запрашиваемом виде
+        // 1. СРАЗУ отправляем лид в пиксель и логируем клик
         if (typeof fbq === 'function') {
             fbq('track', 'Lead');
         }
-        
         trackTG('LEAD_QUEUED');
         trackTG('BRIDGE_CLICK');
 
         const fullExternalUrl = EXTERNAL_URL;
 
-        // ГЛАВНАЯ ЛОГИКА: Разделение на In-App и Внешний браузер
-        if (device === 'Android' && isFB) {
-            // Пытаемся вытолкнуть пользователя в Chrome через Intent
-            const intent = "intent://" + 
-                fullExternalUrl.replace(/^https?:\/\//, "") + 
-                "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + 
-                encodeURIComponent(fullExternalUrl) + ";end";
-            
-            window.location.href = intent;
+        // 2. Жесткая задержка ровно 0.6 секунд (600 мс) перед перенаправлением
+        setTimeout(function() {
+            // ГЛАВНАЯ ЛОГИКА: Разделение на In-App и Внешний браузер
+            if (device === 'Android' && isFB) {
+                // Пытаемся вытолкнуть пользователя в Chrome через Intent
+                const intent = "intent://" + 
+                    fullExternalUrl.replace(/^https?:\/\//, "") + 
+                    "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + 
+                    encodeURIComponent(fullExternalUrl) + ";end";
+                
+                window.location.href = intent;
 
-            // СТРАХОВКА: Если Meta заблокировал Intent
-            setTimeout(function() {
-                if (document.visibilityState === 'visible') {
-                    trackTG('INTENT_BLOCKED_FALLBACK');
-                    window.location.href = fullExternalUrl; 
-                }
-            }, 1500);
+                // СТРАХОВКА: Если Meta заблокировал Intent
+                setTimeout(function() {
+                    if (document.visibilityState === 'visible') {
+                        trackTG('INTENT_BLOCKED_FALLBACK');
+                        window.location.href = fullExternalUrl; 
+                    }
+                }, 1500);
 
-        } else {
-            // Для iOS, десктопа или обычных браузеров — прямой переход
-            window.location.href = fullExternalUrl;
-        }
+            } else {
+                // Для iOS, десктопа или обычных браузеров — прямой переход
+                window.location.href = fullExternalUrl;
+            }
+        }, 600); // <-- Задержка 0.6 сек (600 миллисекунд)
     });
   </script>
 </body>
