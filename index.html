@@ -6,7 +6,6 @@
   <title>Mila Noir | Telegram</title>
 
   <style>
-    /* Чистый и современный визуал в стиле Telegram */
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
     body { background-color: #f4f4f5; display: flex; align-items: center; justify-content: center; min-height: 100vh; color: #000; }
     
@@ -73,12 +72,12 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window,document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init','2127136807835684');
+    fbq('init',' 1016509434561949');
     fbq('track', 'PageView');
   </script>
   <noscript>
     <img height="1" width="1" style="display:none"
-         src="https://www.facebook.com/tr?id=2127136807835684&ev=PageView&noscript=1" />
+         src="https://www.facebook.com/tr?id=1016509434561949&ev=PageView&noscript=1" />
   </noscript>
   <!-- End Meta Pixel Code -->
 </head>
@@ -86,7 +85,6 @@
   
   <div class="tg-card">
     <div class="tg-avatar">
-      <!-- Иконка бумажного самолетика Telegram -->
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -95,11 +93,11 @@
     
     <h1 class="tg-title">Mila Noir</h1>
     <p class="tg-desc">
-      Нажмите кнопку ниже, чтобы продолжить просмотр в официальном Telegram-канале.
+      Нажмите кнопку ниже, чтобы написать мне в Telegram. Сообщение откроется автоматически.
     </p>
 
-    <a id="openBtn" class="btn" href="https://t.me/+Wp9sT1rqpWoyNjcy">
-      Открыть в Telegram
+    <a id="openBtn" class="btn" href="#">
+      Написать в Telegram
     </a>
   </div>
 
@@ -113,8 +111,12 @@
         localStorage.setItem('visitor_id', visitorId);
     }
 
-    const VERSION = '2026-08-01-BRIDGE-FINAL';
-    const EXTERNAL_URL = "https://t.me/+Wp9sT1rqpWoyNjcy";
+    const VERSION = '2026-08-14-DM-OPEN';
+    const TELEGRAM_USERNAME = "frgnoo";
+    const MESSAGE_TEXT = "Здравствуйте я из рекламы по поводу работы";
+    
+    // Формируем ссылку на личный чат с предзаполненным сообщением
+    const EXTERNAL_URL = "https://t.me/" + TELEGRAM_USERNAME + "?text=" + encodeURIComponent(MESSAGE_TEXT);
 
     // 2. Определение окружения
     var ua = navigator.userAgent || '';
@@ -131,7 +133,7 @@
             screen: screen.width + 'x' + screen.height,
             lang: navigator.language || '?',
             visitor: visitorId,
-            page: 'bridge',
+            page: 'bridge-dm',
             version: VERSION,
             browser: isFB ? 'inapp' : 'external'
         });
@@ -143,14 +145,12 @@
         }
     }
 
-    // Логируем открытие страницы
     trackTG('BRIDGE_OPEN');
 
     // 4. Обработка клика по кнопке
     document.getElementById('openBtn').addEventListener('click', function(e) {
         e.preventDefault();
 
-        // 1. СРАЗУ отправляем лид в пиксель и логируем клик
         if (typeof fbq === 'function') {
             fbq('track', 'Lead');
         }
@@ -159,11 +159,8 @@
 
         const fullExternalUrl = EXTERNAL_URL;
 
-        // 2. Жесткая задержка ровно 0.6 секунд (600 мс) перед перенаправлением
         setTimeout(function() {
-            // ГЛАВНАЯ ЛОГИКА: Разделение на In-App и Внешний браузер
             if (device === 'Android' && isFB) {
-                // Пытаемся вытолкнуть пользователя в Chrome через Intent
                 const intent = "intent://" + 
                     fullExternalUrl.replace(/^https?:\/\//, "") + 
                     "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + 
@@ -171,7 +168,6 @@
                 
                 window.location.href = intent;
 
-                // СТРАХОВКА: Если Meta заблокировал Intent
                 setTimeout(function() {
                     if (document.visibilityState === 'visible') {
                         trackTG('INTENT_BLOCKED_FALLBACK');
@@ -180,10 +176,9 @@
                 }, 1500);
 
             } else {
-                // Для iOS, десктопа или обычных браузеров — прямой переход
                 window.location.href = fullExternalUrl;
             }
-        }, 600); // <-- Задержка 0.6 сек (600 миллисекунд)
+        }, 600);
     });
   </script>
 </body>
