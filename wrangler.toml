@@ -1,8 +1,11 @@
 name = "fdtotg"
-main = "index.html"
 compatibility_date = "2026-08-23"
-
 workers_dev = true
+
+# Указываем папку со статическими файлами (вашим index.html). 
+# "./" означает, что файл лежит в корне проекта.
+[assets]
+directory = "./"
 
 [vars]
 ENVIRONMENT = "production"
