@@ -3,9 +3,9 @@ main = "index.js"
 compatibility_date = "2026-08-23"
 workers_dev = true
 
-# Указываем, что твои HTML файлы лежат в папке public_html
+# Указываем правильное название папки со статикой
 [assets]
-directory = "./public_html"
+directory = "./public"
 
 [vars]
 ENVIRONMENT = "production"
