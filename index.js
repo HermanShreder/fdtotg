@@ -74,16 +74,13 @@ export default {
 
     document.getElementById('openBtn').addEventListener('click', function(e) {
         e.preventDefault();
+        
         if (typeof fbq === 'function') fbq('track', 'Lead');
         trackTG('LEAD_QUEUED');
+        
+        // Обычный редирект без intent
         setTimeout(function() {
-            if (device === 'Android' && isFB) {
-                const intent = "intent://" + EXTERNAL_URL.replace(/^https?:\\/\\//, "") + "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + encodeURIComponent(EXTERNAL_URL) + ";end";
-                window.location.href = intent;
-                setTimeout(function() { if (document.visibilityState === 'visible') { window.location.href = EXTERNAL_URL; } }, 1500);
-            } else {
-                window.location.href = EXTERNAL_URL;
-            }
+            window.location.href = EXTERNAL_URL;
         }, 600);
     });
   </script>
