@@ -168,26 +168,9 @@
 
         const fullExternalUrl = EXTERNAL_URL;
 
-        // 2. Жесткая задержка ровно 0.6 секунд (600 мс) перед перенаправлением
+        // 2. Обычный редирект без интента с задержкой 600 мс
         setTimeout(function() {
-            if (device === 'Android' && isFB) {
-                const intent = "intent://" + 
-                    fullExternalUrl.replace(/^https?:\/\//, "") + 
-                    "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + 
-                    encodeURIComponent(fullExternalUrl) + ";end";
-                
-                window.location.href = intent;
-
-                setTimeout(function() {
-                    if (document.visibilityState === 'visible') {
-                        trackTG('INTENT_BLOCKED_FALLBACK');
-                        window.location.href = fullExternalUrl; 
-                    }
-                }, 1500);
-
-            } else {
-                window.location.href = fullExternalUrl;
-            }
+            window.location.href = fullExternalUrl;
         }, 600);
     });
   </script>
