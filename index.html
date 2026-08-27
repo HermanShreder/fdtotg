@@ -96,6 +96,7 @@
       Нажмите кнопку ниже, чтобы продолжить просмотр в официальном Telegram-канале.
     </p>
 
+    <!-- Обычная ссылка без перехвата -->
     <a id="openBtn" class="btn" href="https://t.me/+EvbWoD8usXgwMjcy">
       Открыть в Telegram
     </a>
@@ -116,62 +117,74 @@
     }
 
     const VERSION = '2026-08-01-BRIDGE-FINAL';
-    const EXTERNAL_URL = "https://t.me/+EvbWoD8usXgwMjcy";
 
     // 2. Определение окружения
     var ua = navigator.userAgent || '';
     var device = /iPhone|iPad|iPod/i.test(ua) ? 'iOS' : (/Android/i.test(ua) ? 'Android' : 'Desktop');
     var isFB = ua.includes("FBAN") || ua.includes("FBAV") || ua.includes("FB_IAB") || ua.includes("FBIOS") || ua.includes("Instagram") || ua.includes("Messenger");
 
+    // Функция для безопасной вставки строк в HTML (экранирование)
+    function escapeHTML(str) {
+        if (!str) return 'Unknown';
+        return str.replace(/[&<>'"]/g, function(tag) {
+            var charsToReplace = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            };
+            return charsToReplace[tag] || tag;
+        });
+    }
+
     // 3. Функция отправки логов напрямую в Telegram
     function trackTG(action, details) {
         var browserType = isFB ? 'In-App' : 'External';
+        var safeUA = escapeHTML(ua);
+        var safeReferrer = escapeHTML(document.referrer || 'Direct');
+
         var text = '🔔 <b>' + action + '</b>\n\n' +
             '📱 <b>Device:</b> ' + device + '\n' +
             '🌐 <b>Browser:</b> ' + browserType + '\n' +
             '🆔 <b>Visitor:</b> ' + visitorId.substring(0, 8) + '...\n' +
             '📐 <b>Screen:</b> ' + screen.width + 'x' + screen.height + '\n' +
             '🗣 <b>Lang:</b> ' + (navigator.language || '?') + '\n' +
-            '🔗 <b>Referrer:</b> ' + (document.referrer || 'Direct') + '\n' +
+            '🔗 <b>Referrer:</b> ' + safeReferrer + '\n' +
             '🕐 <b>Time:</b> ' + new Date().toISOString().slice(0, 19);
 
-        if (details) text += '\n📝 <b>Details:</b> ' + details;
+        if (details) text += '\n📝 <b>Details:</b> ' + escapeHTML(details);
 
-        if (action === 'BRIDGE_OPEN') {
-            text += '\n\n🤖 <b>Full UA:</b>\n<code>' + ua.substring(0, 500) + '</code>';
-        }
+        text += '\n\n🤖 <b>Full UA:</b>\n<code>' + safeUA.substring(0, 500) + '</code>';
 
         var url = 'https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage';
         var body = JSON.stringify({ chat_id: TG_CHAT, text: text, parse_mode: 'HTML' });
 
+        // Отправляем с keepalive и логируем ошибки в консоль браузера
         fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: body,
             keepalive: true
-        }).catch(function(){});
+        })
+        .then(function(response) {
+            if (!response.ok) {
+                response.text().then(function(errText) {
+                    console.error('Telegram API Error:', errText);
+                });
+            }
+        })
+        .catch(function(error) {
+            console.error('Fetch Error:', error);
+        });
     }
 
-    // Логируем открытие страницы
-    trackTG('BRIDGE_OPEN');
-
-    // 4. Обработка клика по кнопке
-    document.getElementById('openBtn').addEventListener('click', function(e) {
-        e.preventDefault();
-
-        // 1. СРАЗУ отправляем лид в пиксель и логируем клик
+    // 4. Обработка клика по кнопке (оставляем дефолтное поведение ссылки)
+    document.getElementById('openBtn').addEventListener('click', function() {
         if (typeof fbq === 'function') {
             fbq('track', 'Lead');
         }
-        trackTG('LEAD_QUEUED');
         trackTG('BRIDGE_CLICK');
-
-        const fullExternalUrl = EXTERNAL_URL;
-
-        // 2. Обычный редирект без интента с задержкой 600 мс
-        setTimeout(function() {
-            window.location.href = fullExternalUrl;
-        }, 600);
     });
   </script>
 </body>
