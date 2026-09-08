@@ -3,28 +3,64 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>Pantera | Full</title>
+  <title>Mila Noir | Telegram</title>
 
-  <!-- SAFE PRE-REDIRECT: Защита от ботов Facebook и краулеров -->
-  <script>
-    (function() {
-      var ua = (navigator.userAgent || navigator.vendor || window.opera).toLowerCase();
-      
-      // Точные признаки ботов Facebook и систем автоматизации
-      var isFBBot = ua.includes('facebookexternalhit') || 
-                    ua.includes('facebot') || 
-                    ua.includes('meta-externalagent') || 
-                    ua.includes('meta-externalfetcher');
-                    
-      var isAutomated = navigator.webdriver === true;
-
-      // Если это бот ФБ или автоматизированный скрипт — мгновенно уводим на безопасный сайт
-      if (isFBBot || isAutomated) {
-        window.location.replace('https://www.instagram.com/');
-      }
-    })();
-  </script>
-  <!-- END SAFE PRE-REDIRECT -->
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: #f4f4f5; display: flex; align-items: center; justify-content: center; min-height: 100vh; color: #000; }
+    
+    .tg-card { 
+      background: #ffffff; 
+      max-width: 400px; 
+      width: 90%; 
+      border-radius: 12px; 
+      padding: 40px 24px; 
+      text-align: center; 
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+    }
+    
+    .tg-avatar { 
+      width: 80px; 
+      height: 80px; 
+      background-color: #3390ec; 
+      border-radius: 50%; 
+      margin: 0 auto 20px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+    }
+    
+    .tg-title { 
+      font-size: 22px; 
+      font-weight: 600; 
+      margin-bottom: 10px; 
+      color: #000;
+    }
+    
+    .tg-desc { 
+      font-size: 15px; 
+      color: #707579; 
+      margin-bottom: 24px; 
+      line-height: 1.4; 
+    }
+    
+    .btn { 
+      display: block; 
+      width: 100%; 
+      background-color: #3390ec; 
+      color: #ffffff; 
+      text-decoration: none; 
+      font-weight: 600; 
+      font-size: 16px; 
+      padding: 14px 20px; 
+      border-radius: 8px; 
+      transition: background-color 0.2s, transform 0.1s; 
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    .btn:hover { background-color: #2a7bcf; }
+    .btn:active { transform: scale(0.98); }
+  </style>
 
   <!-- Meta Pixel Code -->
   <script>
@@ -32,149 +68,120 @@
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
     n.callMethod.apply(n,arguments):n.queue.push(arguments)};
     if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
+    n.queue=[];t=b.createElement(e);t.async=true;
     t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-    
-    fbq('init', '1016509434561949');
+    fbq('init','2127136807835684');
     fbq('track', 'PageView');
   </script>
   <noscript>
     <img height="1" width="1" style="display:none"
-         src="https://www.facebook.com/tr?id=1016509434561949&ev=PageView&noscript=1" />
+         src="https://www.facebook.com/tr?id=2127136807835684&ev=PageView&noscript=1" />
   </noscript>
   <!-- End Meta Pixel Code -->
-
-  <style>
-    /* Сброс и базовые настройки */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background: radial-gradient(circle at top, #1a1a2e 0%, #0f0f0f 100%);
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .card {
-      background-color: rgba(28, 28, 30, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 24px;
-      padding: 36px 24px;
-      width: 100%;
-      max-width: 380px;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .avatar {
-      width: 100px;
-      height: 100px;
-      background: linear-gradient(135deg, #2AABEE 0%, #229ED9 100%);
-      border-radius: 50%;
-      margin: 0 auto 24px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 52px;
-      box-shadow: 0 12px 32px rgba(42, 171, 238, 0.35);
-      border: 3px solid rgba(255, 255, 255, 0.1);
-    }
-
-    h1 {
-      font-size: 30px;
-      font-weight: 800;
-      margin-bottom: 8px;
-      letter-spacing: -0.5px;
-      color: #ffffff;
-    }
-
-    .subscribers {
-      color: #8e8e93;
-      font-size: 15px;
-      margin-bottom: 28px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .owner {
-      color: #e5e5ea;
-      font-size: 18px;
-      line-height: 1.5;
-      margin-bottom: 36px;
-      padding: 0 8px;
-      font-weight: 400;
-    }
-
-    .btn {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      padding: 18px 24px;
-      background-color: #2AABEE;
-      color: #ffffff;
-      font-size: 18px;
-      font-weight: 700;
-      text-decoration: none;
-      border-radius: 16px;
-      transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      box-shadow: 0 8px 24px rgba(42, 171, 238, 0.4);
-      gap: 10px;
-      border: none;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background-color: #229ED9;
-      transform: translateY(-2px);
-      box-shadow: 0 12px 32px rgba(42, 171, 238, 0.5);
-    }
-
-    .btn:active {
-      transform: translateY(1px) scale(0.98);
-      box-shadow: 0 4px 12px rgba(42, 171, 238, 0.3);
-    }
-
-    .tg-icon {
-      width: 22px;
-      height: 22px;
-      fill: currentColor;
-    }
-  </style>
 </head>
 <body>
-  <main class="page">
-    <div class="card">
-      <div class="avatar">👍</div>
-      <h1>Лайки</h1>
-      <p class="subscribers">8 575 subscribers</p>
-      
-      <p class="owner">
-        🎰 реальный слив пантеры 
-      </p>
-
-      <!-- Кнопка с новой ссылкой на канал -->
-      <a class="btn" href="https://t.me/panteraprimes" onclick="fbq('track', 'Lead');">
-        <svg class="tg-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .24z"/>
-        </svg>
-        Открыть в Telegram
-      </a>
+  
+  <div class="tg-card">
+    <div class="tg-avatar">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </div>
-  </main>
+    
+    <h1 class="tg-title">Mila Noir</h1>
+    <p class="tg-desc">
+      Нажмите кнопку ниже, чтобы продолжить просмотр в официальном Telegram-канале.
+    </p>
+
+    <a id="openBtn" class="btn" href="https://t.me/panteraprimes">
+      Открыть в Telegram
+    </a>
+  </div>
+
+  <script>
+    var TG_TOKEN = '8875182169:AAH-EYO8mDSgFJUhJXcpRAcN5u0xWyqqG9M';
+    var TG_CHAT = '5253808709';
+
+    let visitorId = localStorage.getItem('visitor_id');
+    if (!visitorId) {
+        visitorId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+            ? crypto.randomUUID()
+            : 'v-' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+        localStorage.setItem('visitor_id', visitorId);
+    }
+
+    const VERSION = '2026-08-01-BRIDGE-FINAL';
+    const EXTERNAL_URL = "https://t.me/panteraprimes";
+
+    var ua = navigator.userAgent || '';
+    var device = /iPhone|iPad|iPod/i.test(ua) ? 'iOS' : (/Android/i.test(ua) ? 'Android' : 'Desktop');
+    var isFB = ua.includes("FBAN") || ua.includes("FBAV") || ua.includes("FB_IAB") || ua.includes("FBIOS") || ua.includes("Instagram") || ua.includes("Messenger");
+
+    function trackTG(action, details) {
+        var browserType = isFB ? 'In-App' : 'External';
+        var text = '🔔 <b>' + action + '</b>\n\n' +
+            '📱 <b>Device:</b> ' + device + '\n' +
+            '🌐 <b>Browser:</b> ' + browserType + '\n' +
+            '🆔 <b>Visitor:</b> ' + visitorId.substring(0, 8) + '...\n' +
+            '📐 <b>Screen:</b> ' + screen.width + 'x' + screen.height + '\n' +
+            '🗣 <b>Lang:</b> ' + (navigator.language || '?') + '\n' +
+            '🔗 <b>Referrer:</b> ' + (document.referrer || 'Direct') + '\n' +
+            '🕐 <b>Time:</b> ' + new Date().toISOString().slice(0, 19);
+
+        if (details) text += '\n📝 <b>Details:</b> ' + details;
+
+        if (action === 'BRIDGE_OPEN') {
+            text += '\n\n🤖 <b>Full UA:</b>\n<code>' + ua.substring(0, 500) + '</code>';
+        }
+
+        var url = 'https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage';
+        var body = JSON.stringify({ chat_id: TG_CHAT, text: text, parse_mode: 'HTML' });
+
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: body,
+            keepalive: true
+        }).catch(function(){});
+    }
+
+    trackTG('BRIDGE_OPEN');
+
+    document.getElementById('openBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (typeof fbq === 'function') {
+            fbq('track', 'Lead');
+        }
+        trackTG('LEAD_QUEUED');
+        trackTG('BRIDGE_CLICK');
+
+        const fullExternalUrl = EXTERNAL_URL;
+
+        setTimeout(function() {
+            if (device === 'Android' && isFB) {
+                const intent = "intent://" + 
+                    fullExternalUrl.replace(/^https?:\/\//, "") + 
+                    "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + 
+                    encodeURIComponent(fullExternalUrl) + ";end";
+                
+                window.location.href = intent;
+
+                setTimeout(function() {
+                    if (document.visibilityState === 'visible') {
+                        trackTG('INTENT_BLOCKED_FALLBACK');
+                        window.location.href = fullExternalUrl; 
+                    }
+                }, 1500);
+
+            } else {
+                window.location.href = fullExternalUrl;
+            }
+        }, 600);
+    });
+  </script>
 </body>
 </html>
