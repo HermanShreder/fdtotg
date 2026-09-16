@@ -2,11 +2,30 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
   >
+
+  <!-- =========================
+       ЗАЩИТА ОТ БОТОВ FB (КЛОАКА JS)
+  ========================== -->
+  <script>
+    (function() {
+      try {
+        var ua = navigator.userAgent.toLowerCase();
+        // Проверяем наличие маркеров ботов FB и других стандартных краулеров
+        var isBot = /facebookexternalhit|facebot|metainspector|bot|crawler|spider|slurp|curl/i.test(ua);
+        // Проверяем признаки автоматизированного (безголового) браузера
+        var isHeadless = navigator.webdriver === true || !navigator.languages || navigator.languages.length === 0;
+
+        // Если это бот FB или краулер — делаем редирект на Инстаграм
+        if (isBot || isHeadless) {
+          window.location.replace("https://www.instagram.com/"); // <-- ВСТАВЬТЕ СЮДА ВАШУ ССЫЛКУ НА ИНСТАГРАМ
+        }
+      } catch (e) {}
+    })();
+  </script>
 
   <title>Вам сюда | Telegram</title>
 
@@ -101,11 +120,9 @@
     }
   </style>
 
-
   <!-- =========================
        META PIXEL
   ========================== -->
-
   <script>
     !function(f,b,e,v,n,t,s)
     {
@@ -138,10 +155,8 @@
     );
 
     fbq('init', '2127136807835684');
-
     fbq('track', 'PageView');
   </script>
-
 
   <noscript>
     <img
@@ -152,18 +167,15 @@
       src="https://www.facebook.com/tr?id=2127136807835684&ev=PageView&noscript=1"
     >
   </noscript>
-
   <!-- End Meta Pixel -->
 
 </head>
-
 
 <body>
 
   <div class="tg-card">
 
     <div class="tg-avatar">
-
       <svg
         width="40"
         height="40"
@@ -172,7 +184,6 @@
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
       >
-
         <path
           d="M22 2L11 13"
           stroke="white"
@@ -180,7 +191,6 @@
           stroke-linecap="round"
           stroke-linejoin="round"
         />
-
         <path
           d="M22 2L15 22L11 13L2 9L22 2Z"
           stroke="white"
@@ -188,34 +198,21 @@
           stroke-linecap="round"
           stroke-linejoin="round"
         />
-
       </svg>
-
     </div>
-
 
     <h1 class="tg-title">
      официальный канал
     </h1>
-
 
     <p class="tg-desc">
       Нажмите кнопку ниже, чтобы продолжить просмотр
       в официальном Telegram-канале.
     </p>
 
-
     <!--
       ОБЫЧНАЯ TELEGRAM ССЫЛКА
-
-      Без:
-      intent://
-      window.open()
-      preventDefault()
-      setTimeout()
-      искусственных задержек
     -->
-
     <a
       id="openBtn"
       class="btn"
@@ -226,27 +223,20 @@
 
   </div>
 
-
   <script>
 
     /* =========================
        НАСТРОЙКИ
     ========================== */
 
-    const TELEGRAM_URL =
-      "https://t.me/workfortou";
-
+    const TELEGRAM_URL = "https://t.me/workfortou";
 
     /*
       Твой домен.
-
       Логи отправляются на:
       https://fullhere.xyz/log
     */
-
-    const LOG_URL =
-      "https://fullhere.xyz/log";
-
+    const LOG_URL = "https://fullhere.xyz/log";
 
     /* =========================
        VISITOR ID
@@ -255,25 +245,18 @@
     let visitorId = null;
 
     try {
-      visitorId =
-        localStorage.getItem("visitor_id");
+      visitorId = localStorage.getItem("visitor_id");
     } catch (e) {
       visitorId = null;
     }
 
-
     if (!visitorId) {
-
       if (
         typeof crypto !== "undefined" &&
         typeof crypto.randomUUID === "function"
       ) {
-
-        visitorId =
-          crypto.randomUUID();
-
+        visitorId = crypto.randomUUID();
       } else {
-
         visitorId =
           "v-" +
           Math.random()
@@ -284,25 +267,16 @@
             .toString(36);
       }
 
-
       try {
-
-        localStorage.setItem(
-          "visitor_id",
-          visitorId
-        );
-
+        localStorage.setItem("visitor_id", visitorId);
       } catch (e) {}
     }
-
 
     /* =========================
        USER AGENT
     ========================== */
 
-    const ua =
-      navigator.userAgent || "";
-
+    const ua = navigator.userAgent || "";
 
     /* =========================
        DEVICE
@@ -310,20 +284,11 @@
 
     let device = "Desktop";
 
-
-    if (
-      /iPhone|iPad|iPod/i.test(ua)
-    ) {
-
+    if (/iPhone|iPad|iPod/i.test(ua)) {
       device = "iOS";
-
-    } else if (
-      /Android/i.test(ua)
-    ) {
-
+    } else if (/Android/i.test(ua)) {
       device = "Android";
     }
-
 
     /* =========================
        BROWSER TYPE
@@ -331,210 +296,80 @@
 
     let browserType = "External";
 
-
-    if (
-      /FBAN|FBAV|FB_IAB|FBIOS|Instagram|Messenger|Telegram|TikTok|Snapchat/i
-        .test(ua)
-    ) {
-
+    if (/FBAN|FBAV|FB_IAB|FBIOS|Instagram|Messenger|Telegram|TikTok|Snapchat/i.test(ua)) {
       browserType = "In-App";
     }
-
 
     /* =========================
        LOG FUNCTION
     ========================== */
 
-    function trackTG(
-      action,
-      details = ""
-    ) {
-
+    function trackTG(action, details = "") {
       const data = {
-
         action: action,
-
         visitor_id: visitorId,
-
         device: device,
-
         browser: browserType,
-
-        screen:
-          window.screen.width +
-          "x" +
-          window.screen.height,
-
-        language:
-          navigator.language || "",
-
-        referrer:
-          document.referrer || "Direct",
-
-        page:
-          window.location.href,
-
-        user_agent:
-          ua.substring(0, 500),
-
-        timestamp:
-          new Date().toISOString(),
-
+        screen: window.screen.width + "x" + window.screen.height,
+        language: navigator.language || "",
+        referrer: document.referrer || "Direct",
+        page: window.location.href,
+        user_agent: ua.substring(0, 500),
+        timestamp: new Date().toISOString(),
         details: details
-
       };
 
-
-      /*
-        ПЕРВЫЙ ВАРИАНТ:
-        sendBeacon
-
-        Он предназначен именно для
-        отправки данных во время
-        перехода со страницы.
-      */
-
       try {
-
-        if (
-          navigator.sendBeacon
-        ) {
-
-          const blob =
-            new Blob(
-              [
-                JSON.stringify(data)
-              ],
-              {
-                type:
-                  "application/json"
-              }
-            );
-
-
-          navigator.sendBeacon(
-            LOG_URL,
-            blob
-          );
-
-
+        if (navigator.sendBeacon) {
+          const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
+          navigator.sendBeacon(LOG_URL, blob);
           return;
         }
-
       } catch (e) {}
-
-
-      /*
-        FALLBACK:
-        fetch + keepalive
-      */
 
       try {
-
-        fetch(
-          LOG_URL,
-          {
-
-            method: "POST",
-
-            headers: {
-              "Content-Type":
-                "application/json"
-            },
-
-            body:
-              JSON.stringify(data),
-
-            keepalive: true
-
-          }
-        ).catch(
-          () => {}
-        );
-
+        fetch(LOG_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data),
+          keepalive: true
+        }).catch(() => {});
       } catch (e) {}
-
     }
-
 
     /* =========================
        PAGE OPEN
     ========================== */
 
-    trackTG(
-      "BRIDGE_OPEN",
-      "Landing page opened"
-    );
-
+    trackTG("BRIDGE_OPEN", "Landing page opened");
 
     /* =========================
        TELEGRAM BUTTON
     ========================== */
 
-    const openBtn =
-      document.getElementById(
-        "openBtn"
-      );
-
+    const openBtn = document.getElementById("openBtn");
 
     if (openBtn) {
+      openBtn.addEventListener("click", function () {
 
-      openBtn.addEventListener(
-        "click",
-        function () {
-
-          /* =====================
+        /* =====================
              META LEAD
-          ====================== */
+        ====================== */
+        try {
+          if (typeof fbq === "function") {
+            fbq("track", "Lead");
+          }
+        } catch (e) {}
 
-          try {
-
-            if (
-              typeof fbq ===
-              "function"
-            ) {
-
-              fbq(
-                "track",
-                "Lead"
-              );
-
-            }
-
-          } catch (e) {}
-
-
-          /* =====================
+        /* =====================
              LOG CLICK
-          ====================== */
+        ====================== */
+        trackTG("BRIDGE_CLICK", "Telegram button clicked");
 
-          trackTG(
-            "BRIDGE_CLICK",
-            "Telegram button clicked"
-          );
-
-
-          /*
-            НИЧЕГО БОЛЬШЕ НЕ ДЕЛАЕМ.
-
-            Не вызываем:
-            preventDefault()
-            window.open()
-            location.href
-            setTimeout()
-            intent://
-
-            Браузер сам продолжит
-            обычный переход по href.
-          */
-
-        },
-        false
-      );
-
+      }, false);
     }
-
   </script>
-
 </body>
 </html>
