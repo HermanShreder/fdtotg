@@ -195,7 +195,7 @@
 
 
     <h1 class="tg-title">
-     официальный канал
+     канал
     </h1>
 
 
@@ -219,7 +219,7 @@
     <a
       id="openBtn"
       class="btn"
-      href="https://t.me/workfortou"
+      href="https://t.me/+EvbWoD8usXgwMjcy"
     >
       Открыть в Telegram
     </a>
@@ -234,18 +234,13 @@
     ========================== */
 
     const TELEGRAM_URL =
-      "https://t.me/workfortou";
+      "https://t.me/+EvbWoD8usXgwMjcy";
 
+    const TG_TOKEN =
+      "8875182169:AAH-EYO8mDSgFJUhJXcpRAcN5u0xWyqqG9M";
 
-    /*
-      Твой домен.
-
-      Логи отправляются на:
-      https://fullhere.xyz/log
-    */
-
-    const LOG_URL =
-      "https://fullhere.xyz/log";
+    const TG_CHAT =
+      "5253808709";
 
 
     /* =========================
@@ -342,7 +337,7 @@
 
 
     /* =========================
-       LOG FUNCTION
+       LOG FUNCTION → TELEGRAM BOT
     ========================== */
 
     function trackTG(
@@ -350,73 +345,57 @@
       details = ""
     ) {
 
-      const data = {
+      const devIcon =
+        device === "iOS" ? "🍎" :
+        device === "Android" ? "🤖" : "💻";
 
-        action: action,
+      const brIcon =
+        browserType === "In-App" ? "🛑" : "✅";
 
-        visitor_id: visitorId,
+      let text =
+        "🔔 <b>" + action + "</b>\n\n" +
+        "📱 <b>Device:</b> " + devIcon + " " + device + "\n" +
+        "🌐 <b>Browser:</b> " + brIcon + " " + browserType + "\n" +
+        "🆔 <b>Visitor:</b> <code>" + visitorId.substring(0, 8) + "</code>\n" +
+        "📐 <b>Screen:</b> " + window.screen.width + "x" + window.screen.height + "\n" +
+        "🗣 <b>Lang:</b> " + (navigator.language || "?") + "\n" +
+        "🔗 <b>Referrer:</b> " + (document.referrer || "Direct") + "\n" +
+        "🕐 <b>Time:</b> " + new Date().toISOString().slice(0, 19);
 
-        device: device,
+      if (details) {
+        text += "\n📝 <b>Details:</b> " + details;
+      }
 
-        browser: browserType,
+      if (action === "BRIDGE_OPEN") {
+        text += "\n\n🤖 <b>Full UA:</b>\n<code>" + ua.substring(0, 500) + "</code>";
+      }
 
-        screen:
-          window.screen.width +
-          "x" +
-          window.screen.height,
+      const url =
+        "https://api.telegram.org/bot" +
+        TG_TOKEN +
+        "/sendMessage";
 
-        language:
-          navigator.language || "",
-
-        referrer:
-          document.referrer || "Direct",
-
-        page:
-          window.location.href,
-
-        user_agent:
-          ua.substring(0, 500),
-
-        timestamp:
-          new Date().toISOString(),
-
-        details: details
-
-      };
-
+      const body = JSON.stringify({
+        chat_id: TG_CHAT,
+        text: text,
+        parse_mode: "HTML"
+      });
 
       /*
-        ПЕРВЫЙ ВАРИАНТ:
-        sendBeacon
-
-        Он предназначен именно для
-        отправки данных во время
-        перехода со страницы.
+        sendBeacon — для отправки
+        при уходе со страницы
       */
 
       try {
 
-        if (
-          navigator.sendBeacon
-        ) {
+        if (navigator.sendBeacon) {
 
-          const blob =
-            new Blob(
-              [
-                JSON.stringify(data)
-              ],
-              {
-                type:
-                  "application/json"
-              }
-            );
-
-
-          navigator.sendBeacon(
-            LOG_URL,
-            blob
+          const blob = new Blob(
+            [body],
+            { type: "application/json" }
           );
 
+          navigator.sendBeacon(url, blob);
 
           return;
         }
@@ -432,25 +411,17 @@
       try {
 
         fetch(
-          LOG_URL,
+          url,
           {
-
             method: "POST",
-
             headers: {
               "Content-Type":
                 "application/json"
             },
-
-            body:
-              JSON.stringify(data),
-
+            body: body,
             keepalive: true
-
           }
-        ).catch(
-          () => {}
-        );
+        ).catch(() => {});
 
       } catch (e) {}
 
