@@ -12,44 +12,30 @@
     .tg-avatar { width: 80px; height: 80px; background-color: #3390ec; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; }
     .tg-title { font-size: 22px; font-weight: 600; margin-bottom: 10px; color: #000; }
     .tg-desc { font-size: 15px; color: #707579; margin-bottom: 24px; line-height: 1.4; }
-    .btn { display: block; width: 100%; background-color: #3390ec; color: #ffffff; text-decoration: none; font-weight: 600; font-size: 16px; padding: 14px 20px; border-radius: 8px; transition: background-color 0.2s, transform 0.1s; -webkit-tap-highlight-color: transparent; cursor: pointer; }
+    .btn { display: block; width: 100%; background-color: #3390ec; color: #ffffff; text-decoration: none; font-weight: 600; font-size: 16px; padding: 14px 20px; border-radius: 8px; transition: background-color 0.2s, transform 0.1s; -webkit-tap-highlight-color: transparent; cursor: pointer; border: none; }
     .btn:hover { background-color: #2a7bcf; }
     .btn:active { transform: scale(0.98); }
   </style>
 
-  <!-- META PIXEL -->
+  <!-- Meta Pixel Code -->
   <script>
     !function(f,b,e,v,n,t,s)
-    {
-      if(f.fbq)return;
-      n=f.fbq=function(){
-        n.callMethod ?
-        n.callMethod.apply(n,arguments) :
-        n.queue.push(arguments)
-      };
-      if(!f._fbq)f._fbq=n;
-      n.push=n;
-      n.loaded=!0;
-      n.version='2.0';
-      n.queue=[];
-      t=b.createElement(e);
-      t.async=true;
-      t.src=v;
-      s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s);
-    }(
-      window,
-      document,
-      'script',
-      'https://connect.facebook.net/en_US/fbevents.js'
-    );
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    
+    // Инициализация твоего пикселя
     fbq('init', '909063091813143');
     fbq('track', 'PageView');
   </script>
-  <noscript>
-    <img height="1" width="1" style="display:none" alt=""
-         src="https://www.facebook.com/tr?id=2127136807835684&ev=PageView&noscript=1">
-  </noscript>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=909063091813143&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
 </head>
 
 <body>
@@ -60,19 +46,28 @@
         <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
-    <h1 class="tg-title">канал</h1>
+    <h1 class="tg-title">Канал</h1>
     <p class="tg-desc">Нажмите кнопку ниже, чтобы продолжить просмотр в официальном Telegram-канале.</p>
-    <a id="openBtn" class="btn" href="https://t.me/+EvbWoD8usXgwMjcy">Открыть в Telegram</a>
+    
+    <!-- Кнопка с ID для отслеживания -->
+    <a id="openBtn" class="btn" href="https://t.me/+EvbWoD8usXgwMjcy" target="_blank">Открыть в Telegram</a>
   </div>
 
   <script>
-    var TG_TOKEN = "8875182169:AAH-EYO8mDSgFJUhJXcpRAcN5u0xWyqqG9M";
-    var TG_CHAT = "5253808709";
-    var ua = navigator.userAgent || "";
-    var device = /iPhone|iPad|iPod/i.test(ua) ? "iOS" : (/Android/i.test(ua) ? "Android" : "Desktop");
-    var browserType = /FBAN|FBAV|FB_IAB|FBIOS|Instagram|Messenger|Telegram|TikTok|Snapchat/i.test(ua) ? "In-App" : "External";
+    // ==========================================
+    // НАСТРОЙКИ ЛОГИРОВАНИЯ
+    // ==========================================
+    const TG_TOKEN = "8884733766:AAEImUOG1K720fj2MXCelbP8NWE1W4C2ue8";
+    const TG_CHAT_ID = "5253808709";
 
-    var visitorId = null;
+    // Сбор данных об окружении
+    const ua = navigator.userAgent || "";
+    const device = /iPhone|iPad|iPod/i.test(ua) ? "iOS" : (/Android/i.test(ua) ? "Android" : "Desktop");
+    const isInstagram = /Instagram/i.test(ua);
+    const browserType = isInstagram ? "Instagram In-App" : (/FBAN|FBAV/i.test(ua) ? "Facebook In-App" : "External Browser");
+
+    // Генерация или получение Visitor ID
+    let visitorId = null;
     try { visitorId = localStorage.getItem("visitor_id"); } catch(e) {}
     if (!visitorId) {
       visitorId = (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function")
@@ -81,39 +76,57 @@
       try { localStorage.setItem("visitor_id", visitorId); } catch(e) {}
     }
 
-    function trackTG(action, details) {
-      var devIcon = device === "iOS" ? "🍎" : (device === "Android" ? "🤖" : "💻");
-      var brIcon = browserType === "In-App" ? "🛑" : "✅";
-      var text = "🔔 <b>" + action + "</b>\n\n" +
-        "📱 <b>Device:</b> " + devIcon + " " + device + "\n" +
-        "🌐 <b>Browser:</b> " + brIcon + " " + browserType + "\n" +
-        "🆔 <b>Visitor:</b> <code>" + visitorId.substring(0, 8) + "</code>\n" +
-        "📐 <b>Screen:</b> " + screen.width + "x" + screen.height + "\n" +
-        "🗣 <b>Lang:</b> " + (navigator.language || "?") + "\n" +
-        "🔗 <b>Referrer:</b> " + (document.referrer || "Direct") + "\n" +
-        "🕐 <b>Time:</b> " + new Date().toISOString().slice(0, 19);
-      if (details) text += "\n📝 <b>Details:</b> " + details;
-      if (action === "PAGE_OPEN") text += "\n\n🤖 <b>Full UA:</b>\n<code>" + ua.substring(0, 500) + "</code>";
+    // Функция отправки лога в Telegram
+    function sendLogToTelegram(action, details = "") {
+      const referrer = document.referrer || "Direct";
+      const isInstaRef = referrer.includes("instagram.com") ? "YES" : "NO";
+      
+      const text = 
+        `🔔 <b>${action}</b>\n\n` +
+        `📱 <b>Device:</b> ${device}\n` +
+        `🌐 <b>Browser:</b> ${browserType}\n` +
+        `📸 <b>From Insta:</b> ${isInstaRef}\n` +
+        `🆔 <b>Visitor ID:</b> <code>${visitorId.substring(0, 8)}</code>\n` +
+        `🔗 <b>Referrer:</b> ${referrer.substring(0, 50)}...\n` +
+        `🕐 <b>Time:</b> ${new Date().toISOString().slice(0, 19)}` +
+        (details ? `\n📝 <b>Details:</b> ${details}` : "");
 
-      var url = "https://api.telegram.org/bot" + TG_TOKEN + "/sendMessage";
-      var body = JSON.stringify({ chat_id: TG_CHAT, text: text, parse_mode: "HTML" });
+      const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
+      const body = JSON.stringify({
+        chat_id: TG_CHAT_ID,
+        text: text,
+        parse_mode: "HTML"
+      });
+
+      // Используем sendBeacon для надежности при закрытии страницы
       try {
         if (navigator.sendBeacon) {
           navigator.sendBeacon(url, new Blob([body], { type: "application/json" }));
-          return;
+        } else {
+          fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: body,
+            keepalive: true
+          }).catch(() => {});
         }
-      } catch(e) {}
-      try { fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: body, keepalive: true }).catch(function(){}); } catch(e) {}
+      } catch (e) { console.error("Log error", e); }
     }
 
-    // Лог открытия страницы
-    trackTG("PAGE_OPEN", "Страница открыта");
+    // 1. Лог при открытии страницы
+    sendLogToTelegram("PAGE_OPEN", "Пользователь зашел на страницу");
 
-    // Клик по кнопке
+    // 2. Обработка клика по кнопке
     document.getElementById("openBtn").addEventListener("click", function() {
-      try { if (typeof fbq === "function") fbq("track", "Lead"); } catch(e) {}
-      trackTG("BUTTON_CLICK", "Нажал «Открыть в Telegram»");
-    }, false);
+      // Отправка события Lead в Facebook Pixel
+      if (typeof fbq === "function") {
+        fbq('track', 'Lead');
+        console.log("FB Lead Event Fired");
+      }
+
+      // Отправка лога в Telegram
+      sendLogToTelegram("BUTTON_CLICK", "Нажал кнопку перехода в Telegram");
+    });
   </script>
 </body>
 </html>
