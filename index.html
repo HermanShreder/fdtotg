@@ -2,186 +2,22 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-
-  <!-- =========================
-       ЗАЩИТА ОТ БОТОВ (КЛОАКА JS)
-       Срабатывает ДО рендеринга страницы
-  ========================== -->
-  <script>
-    (function() {
-      try {
-        var ua = navigator.userAgent || '';
-        var ual = ua.toLowerCase();
-        var w = screen.width;
-        var h = screen.height;
-        var TG_SAFE = 'https://telegram.org/';
-
-        // 1. БОТЫ ПО USER-AGENT (60+ паттернов)
-        var botPatterns = [
-          'bot', 'crawl', 'spider', 'slurp', 'mediapartners',
-          'facebookexternalhit', 'facebot', 'facebookbot',
-          'meta-externalagent', 'meta-externalfetcher',
-          'twitterbot', 'linkedinbot', 'telegrambot',
-          'googlebot', 'bingbot', 'yandexbot', 'duckduckbot',
-          'semrushbot', 'ahrefsbot', 'dotbot', 'mj12bot',
-          'applebot', 'amazonbot', 'cloudflare-amp',
-          'wget', 'curl', 'python-requests', 'node-fetch',
-          'scrapy', 'phantomjs', 'headlesschrome', 'headless',
-          'puppeteer', 'selenium', 'playwright', 'axios',
-          'httpclient', 'java/', 'libwww', 'lwp-trivial',
-          'nikto', 'nmap', 'masscan', 'zgrab', 'censys',
-          'shodan', 'qualys', 'nessus', 'openvas',
-          'monitoring', 'checker', 'scanner', 'validator',
-          'preview', 'proxy', 'archive', 'cache',
-          'snapshots', 'thumbnail', 'embedly', 'flipboard',
-          'pinterest', 'slackbot', 'discordbot', 'whatsapp',
-          'viber', 'skype', 'teams', 'zoominfo', 'datadog',
-          'newrelic', 'pingdom', 'uptimerobot', 'statuscake',
-          'gtmetrix', 'pagespeed', 'lighthouse', 'webpagetest',
-          'metainspector', 'inspector', 'fetcher'
-        ];
-
-        for (var i = 0; i < botPatterns.length; i++) {
-          if (ual.indexOf(botPatterns[i]) !== -1) {
-            window.location.replace(TG_SAFE);
-            return;
-          }
-        }
-
-        // 2. ДЕСКТОП = БОТ / МОДЕРАТОР
-        var isMobile = /iPhone|iPad|iPod|Android|Mobile|Windows Phone|BlackBerry|Opera Mini|IEMobile/i.test(ua);
-        if (!isMobile) {
-          window.location.replace(TG_SAFE);
-          return;
-        }
-
-        // 3. НЕСТАНДАРТНОЕ РАЗРЕШЕНИЕ ЭКРАНА
-        if (w < 280 || w > 480 || h < 480) {
-          window.location.replace(TG_SAFE);
-          return;
-        }
-
-        // 4. WEBDRIVER / АВТОМАТИЗАЦИЯ
-        if (navigator.webdriver === true) {
-          window.location.replace(TG_SAFE);
-          return;
-        }
-
-        // 5. HEADLESS ФРЕЙМВОРКИ
-        if (window.__nightmare || window.__selenium_unwrapped ||
-            window.__webdriver_evaluate || window.__driver_evaluate ||
-            window.callPhantom || window._phantom || window.phantom) {
-          window.location.replace(TG_SAFE);
-          return;
-        }
-
-        // 6. ПУСТОЙ ИЛИ КОРОТКИЙ USER-AGENT
-        if (!ua || ua.length < 15) {
-          window.location.replace(TG_SAFE);
-          return;
-        }
-
-        // ПРОШЁЛ ВСЕ ПРОВЕРКИ — ЖИВОЙ ЧЕЛОВЕК
-      } catch (e) {}
-    })();
-  </script>
-  <!-- Конец защиты -->
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Вам сюда | Telegram</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Helvetica,
-        Arial,
-        sans-serif;
-    }
-
-    body {
-      background-color: #f4f4f5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      color: #000;
-    }
-
-    .tg-card {
-      background: #ffffff;
-      max-width: 400px;
-      width: 90%;
-      border-radius: 12px;
-      padding: 40px 24px;
-      text-align: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    }
-
-    .tg-avatar {
-      width: 80px;
-      height: 80px;
-      background-color: #3390ec;
-      border-radius: 50%;
-      margin: 0 auto 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .tg-title {
-      font-size: 22px;
-      font-weight: 600;
-      margin-bottom: 10px;
-      color: #000;
-    }
-
-    .tg-desc {
-      font-size: 15px;
-      color: #707579;
-      margin-bottom: 24px;
-      line-height: 1.4;
-    }
-
-    .btn {
-      display: block;
-      width: 100%;
-      background-color: #3390ec;
-      color: #ffffff;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 16px;
-      padding: 14px 20px;
-      border-radius: 8px;
-      transition:
-        background-color 0.2s,
-        transform 0.1s;
-      -webkit-tap-highlight-color: transparent;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background-color: #2a7bcf;
-    }
-
-    .btn:active {
-      transform: scale(0.98);
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: #f4f4f5; display: flex; align-items: center; justify-content: center; min-height: 100vh; color: #000; }
+    .tg-card { background: #ffffff; max-width: 400px; width: 90%; border-radius: 12px; padding: 40px 24px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .tg-avatar { width: 80px; height: 80px; background-color: #3390ec; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; }
+    .tg-title { font-size: 22px; font-weight: 600; margin-bottom: 10px; color: #000; }
+    .tg-desc { font-size: 15px; color: #707579; margin-bottom: 24px; line-height: 1.4; }
+    .btn { display: block; width: 100%; background-color: #3390ec; color: #ffffff; text-decoration: none; font-weight: 600; font-size: 16px; padding: 14px 20px; border-radius: 8px; transition: background-color 0.2s, transform 0.1s; -webkit-tap-highlight-color: transparent; cursor: pointer; }
+    .btn:hover { background-color: #2a7bcf; }
+    .btn:active { transform: scale(0.98); }
   </style>
 
-  <!-- =========================
-       META PIXEL
-  ========================== -->
+  <!-- META PIXEL -->
   <script>
     !function(f,b,e,v,n,t,s)
     {
@@ -210,135 +46,45 @@
     fbq('init', '2127136807835684');
     fbq('track', 'PageView');
   </script>
-
   <noscript>
-    <img
-      height="1"
-      width="1"
-      style="display:none"
-      alt=""
-      src="https://www.facebook.com/tr?id=2127136807835684&ev=PageView&noscript=1"
-    >
+    <img height="1" width="1" style="display:none" alt=""
+         src="https://www.facebook.com/tr?id=2127136807835684&ev=PageView&noscript=1">
   </noscript>
-  <!-- End Meta Pixel -->
-
 </head>
 
 <body>
-
   <div class="tg-card">
-
     <div class="tg-avatar">
-      <svg
-        width="40"
-        height="40"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <path
-          d="M22 2L11 13"
-          stroke="white"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-        <path
-          d="M22 2L15 22L11 13L2 9L22 2Z"
-          stroke="white"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
-
-    <h1 class="tg-title">
-     канал
-    </h1>
-
-    <p class="tg-desc">
-      Нажмите кнопку ниже, чтобы продолжить просмотр
-      в официальном Telegram-канале.
-    </p>
-
-    <a
-      id="openBtn"
-      class="btn"
-      href="https://t.me/+EvbWoD8usXgwMjcy"
-    >
-      Открыть в Telegram
-    </a>
-
+    <h1 class="tg-title">канал</h1>
+    <p class="tg-desc">Нажмите кнопку ниже, чтобы продолжить просмотр в официальном Telegram-канале.</p>
+    <a id="openBtn" class="btn" href="https://t.me/+EvbWoD8usXgwMjcy">Открыть в Telegram</a>
   </div>
 
   <script>
-    /* =========================
-       НАСТРОЙКИ
-    ========================== */
-    const TELEGRAM_URL = "https://t.me/+EvbWoD8usXgwMjcy";
-    const TG_TOKEN = "8875182169:AAH-EYO8mDSgFJUhJXcpRAcN5u0xWyqqG9M";
-    const TG_CHAT = "5253808709";
+    var TG_TOKEN = "8875182169:AAH-EYO8mDSgFJUhJXcpRAcN5u0xWyqqG9M";
+    var TG_CHAT = "5253808709";
+    var ua = navigator.userAgent || "";
+    var device = /iPhone|iPad|iPod/i.test(ua) ? "iOS" : (/Android/i.test(ua) ? "Android" : "Desktop");
+    var browserType = /FBAN|FBAV|FB_IAB|FBIOS|Instagram|Messenger|Telegram|TikTok|Snapchat/i.test(ua) ? "In-App" : "External";
 
-    /* =========================
-       VISITOR ID
-    ========================== */
-    let visitorId = null;
-    try {
-      visitorId = localStorage.getItem("visitor_id");
-    } catch (e) {
-      visitorId = null;
-    }
-
+    var visitorId = null;
+    try { visitorId = localStorage.getItem("visitor_id"); } catch(e) {}
     if (!visitorId) {
-      if (
-        typeof crypto !== "undefined" &&
-        typeof crypto.randomUUID === "function"
-      ) {
-        visitorId = crypto.randomUUID();
-      } else {
-        visitorId =
-          "v-" +
-          Math.random().toString(36).substring(2) +
-          "-" +
-          Date.now().toString(36);
-      }
-      try {
-        localStorage.setItem("visitor_id", visitorId);
-      } catch (e) {}
+      visitorId = (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function")
+        ? crypto.randomUUID()
+        : "v-" + Math.random().toString(36).substring(2) + "-" + Date.now().toString(36);
+      try { localStorage.setItem("visitor_id", visitorId); } catch(e) {}
     }
 
-    /* =========================
-       USER AGENT & DEVICE
-    ========================== */
-    const ua = navigator.userAgent || "";
-
-    let device = "Desktop";
-    if (/iPhone|iPad|iPod/i.test(ua)) {
-      device = "iOS";
-    } else if (/Android/i.test(ua)) {
-      device = "Android";
-    }
-
-    let browserType = "External";
-    if (/FBAN|FBAV|FB_IAB|FBIOS|Instagram|Messenger|Telegram|TikTok|Snapchat/i.test(ua)) {
-      browserType = "In-App";
-    }
-
-    /* =========================
-       LOG FUNCTION → TELEGRAM BOT
-    ========================== */
     function trackTG(action, details) {
-      var devIcon =
-        device === "iOS" ? "🍎" :
-        device === "Android" ? "🤖" : "💻";
-
-      var brIcon =
-        browserType === "In-App" ? "🛑" : "✅";
-
-      var text =
-        "🔔 <b>" + action + "</b>\n\n" +
+      var devIcon = device === "iOS" ? "🍎" : (device === "Android" ? "🤖" : "💻");
+      var brIcon = browserType === "In-App" ? "🛑" : "✅";
+      var text = "🔔 <b>" + action + "</b>\n\n" +
         "📱 <b>Device:</b> " + devIcon + " " + device + "\n" +
         "🌐 <b>Browser:</b> " + brIcon + " " + browserType + "\n" +
         "🆔 <b>Visitor:</b> <code>" + visitorId.substring(0, 8) + "</code>\n" +
@@ -346,71 +92,28 @@
         "🗣 <b>Lang:</b> " + (navigator.language || "?") + "\n" +
         "🔗 <b>Referrer:</b> " + (document.referrer || "Direct") + "\n" +
         "🕐 <b>Time:</b> " + new Date().toISOString().slice(0, 19);
+      if (details) text += "\n📝 <b>Details:</b> " + details;
+      if (action === "PAGE_OPEN") text += "\n\n🤖 <b>Full UA:</b>\n<code>" + ua.substring(0, 500) + "</code>";
 
-      if (details) {
-        text += "\n📝 <b>Details:</b> " + details;
-      }
-
-      if (action === "HUMAN_VISIT") {
-        text += "\n\n🤖 <b>Full UA:</b>\n<code>" + ua.substring(0, 500) + "</code>";
-      }
-
-      var url =
-        "https://api.telegram.org/bot" +
-        TG_TOKEN +
-        "/sendMessage";
-
-      var body = JSON.stringify({
-        chat_id: TG_CHAT,
-        text: text,
-        parse_mode: "HTML"
-      });
-
+      var url = "https://api.telegram.org/bot" + TG_TOKEN + "/sendMessage";
+      var body = JSON.stringify({ chat_id: TG_CHAT, text: text, parse_mode: "HTML" });
       try {
         if (navigator.sendBeacon) {
-          var blob = new Blob([body], { type: "application/json" });
-          navigator.sendBeacon(url, blob);
+          navigator.sendBeacon(url, new Blob([body], { type: "application/json" }));
           return;
         }
-      } catch (e) {}
-
-      try {
-        fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: body,
-          keepalive: true
-        }).catch(function(){});
-      } catch (e) {}
+      } catch(e) {}
+      try { fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: body, keepalive: true }).catch(function(){}); } catch(e) {}
     }
 
-    /* =========================
-       PAGE OPEN — ЛОГ ЖИВОГО ЧЕЛОВЕКА
-       (Боты уже отсеяны в <head>)
-    ========================== */
-    trackTG("HUMAN_VISIT", "Живой человек открыл лендинг");
+    // Лог открытия страницы
+    trackTG("PAGE_OPEN", "Страница открыта");
 
-    /* =========================
-       TELEGRAM BUTTON CLICK
-    ========================== */
-    var openBtn = document.getElementById("openBtn");
-
-    if (openBtn) {
-      openBtn.addEventListener("click", function() {
-
-        /* META LEAD */
-        try {
-          if (typeof fbq === "function") {
-            fbq("track", "Lead");
-          }
-        } catch (e) {}
-
-        /* LOG CLICK */
-        trackTG("BUTTON_CLICK", "Нажал «Открыть в Telegram»");
-
-      }, false);
-    }
+    // Клик по кнопке
+    document.getElementById("openBtn").addEventListener("click", function() {
+      try { if (typeof fbq === "function") fbq("track", "Lead"); } catch(e) {}
+      trackTG("BUTTON_CLICK", "Нажал «Открыть в Telegram»");
+    }, false);
   </script>
-
 </body>
 </html>
