@@ -1,25 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <!-- ПОДТВЕРЖДЕНИЕ ДОМЕНА FACEBOOK -->
-  <meta name="facebook-domain-verification" content="1ddq5g9b9nlbak5619ajnlyjbz4xjt" />
+  <meta name="facebook-domain-verification" content="1ddq5g9b9nlbak5619ajnlyjbz4xjt">
 
-  <title>Вам сюда | Telegram</title>
+  <title>TGWORK</title>
 
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    body { background-color: #f4f4f5; display: flex; align-items: center; justify-content: center; min-height: 100vh; color: #000; }
-    .tg-card { background: #ffffff; max-width: 400px; width: 90%; border-radius: 12px; padding: 40px 24px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-    .tg-avatar { width: 80px; height: 80px; background-color: #3390ec; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; }
-    .tg-title { font-size: 22px; font-weight: 600; margin-bottom: 10px; color: #000; }
-    .tg-desc { font-size: 15px; color: #707579; margin-bottom: 24px; line-height: 1.4; }
-    .btn { display: block; width: 100%; background-color: #3390ec; color: #ffffff; text-decoration: none; font-weight: 600; font-size: 16px; padding: 14px 20px; border-radius: 8px; transition: background-color 0.2s, transform 0.1s; -webkit-tap-highlight-color: transparent; cursor: pointer; border: none; }
-    .btn:hover { background-color: #2a7bcf; }
-    .btn:active { transform: scale(0.98); }
-  </style>
+  <link rel="stylesheet" href="https://thegamb.site/style.css">
 
   <!-- Meta Pixel Code -->
   <script>
@@ -31,124 +21,58 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-    
-    // Инициализация нового пикселя
+
     fbq('init', '1413695077434129');
     fbq('track', 'PageView');
   </script>
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=1413695077434129&ev=PageView&noscript=1"
-  /></noscript>
+
+  <noscript>
+    <img
+      height="1"
+      width="1"
+      style="display:none"
+      src="https://www.facebook.com/tr?id=1413695077434129&ev=PageView&noscript=1"
+    />
+  </noscript>
   <!-- End Meta Pixel Code -->
+
 </head>
 
 <body>
-  <div class="tg-card">
-    <div class="tg-avatar">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+
+  <!-- Page -->
+  <main class="page">
+    <div class="card">
+
+      <div class="avatar"></div>
+
+      <h1>TGWORK</h1>
+
+      <p class="subscribers">8 575 subscribers</p>
+
+      <a class="btn" href="https://t.me/tgworkcv">
+        JOIN CHANNEL
+      </a>
+
     </div>
-    <h1 class="tg-title">Бот</h1>
-    <p class="tg-desc">Нажмите кнопку ниже, чтобы запустить официального Telegram-бота.</p>
-    
-    <!-- Кнопка с ID для отслеживания -->
-    <a id="openBtn" class="btn" href="https://t.me/workfortou" target="_blank">Открыть в Telegram</a>
-  </div>
+  </main>
 
   <script>
-    // ==========================================
-    // НАСТРОЙКИ ЛОГИРОВАНИЯ
-    // ==========================================
-    const TG_TOKEN = "8884733766:AAEImUOG1K720fj2MXCelbP8NWE1W4C2ue8";
-    const TG_CHAT_ID = "5253808709";
+    // Lead на оригинальную кнопку .btn
+    document.querySelector('.btn').addEventListener('click', function () {
 
-    // Сбор расширенных данных об окружении
-    const ua = navigator.userAgent || "";
-    const platform = navigator.platform || "";
-    const language = navigator.language || "";
-    const screenRes = `${window.screen.width}x${window.screen.height}`;
-    
-    // Определение устройства
-    const device = /iPhone|iPad|iPod/i.test(ua) ? "iOS" : (/Android/i.test(ua) ? "Android" : "Desktop");
-    
-    // Определение типа браузера (более детально)
-    const isInstagram = /Instagram/i.test(ua);
-    const isFacebook = /FBAN|FBAV/i.test(ua);
-    let browserType = "External Browser";
-    if (isInstagram) browserType = "Instagram In-App";
-    else if (isFacebook) browserType = "Facebook In-App";
-    else if (/Telegram/i.test(ua)) browserType = "Telegram In-App";
-
-    // Генерация или получение Visitor ID
-    let visitorId = null;
-    try { visitorId = localStorage.getItem("visitor_id"); } catch(e) {}
-    if (!visitorId) {
-      visitorId = (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function")
-        ? crypto.randomUUID()
-        : "v-" + Math.random().toString(36).substring(2) + "-" + Date.now().toString(36);
-      try { localStorage.setItem("visitor_id", visitorId); } catch(e) {}
-    }
-
-    // Функция отправки лога в Telegram
-    function sendLogToTelegram(action, details = "") {
-      const referrer = document.referrer || "Direct";
-      const isInstaRef = referrer.includes("instagram.com") ? "YES" : "NO";
-      
-      // Улучшенный формат сообщения
-      const text = 
-        `🔔 <b>${action}</b>\n\n` +
-        `📱 <b>Device:</b> ${device} (${platform})\n` +
-        `🌐 <b>Browser:</b> ${browserType}\n` +
-        `📸 <b>From Insta Ref:</b> ${isInstaRef}\n` +
-        `🆔 <b>Visitor ID:</b> <code>${visitorId.substring(0, 8)}</code>\n` +
-        `🔗 <b>Referrer:</b> ${referrer.substring(0, 60)}...\n` +
-        `📏 <b>Screen:</b> ${screenRes}\n` +
-        `🗣 <b>Lang:</b> ${language}\n` +
-        `🕐 <b>Time:</b> ${new Date().toLocaleString()}` +
-        (details ? `\n📝 <b>Details:</b> ${details}` : "");
-
-      const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
-      const body = JSON.stringify({
-        chat_id: TG_CHAT_ID,
-        text: text,
-        parse_mode: "HTML"
-      });
-
-      // Используем sendBeacon для надежности при закрытии страницы
-      try {
-        if (navigator.sendBeacon) {
-          navigator.sendBeacon(url, new Blob([body], { type: "application/json" }));
-        } else {
-          fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: body,
-            keepalive: true
-          }).catch(() => {});
-        }
-      } catch (e) { console.error("Log error", e); }
-    }
-
-    // 1. Лог при открытии страницы
-    sendLogToTelegram("PAGE_OPEN", "Пользователь зашел на страницу");
-
-    // 2. Обработка клика по кнопке
-    document.getElementById("openBtn").addEventListener("click", function() {
-      // Отправка события Lead в Facebook Pixel
-      if (typeof fbq === "function") {
+      if (typeof fbq === 'function') {
         fbq('track', 'Lead', {
-          content_name: 'Telegram Bot Click',
+          content_name: 'TGWORK Telegram Channel',
           value: 1.00,
           currency: 'USD'
         });
-        console.log("FB Lead Event Fired for Pixel 1413695077434129");
+
+        console.log('Lead event fired for Pixel 1413695077434129');
       }
 
-      // Отправка лога в Telegram
-      sendLogToTelegram("BUTTON_CLICK", "Нажал кнопку перехода в Telegram");
     });
   </script>
+
 </body>
 </html>
