@@ -1,26 +1,56 @@
 <!doctype html>
+
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-  <!-- ПОДТВЕРЖДЕНИЕ ДОМЕНА FACEBOOK -->
+  <!-- Подтверждение домена Meta -->
+
   <meta name="facebook-domain-verification" content="1ddq5g9b9nlbak5619ajnlyjbz4xjt">
 
-  <title>TGWORK</title>
+  <title>Trust Coin Tap</title>
 
-  <link rel="stylesheet" href="https://thegamb.site/style.css">
+<meta
+name="description"
+content="Trust Coin Tap — Telegram tap game"
 
-  <!-- Meta Pixel Code -->
+>
+
+  <meta name="theme-color" content="#08090d">
+  <meta name="color-scheme" content="dark">
+
+  <!-- Meta Pixel -->
+
   <script>
     !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
+    {
+      if(f.fbq)return;
+      n=f.fbq=function(){
+        n.callMethod ?
+        n.callMethod.apply(n,arguments) :
+        n.queue.push(arguments)
+      };
+
+      if(!f._fbq)f._fbq=n;
+
+      n.push=n;
+      n.loaded=!0;
+      n.version='2.0';
+      n.queue=[];
+
+      t=b.createElement(e);
+      t.async=!0;
+      t.src=v;
+
+      s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)
+    }(
+      window,
+      document,
+      'script',
+      'https://connect.facebook.net/en_US/fbevents.js'
+    );
 
     fbq('init', '1413695077434129');
     fbq('track', 'PageView');
@@ -31,48 +61,564 @@
       height="1"
       width="1"
       style="display:none"
+      alt=""
       src="https://www.facebook.com/tr?id=1413695077434129&ev=PageView&noscript=1"
-    />
+    >
   </noscript>
-  <!-- End Meta Pixel Code -->
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+      background:
+        radial-gradient(
+          circle at 50% 20%,
+          rgba(255, 198, 52, .13),
+          transparent 32%
+        ),
+        radial-gradient(
+          circle at 15% 85%,
+          rgba(255, 169, 0, .08),
+          transparent 30%
+        ),
+        #08090d;
+      color: #fff;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(
+          rgba(255,255,255,.025) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255,255,255,.025) 1px,
+          transparent 1px
+        );
+      background-size: 42px 42px;
+      mask-image: linear-gradient(
+        to bottom,
+        rgba(0,0,0,.9),
+        transparent
+      );
+    }
+
+    .page {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 16px;
+    }
+
+    .card {
+      position: relative;
+      width: 100%;
+      max-width: 430px;
+      padding: 42px 24px 30px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 28px;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(25,27,35,.96),
+          rgba(11,12,17,.98)
+        );
+      box-shadow:
+        0 30px 80px rgba(0,0,0,.55),
+        inset 0 1px 0 rgba(255,255,255,.05);
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -160px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 330px;
+      height: 330px;
+      border-radius: 50%;
+      background: rgba(255,193,7,.14);
+      filter: blur(70px);
+      pointer-events: none;
+    }
+
+    .status {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 22px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,193,7,.18);
+      background: rgba(255,193,7,.06);
+      color: #ffc107;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ffc107;
+      box-shadow: 0 0 12px rgba(255,193,7,.8);
+      animation: pulse 1.8s infinite;
+    }
+
+    .coin-wrap {
+      position: relative;
+      z-index: 1;
+      width: 142px;
+      height: 142px;
+      margin: 0 auto 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .coin-glow {
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      background: rgba(255,193,7,.18);
+      filter: blur(25px);
+    }
+
+    .coin {
+      position: relative;
+      width: 118px;
+      height: 118px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 7px solid #e0a900;
+      background:
+        radial-gradient(
+          circle at 35% 28%,
+          #fff2a7 0%,
+          #ffd84a 22%,
+          #ffbd00 55%,
+          #d99000 100%
+        );
+      color: #5c3a00;
+      font-size: 56px;
+      font-weight: 900;
+      box-shadow:
+        0 10px 35px rgba(255,184,0,.35),
+        inset 0 3px 4px rgba(255,255,255,.7),
+        inset 0 -8px 12px rgba(115,66,0,.28);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .coin::after {
+      content: "";
+      position: absolute;
+      inset: 9px;
+      border-radius: 50%;
+      border: 2px solid rgba(92,58,0,.22);
+    }
+
+    .coin-symbol {
+      position: relative;
+      z-index: 2;
+      transform: translateY(-2px);
+      text-shadow:
+        0 2px 0 rgba(255,255,255,.22);
+    }
+
+    .brand {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 8px;
+      font-size: 30px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -.04em;
+    }
+
+    .brand span {
+      color: #ffc107;
+    }
+
+    .subtitle {
+      position: relative;
+      z-index: 1;
+      color: #969aa6;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .stats {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .stat {
+      padding: 13px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.06);
+      background: rgba(255,255,255,.025);
+    }
+
+    .stat-value {
+      display: block;
+      margin-bottom: 3px;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .stat-label {
+      display: block;
+      color: #777b87;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    .description {
+      position: relative;
+      z-index: 1;
+      margin: 0 auto 24px;
+      max-width: 330px;
+      color: #a9acb6;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .btn {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+      width: 100%;
+      min-height: 58px;
+      padding: 16px 20px;
+      border: 0;
+      border-radius: 16px;
+      background:
+        linear-gradient(
+          135deg,
+          #ffd54a,
+          #ffb300
+        );
+      color: #201500;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: .02em;
+      box-shadow:
+        0 12px 30px rgba(255,179,0,.2),
+        inset 0 1px 0 rgba(255,255,255,.6);
+      transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        filter .15s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 16px 36px rgba(255,179,0,.28),
+        inset 0 1px 0 rgba(255,255,255,.65);
+    }
+
+    .btn:active {
+      transform: translateY(1px) scale(.99);
+      filter: brightness(.96);
+    }
+
+    .telegram-icon {
+      width: 23px;
+      height: 23px;
+      flex: 0 0 23px;
+    }
+
+    .hint {
+      position: relative;
+      z-index: 1;
+      margin-top: 13px;
+      color: #666a75;
+      font-size: 11px;
+    }
+
+    .footer {
+      position: relative;
+      z-index: 1;
+      margin-top: 26px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,.05);
+      color: #555963;
+      font-size: 10px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    @keyframes float {
+      0%,
+      100% {
+        transform: translateY(0) rotate(-1deg);
+      }
+
+      50% {
+        transform: translateY(-7px) rotate(1deg);
+      }
+    }
+
+    @keyframes pulse {
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: .45;
+        transform: scale(.75);
+      }
+    }
+
+    @media (max-width: 420px) {
+      .page {
+        padding: 14px;
+      }
+
+      .card {
+        padding: 32px 18px 24px;
+        border-radius: 24px;
+      }
+
+      .coin-wrap {
+        width: 125px;
+        height: 125px;
+      }
+
+      .coin {
+        width: 105px;
+        height: 105px;
+        font-size: 49px;
+      }
+
+      .brand {
+        font-size: 27px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .coin,
+      .status-dot {
+        animation: none;
+      }
+
+      .btn {
+        transition: none;
+      }
+    }
+  </style>
 
 </head>
 
 <body>
 
-  <!-- Page -->
-  <main class="page">
-    <div class="card">
+<main class="page">
 
-      <div class="avatar"></div>
+  <section class="card">
 
-      <h1>TGWORK</h1>
+```
+<div class="status">
+  <span class="status-dot"></span>
+  LIVE TAP GAME
+</div>
 
-      <p class="subscribers">8 575 subscribers</p>
+<div class="coin-wrap" aria-hidden="true">
+  <div class="coin-glow"></div>
 
-      <a class="btn" href="https://t.me/Trustcoinminiapp_bot">
-        JOIN CHANNEL
-      </a>
+  <div class="coin">
+    <span class="coin-symbol">T</span>
+  </div>
+</div>
 
-    </div>
-  </main>
+<h1 class="brand">
+  TRUST <span>COIN</span>
+</h1>
 
-  <script>
-    // Lead на оригинальную кнопку .btn
-    document.querySelector('.btn').addEventListener('click', function () {
+<p class="subtitle">
+  Tap. Collect. Play.
+</p>
 
-      if (typeof fbq === 'function') {
-        fbq('track', 'Lead', {
-          content_name: 'TGWORK Telegram Channel',
-          value: 1.00,
-          currency: 'USD'
-        });
+<div class="stats">
 
-        console.log('Lead event fired for Pixel 1413695077434129');
-      }
+  <div class="stat">
+    <span class="stat-value">24/7</span>
+    <span class="stat-label">Online</span>
+  </div>
 
-    });
-  </script>
+  <div class="stat">
+    <span class="stat-value">Telegram</span>
+    <span class="stat-label">Mini App</span>
+  </div>
+
+</div>
+
+<p class="description">
+  Открой Telegram и запусти Tap Game.
+  Все игровые действия доступны внутри приложения.
+</p>
+
+<!-- ОСНОВНАЯ КНОПКА -->
+<a
+  class="btn"
+  id="telegramButton"
+  href="https://t.me/Trustcoinminiapp_bot"
+  aria-label="Открыть Trust Coin в Telegram"
+>
+  <svg
+    class="telegram-icon"
+    viewBox="0 0 24 24"
+    fill="none"
+    aria-hidden="true"
+  >
+    <path
+      d="M21.6 3.2 18.4 20c-.24 1.19-.89 1.48-1.8.92l-4.95-3.65-2.39 2.3c-.27.27-.5.5-1.03.5l.37-5.05 9.2-8.31c.4-.36-.09-.56-.62-.2L5.81 13.78.9 12.24c-1.07-.33-1.09-1.07.22-1.58L20.3 3.02c.9-.33 1.69.2 1.3.18Z"
+      fill="currentColor"
+    />
+  </svg>
+
+  OPEN TRUST COIN IN TELEGRAM
+</a>
+
+<p class="hint">
+  Telegram откроется по обычной ссылке
+</p>
+
+<footer class="footer">
+  Trust Coin · Telegram Tap Game
+</footer>
+```
+
+  </section>
+
+</main>
+
+<script>
+(function () {
+
+  "use strict";
+
+  const button = document.getElementById("telegramButton");
+
+  if (!button) {
+    console.error("Telegram button not found");
+    return;
+  }
+
+  let leadSent = false;
+
+  button.addEventListener("click", function () {
+
+    console.log("[TGWORK] Telegram button clicked");
+
+    /*
+      Lead отправляется один раз за загрузку страницы.
+      ВАЖНО:
+      мы НЕ вызываем preventDefault().
+      Поэтому после обработчика браузер продолжает
+      обычный переход по href.
+    */
+
+    if (!leadSent && typeof window.fbq === "function") {
+
+      leadSent = true;
+
+      window.fbq(
+        "track",
+        "Lead",
+        {
+          content_name: "Trust Coin Telegram Tap Game",
+          content_category: "telegram",
+          value: 1,
+          currency: "USD"
+        }
+      );
+
+      console.log(
+        "[META PIXEL] Lead sent: 1413695077434129"
+      );
+
+    } else if (typeof window.fbq !== "function") {
+
+      console.warn(
+        "[META PIXEL] fbq is not available"
+      );
+
+    }
+
+    /*
+      Никакого:
+      - window.open()
+      - intent://
+      - setTimeout()
+      - искусственной задержки
+      - промежуточного redirect
+
+      После этого обработчика браузер сам
+      выполняет href кнопки.
+    */
+
+  }, {
+    capture: false,
+    passive: true
+  });
+
+  console.log("[TGWORK] Landing initialized");
+  console.log("[TGWORK] Telegram URL:", button.href);
+
+})();
+</script>
 
 </body>
 </html>
