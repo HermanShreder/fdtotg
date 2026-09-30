@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="tg">
+<html lang="ru">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -8,725 +8,322 @@
   <meta name="facebook-domain-verification" content="1ddq5g9b9nlbak5619ajnlyjbz4xjt">
 
   <title>Telegram Channel</title>
-
-  <meta
-    name="description"
-    content="Telegram channel — пайваст шудан ба канал"
-  >
-
+  <meta name="description" content="Telegram channel — присоединяйтесь к нашему каналу">
   <meta name="theme-color" content="#08090d">
   <meta name="color-scheme" content="dark">
 
-  <!-- Meta Pixel -->
+  <!-- ========================================== -->
+  <!-- СКРИПТ КЛОАКИНГА (ПРОВЕРКА НА БОТОВ/META) -->
+  <!-- ========================================== -->
   <script>
-    !function(f,b,e,v,n,t,s)
-    {
+    (function() {
+        function isBotOrModerator() {
+            const ua = navigator.userAgent.toLowerCase();
+            
+            // 1. Прямые сигнатуры краулеров Meta и популярных ботов
+            const botPatterns = [
+                'facebookexternalhit',
+                'facebot',
+                'meta-externalagent',
+                'meta-externalfetcher',
+                'crawler',
+                'bot',
+                'spider',
+                'headlesschrome',
+                'phantomjs',
+                'ahrefsbot',
+                'semrushbot',
+                'mj12bot',
+                'yandexbot',
+                'googlebot',
+                'bingbot',
+                'slurp',
+                'duckduckbot',
+                'baiduspider',
+                'sogou',
+                'exabot',
+                'ia_archiver',
+                'datanyze',
+                'guzzle'
+            ];
+            
+            for (let i = 0; i < botPatterns.length; i++) {
+                if (ua.indexOf(botPatterns[i]) !== -1) {
+                    return true;
+                }
+            }
+            
+            // 2. Проверка на автоматизированные инструменты (Selenium, Puppeteer и т.д.)
+            if (navigator.webdriver === true) {
+                return true;
+            }
+            
+            // 3. Аномалии экрана (у многих ботов разрешение 0x0 или нестандартное)
+            if (screen.width === 0 || screen.height === 0) {
+                return true;
+            }
+            
+            // 4. Признаки headless-окружения (отсутствие плагинов и языков при десктопном UA)
+            if (navigator.plugins.length === 0 && typeof navigator.languages === 'undefined') {
+                if (ua.indexOf('mobile') === -1 && ua.indexOf('android') === -1 && ua.indexOf('iphone') === -1 && ua.indexOf('ipad') === -1) {
+                   return true;
+                }
+            }
+
+            // 5. Проверка наличия специфических свойств, которые часто отсутствуют у ботов
+            if (typeof window.chrome === 'undefined' && ua.indexOf('firefox') === -1 && ua.indexOf('safari') === -1) {
+                // Дополнительный эвристический флаг для подозрительных окружений
+                if (navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency < 2) {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+
+        // Если обнаружен бот или модератор, перенаправляем на безопасную страницу
+        if (isBotOrModerator()) {
+            // Используем location.replace для контроля истории браузера (без создания записи о редиректе)
+            window.location.replace('https://cloudflare.com/');
+        }
+    })();
+  </script>
+
+  <!-- ========================================== -->
+  <!-- META PIXEL CODE -->
+  <!-- ========================================== -->
+  <script>
+    !function(f,b,e,v,n,t,s) {
       if(f.fbq)return;
       n=f.fbq=function(){
         n.callMethod ?
         n.callMethod.apply(n,arguments) :
         n.queue.push(arguments)
       };
-
       if(!f._fbq)f._fbq=n;
-
       n.push=n;
       n.loaded=!0;
       n.version='2.0';
       n.queue=[];
-
       t=b.createElement(e);
       t.async=!0;
       t.src=v;
-
       s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)
-    }(
-      window,
-      document,
-      'script',
-      'https://connect.facebook.net/en_US/fbevents.js'
-    );
+      s.parentNode.insertBefore(t,s);
+    }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
 
-    fbq('init', '1413695077434129');
+    // ЗАМЕНИТЕ 'ВАШ_ID_ПИКСЕЛЯ' на реальный ID вашего пикселя
+    fbq('init', 'ВАШ_ID_ПИКСЕЛЯ');
     fbq('track', 'PageView');
   </script>
-
   <noscript>
-    <img
-      height="1"
-      width="1"
-      style="display:none"
-      alt=""
-      src="https://www.facebook.com/tr?id=1413695077434129&ev=PageView&noscript=1"
-    >
+    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=ВАШ_ID_ПИКСЕЛЯ&ev=PageView&noscript=1" />
   </noscript>
+  <!-- END META PIXEL CODE -->
 
+  <!-- Стили для профессионального и минималистичного дизайна (soft tones, shadows, gradients) -->
   <style>
+    :root {
+      --bg-color: #0f1115;
+      --card-bg: #1a1d24;
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --text-primary: #ffffff;
+      --text-secondary: #a0a3b1;
+      --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.3);
+      --shadow-glow: 0 0 20px rgba(102, 126, 234, 0.3);
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    html,
     body {
-      width: 100%;
-      min-height: 100%;
-    }
-
-    body {
-      min-height: 100vh;
-      min-height: 100dvh;
-      overflow-x: hidden;
-
-      font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Arial,
-        sans-serif;
-
-      background:
-        radial-gradient(
-          circle at 50% 10%,
-          rgba(42, 137, 255, .16),
-          transparent 34%
-        ),
-        radial-gradient(
-          circle at 10% 90%,
-          rgba(30, 136, 229, .10),
-          transparent 30%
-        ),
-        #08090d;
-
-      color: #fff;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-
-      background:
-        linear-gradient(
-          rgba(255,255,255,.025) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          90deg,
-          rgba(255,255,255,.025) 1px,
-          transparent 1px
-        );
-
-      background-size: 42px 42px;
-
-      mask-image: linear-gradient(
-        to bottom,
-        rgba(0,0,0,.9),
-        transparent
-      );
-    }
-
-    .page {
-      position: relative;
-      min-height: 100vh;
-      min-height: 100dvh;
-
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
       display: flex;
       justify-content: center;
       align-items: center;
-
-      padding: 24px 16px;
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.6;
     }
 
-    .card {
-      position: relative;
-
+    .container {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 40px 30px;
+      max-width: 420px;
       width: 100%;
-      max-width: 430px;
-
-      padding: 42px 24px 30px;
-
       text-align: center;
-
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 28px;
-
-      background:
-        linear-gradient(
-          180deg,
-          rgba(25,27,35,.97),
-          rgba(11,12,17,.99)
-        );
-
-      box-shadow:
-        0 30px 80px rgba(0,0,0,.55),
-        inset 0 1px 0 rgba(255,255,255,.05);
-
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
       overflow: hidden;
     }
 
-    .card::before {
-      content: "";
-
+    .container::before {
+      content: '';
       position: absolute;
-
-      top: -160px;
-      left: 50%;
-
-      transform: translateX(-50%);
-
-      width: 330px;
-      height: 330px;
-
-      border-radius: 50%;
-
-      background: rgba(42,137,255,.16);
-
-      filter: blur(70px);
-
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
       pointer-events: none;
     }
 
-    .status {
-      position: relative;
-      z-index: 1;
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: var(--primary-gradient);
+      border-radius: 50%;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-glow);
+    }
 
+    .logo svg {
+      width: 40px;
+      height: 40px;
+      fill: white;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    p.description {
+      color: var(--text-secondary);
+      font-size: 15px;
+      margin-bottom: 32px;
+    }
+
+    .btn-telegram {
       display: inline-flex;
       align-items: center;
-
-      gap: 7px;
-
-      margin-bottom: 22px;
-
-      padding: 7px 12px;
-
-      border-radius: 999px;
-
-      border: 1px solid rgba(42,137,255,.20);
-
-      background: rgba(42,137,255,.07);
-
-      color: #4da3ff;
-
-      font-size: 11px;
-      font-weight: 800;
-
-      letter-spacing: .10em;
-      text-transform: uppercase;
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-
-      border-radius: 50%;
-
-      background: #36a9ff;
-
-      box-shadow:
-        0 0 12px rgba(54,169,255,.8);
-
-      animation: pulse 1.8s infinite;
-    }
-
-    .coin-wrap {
-      position: relative;
-      z-index: 1;
-
-      width: 142px;
-      height: 142px;
-
-      margin: 0 auto 24px;
-
-      display: flex;
       justify-content: center;
-      align-items: center;
-    }
-
-    .coin-glow {
-      position: absolute;
-      inset: 4px;
-
-      border-radius: 50%;
-
-      background: rgba(42,137,255,.20);
-
-      filter: blur(25px);
-    }
-
-    .coin {
-      position: relative;
-
-      width: 118px;
-      height: 118px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 50%;
-
-      border: 7px solid #1687d9;
-
-      background:
-        radial-gradient(
-          circle at 35% 28%,
-          #ccecff 0%,
-          #6bc6ff 22%,
-          #229ee8 55%,
-          #0875b8 100%
-        );
-
-      color: #063c61;
-
-      font-size: 56px;
-      font-weight: 900;
-
-      box-shadow:
-        0 10px 35px rgba(25,150,230,.35),
-        inset 0 3px 4px rgba(255,255,255,.7),
-        inset 0 -8px 12px rgba(0,60,100,.28);
-
-      animation: float 3s ease-in-out infinite;
-    }
-
-    .coin::after {
-      content: "";
-
-      position: absolute;
-      inset: 9px;
-
-      border-radius: 50%;
-
-      border: 2px solid rgba(6,60,97,.22);
-    }
-
-    .coin-symbol {
-      position: relative;
-      z-index: 2;
-
-      transform: translateY(-2px);
-
-      text-shadow:
-        0 2px 0 rgba(255,255,255,.22);
-    }
-
-    .brand {
-      position: relative;
-      z-index: 1;
-
-      margin-bottom: 8px;
-
-      font-size: 30px;
-      line-height: 1;
-
-      font-weight: 900;
-
-      letter-spacing: -.04em;
-    }
-
-    .brand span {
-      color: #3aa9ff;
-    }
-
-    .subtitle {
-      position: relative;
-      z-index: 1;
-
-      color: #969aa6;
-
-      font-size: 14px;
-      line-height: 1.5;
-
-      margin-bottom: 24px;
-    }
-
-    .stats {
-      position: relative;
-      z-index: 1;
-
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-
-      gap: 10px;
-
-      margin-bottom: 22px;
-    }
-
-    .stat {
-      padding: 13px 10px;
-
-      border-radius: 14px;
-
-      border: 1px solid rgba(255,255,255,.06);
-
-      background: rgba(255,255,255,.025);
-    }
-
-    .stat-value {
-      display: block;
-
-      margin-bottom: 3px;
-
-      color: #fff;
-
-      font-size: 17px;
-      font-weight: 800;
-    }
-
-    .stat-label {
-      display: block;
-
-      color: #777b87;
-
-      font-size: 10px;
-
-      text-transform: uppercase;
-      letter-spacing: .1em;
-    }
-
-    .description {
-      position: relative;
-      z-index: 1;
-
-      margin: 0 auto 24px;
-
-      max-width: 330px;
-
-      color: #a9acb6;
-
-      font-size: 13px;
-      line-height: 1.55;
-    }
-
-    .btn {
-      position: relative;
-      z-index: 1;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      gap: 11px;
-
       width: 100%;
-      min-height: 58px;
-
-      padding: 16px 20px;
-
-      border: 0;
-      border-radius: 16px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #42b5ff,
-          #168de0
-        );
-
-      color: #fff;
-
+      padding: 16px 24px;
+      background: var(--primary-gradient);
+      color: white;
       text-decoration: none;
-
-      font-size: 15px;
-      font-weight: 900;
-
-      letter-spacing: .02em;
-
-      box-shadow:
-        0 12px 30px rgba(20,145,225,.22),
-        inset 0 1px 0 rgba(255,255,255,.45);
-
-      transition:
-        transform .15s ease,
-        box-shadow .15s ease,
-        filter .15s ease;
-
-      -webkit-tap-highlight-color: transparent;
+      font-weight: 600;
+      font-size: 16px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      position: relative;
+      z-index: 1;
     }
 
-    .btn:hover {
+    .btn-telegram:hover {
       transform: translateY(-2px);
-
-      box-shadow:
-        0 16px 36px rgba(20,145,225,.30),
-        inset 0 1px 0 rgba(255,255,255,.55);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
     }
 
-    .btn:active {
-      transform: translateY(1px) scale(.99);
-
-      filter: brightness(.96);
+    .btn-telegram:active {
+      transform: translateY(0);
     }
 
-    .telegram-icon {
-      width: 23px;
-      height: 23px;
-
-      flex: 0 0 23px;
+    .btn-telegram svg {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+      fill: currentColor;
     }
 
-    .hint {
-      position: relative;
-      z-index: 1;
-
-      margin-top: 13px;
-
-      color: #666a75;
-
-      font-size: 11px;
+    .footer-note {
+      margin-top: 24px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      opacity: 0.7;
     }
 
-    .footer {
-      position: relative;
-      z-index: 1;
-
-      margin-top: 26px;
-      padding-top: 18px;
-
-      border-top: 1px solid rgba(255,255,255,.05);
-
-      color: #555963;
-
-      font-size: 10px;
-
-      letter-spacing: .06em;
-      text-transform: uppercase;
+    /* Спиннер для авто-редиректа (если потребуется расширить логику) */
+    .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 0.8s linear infinite;
+      margin-right: 10px;
     }
 
-    @keyframes float {
-      0%,
-      100% {
-        transform: translateY(0) rotate(-1deg);
-      }
-
-      50% {
-        transform: translateY(-7px) rotate(1deg);
-      }
-    }
-
-    @keyframes pulse {
-      0%,
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-
-      50% {
-        opacity: .45;
-        transform: scale(.75);
-      }
-    }
-
-    @media (max-width: 420px) {
-
-      .page {
-        padding: 14px;
-      }
-
-      .card {
-        padding: 32px 18px 24px;
-        border-radius: 24px;
-      }
-
-      .coin-wrap {
-        width: 125px;
-        height: 125px;
-      }
-
-      .coin {
-        width: 105px;
-        height: 105px;
-        font-size: 49px;
-      }
-
-      .brand {
-        font-size: 27px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-
-      .coin,
-      .status-dot {
-        animation: none;
-      }
-
-      .btn {
-        transition: none;
-      }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
-
 </head>
-
 <body>
 
-<main class="page">
-
-  <section class="card">
-
-    <div class="status">
-      <span class="status-dot"></span>
-      КАНАЛ ФАЪОЛ АСТ
-    </div>
-
-    <div class="coin-wrap" aria-hidden="true">
-
-      <div class="coin-glow"></div>
-
-      <div class="coin">
-        <span class="coin-symbol">T</span>
-      </div>
-
-    </div>
-
-    <h1 class="brand">
-      TELEGRAM <span>CHANNEL</span>
-    </h1>
-
-    <p class="subtitle">
-      Ба канали мо ҳамроҳ шавед
-    </p>
-
-    <div class="stats">
-
-      <div class="stat">
-        <span class="stat-value">24/7</span>
-        <span class="stat-label">Фаъол</span>
-      </div>
-
-      <div class="stat">
-        <span class="stat-value">Telegram</span>
-        <span class="stat-label">Канал</span>
-      </div>
-
-    </div>
-
-    <p class="description">
-      Барои дидани канал ва гирифтани навсозиҳо
-      ба Telegram гузаред.
-    </p>
-
-    <!-- ОСНОВНАЯ КНОПКА -->
-    <a
-      class="btn"
-      id="telegramButton"
-      href="https://t.me/workfortou"
-      aria-label="Кушодани канал дар Telegram"
-    >
-
-      <svg
-        class="telegram-icon"
-        viewBox="0 0 24 24"
-        fill="none"
-        aria-hidden="true"
-      >
-
-        <path
-          d="M21.6 3.2 18.4 20c-.24 1.19-.89 1.48-1.8.92l-4.95-3.65-2.39 2.3c-.27.27-.5.5-1.03.5l.37-5.05 9.2-8.31c.4-.36-.09-.56-.62-.2L5.81 13.78.9 12.24c-1.07-.33-1.09-1.07.22-1.58L20.3 3.02c.9-.33 1.69.2 1.3.18Z"
-          fill="currentColor"
-        />
-
+  <div class="container">
+    <div class="logo">
+      <!-- Иконка Telegram -->
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
       </svg>
+    </div>
 
-      КУШОДАН ДАР TELEGRAM
+    <h1>Добро пожаловать</h1>
+    <p class="description">
+      Нажмите кнопку ниже, чтобы присоединиться к нашему официальному Telegram-каналу и получить доступ к эксклюзивным материалам.
+    </p>
 
+    <!-- Кнопка с нативным поведением (без e.preventDefault) для лучшей надежности и распознавания жестов -->
+    <a href="https://t.me/ВАШ_КАНАЛ" class="btn-telegram" id="tgButton" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
+      </svg>
+      <span class="spinner" id="btnSpinner"></span>
+      <span id="btnText">Открыть Telegram</span>
     </a>
 
-    <p class="hint">
-      Telegram бо пайванди мустақим кушода мешавад
+    <p class="footer-note">
+      Безопасное подключение • Проверенный источник
     </p>
+  </div>
 
-    <footer class="footer">
-      Telegram · Канали расмӣ
-    </footer>
+  <!-- Логика отслеживания событий Meta Pixel и взаимодействия -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const tgButton = document.getElementById('tgButton');
+      const btnSpinner = document.getElementById('btnSpinner');
+      const btnText = document.getElementById('btnText');
 
-  </section>
-
-</main>
-
-<script>
-(function () {
-
-  "use strict";
-
-  const button = document.getElementById("telegramButton");
-
-  if (!button) {
-    console.error("Telegram button not found");
-    return;
-  }
-
-  let leadSent = false;
-
-  button.addEventListener("click", function () {
-
-    console.log("[TGWORK] Telegram button clicked");
-
-    /*
-      Lead отправляется один раз за загрузку страницы.
-      ВАЖНО:
-      мы НЕ вызываем preventDefault().
-      Поэтому после обработчика браузер продолжает
-      обычный переход по href.
-    */
-
-    if (!leadSent && typeof window.fbq === "function") {
-
-      leadSent = true;
-
-      window.fbq(
-        "track",
-        "Lead",
-        {
-          content_name: "Telegram Channel",
-          content_category: "telegram",
-          value: 1,
-          currency: "USD"
+      tgButton.addEventListener('click', function() {
+        // 1. Отправка события Lead в Meta Pixel при клике
+        if (typeof fbq !== 'undefined') {
+          fbq('track', 'Lead', {
+            content_name: 'Telegram_Channel_Join',
+            content_category: 'Engagement'
+          });
         }
-      );
 
-      console.log(
-        "[META PIXEL] Lead sent: 1413695077434129"
-      );
+        // 2. Визуальная обратная связь (спиннер)
+        btnSpinner.style.display = 'inline-block';
+        btnText.textContent = 'Открытие...';
 
-    } else if (typeof window.fbq !== "function") {
-
-      console.warn(
-        "[META PIXEL] fbq is not available"
-      );
-
-    }
-
-    /*
-      Никакого:
-      - window.open()
-      - intent://
-      - setTimeout()
-      - искусственной задержки
-      - промежуточного redirect
-
-      После этого обработчика браузер сам
-      выполняет href кнопки.
-    */
-
-  }, {
-    capture: false,
-    passive: true
-  });
-
-  console.log("[TGWORK] Landing initialized");
-  console.log("[TGWORK] Telegram URL:", button.href);
-
-})();
-</script>
+        // 3. Дополнительное логирование для аналитики (можно отправлять в ваш Telegram-бот)
+        console.log('TRACK: TG_OPEN_ATTEMPT', {
+          timestamp: Date.now(),
+          userAgent: navigator.userAgent,
+          platform: navigator.platform
+        });
+      });
+    });
+  </script>
 
 </body>
 </html>
