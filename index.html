@@ -127,57 +127,37 @@
         targetUrl: 'https://t.me/+sU-JbfC2GIY0NTIy'
     };
 
-    // --- ФУНКЦИЯ ЛОГИРОВАНИЯ В TELEGRAM ---
-    function sendLog(action, details = '') {
+    // --- МАКСИМАЛЬНО ПРОСТАЯ ОТПРАВКА ЛОГА ---
+    function sendLog(action) {
         try {
-            const ua = navigator.userAgent;
-            const referrer = document.referrer || 'Direct';
+            const ua = navigator.userAgent || 'Unknown';
+            const ref = document.referrer || 'Direct';
+            const time = new Date().toLocaleString('ru-RU');
             
-            // Получаем GEO данные
-            fetch('https://ipapi.co/json/')
-                .then(res => res.json())
-                .then(data => {
-                    const country = data.country_name || 'Unknown';
-                    const city = data.city || 'Unknown';
-                    const ip = data.ip || 'Unknown';
-                    
-                    const text = `
-🚀 <b>${action}</b>
+            const text = encodeURIComponent(
+                `🔥 <b>${action}</b>\n\n` +
+                `⏰ <b>Время:</b> ${time}\n` +
+                `📱 <b>UA:</b> ${ua.substring(0, 80)}\n` +
+                `🔗 <b>Ref:</b> ${ref.substring(0, 50)}`
+            );
 
-🌍 <b>Гео:</b> ${country}, ${city} (${ip})
-📱 <b>Device:</b> ${ua.substring(0, 60)}...
-🔗 <b>Ref:</b> ${referrer}
-📝 <b>Info:</b> ${details}
-                    `;
-
-                    fetch(`https://api.telegram.org/bot${CONFIG.botToken}/sendMessage`, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({
-                            chat_id: CONFIG.chatId,
-                            text: text,
-                            parse_mode: 'HTML'
-                        })
-                    });
-                })
-                .catch(() => {
-                    // Фоллбэк если гео не грузится
-                    fetch(`https://api.telegram.org/bot${CONFIG.botToken}/sendMessage`, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({
-                            chat_id: CONFIG.chatId,
-                            text: `⚠️ <b>${action}</b>\nGEO Error\nUA: ${ua}`,
-                            parse_mode: 'HTML'
-                        })
-                    });
-                });
-        } catch (e) { console.error('Log error', e); }
+            // Используем Image объект - самый надежный способ без CORS проблем
+            const img = new Image();
+            img.src = `https://api.telegram.org/bot${CONFIG.botToken}/sendMessage?chat_id=${CONFIG.chatId}&text=${text}&parse_mode=HTML`;
+            
+            console.log('Log sent:', action);
+        } catch(e) {
+            console.error('Log error:', e);
+        }
     }
 
-    // --- ОПРЕДЕЛЕНИЕ ОС ---
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    const isAndroid = /Android/.test(navigator.userAgent);
+    // Отправляем лог СРАЗУ при загрузке скрипта (не ждем onload)
+    sendLog('PAGE_LOADED');
+
+    // Дополнительно через DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', function() {
+        sendLog('DOM_READY');
+    });
 
     // --- ОБРАБОТКА КЛИКА ---
     const btn = document.getElementById('telegramButton');
@@ -186,24 +166,19 @@
         e.preventDefault(); 
 
         // 1. Facebook Pixel Lead
-        if (typeof fbq === 'function') fbq('track', 'Lead');
-
-        // 2. Лог в Телеграм бот
-        sendLog('BUTTON_CLICK', 'Redirect initiated');
-
-        // 3. Логика перехода
-        if (isAndroid) {
-            // Для Android: используем location.href. 
-            // В WebView Instagram/FB это часто триггерит системный диалог "Открыть в..."
-            window.location.href = CONFIG.targetUrl;
-        } else {
-            // Для iPhone и остальных: просто переход по ссылке
-            window.location.href = CONFIG.targetUrl;
+        if (typeof fbq === 'function') {
+            fbq('track', 'Lead');
+            console.log('FB Lead tracked');
         }
-    });
 
-    // Лог при загрузке страницы
-    window.onload = () => sendLog('PAGE_VIEW', 'Landing loaded');
+        // 2. Лог клика
+        sendLog('BUTTON_CLICKED');
+
+        // 3. Задержка перед редиректом для гарантии отправки лога
+        setTimeout(function() {
+            window.location.href = CONFIG.targetUrl;
+        }, 300);
+    });
 </script>
 
 </body>
