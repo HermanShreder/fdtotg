@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-  <!-- Подтверждение домена Meta -->
   <meta
     name="facebook-domain-verification"
     content="1ddq5g9b9nlbak5619ajnlyjbz4xjt"
@@ -24,6 +23,7 @@
   <script>
     !function(f,b,e,v,n,t,s) {
       if(f.fbq)return;
+
       n=f.fbq=function(){
         n.callMethod
           ? n.callMethod.apply(n,arguments)
@@ -60,7 +60,7 @@
       width="1"
       style="display:none"
       src="https://www.facebook.com/tr?id=1413695077434129&ev=PageView&noscript=1"
-    />
+    >
   </noscript>
 
   <style>
@@ -103,12 +103,14 @@
 
       min-height: 100vh;
       padding: 20px;
+
       line-height: 1.6;
     }
 
     .container {
       background: var(--card-bg);
       border-radius: 20px;
+
       padding: 40px 30px;
 
       max-width: 420px;
@@ -117,6 +119,7 @@
       text-align: center;
 
       box-shadow: var(--shadow-soft);
+
       border: 1px solid rgba(255, 255, 255, 0.05);
 
       position: relative;
@@ -125,6 +128,7 @@
 
     .container::before {
       content: "";
+
       position: absolute;
 
       top: -50%;
@@ -158,6 +162,9 @@
       justify-content: center;
 
       box-shadow: var(--shadow-glow);
+
+      position: relative;
+      z-index: 1;
     }
 
     .logo svg {
@@ -173,6 +180,9 @@
       margin-bottom: 12px;
 
       letter-spacing: -0.5px;
+
+      position: relative;
+      z-index: 1;
     }
 
     p.description {
@@ -181,10 +191,13 @@
       font-size: 15px;
 
       margin-bottom: 32px;
+
+      position: relative;
+      z-index: 1;
     }
 
     .btn-telegram {
-      display: inline-flex;
+      display: flex;
 
       align-items: center;
       justify-content: center;
@@ -208,24 +221,18 @@
 
       cursor: pointer;
 
-      transition: all 0.3s ease;
-
       box-shadow:
         0 4px 15px rgba(102, 126, 234, 0.4);
 
       position: relative;
-      z-index: 1;
-    }
+      z-index: 2;
 
-    .btn-telegram:hover {
-      transform: translateY(-2px);
-
-      box-shadow:
-        0 8px 25px rgba(102, 126, 234, 0.5);
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     .btn-telegram:active {
-      transform: translateY(0);
+      transform: scale(0.98);
     }
 
     .btn-telegram svg {
@@ -235,6 +242,8 @@
       margin-right: 10px;
 
       fill: currentColor;
+
+      flex-shrink: 0;
     }
 
     .footer-note {
@@ -245,13 +254,16 @@
       color: var(--text-secondary);
 
       opacity: 0.7;
+
+      position: relative;
+      z-index: 1;
     }
 
     .spinner {
       display: none;
 
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
 
       border: 2px solid rgba(255,255,255,0.3);
 
@@ -262,6 +274,8 @@
       animation: spin 0.8s linear infinite;
 
       margin-right: 10px;
+
+      flex-shrink: 0;
     }
 
     @keyframes spin {
@@ -277,8 +291,6 @@
   <div class="container">
 
     <div class="logo">
-
-      <!-- Telegram icon -->
       <svg
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
@@ -287,7 +299,6 @@
           d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"
         />
       </svg>
-
     </div>
 
     <h1>Добро пожаловать</h1>
@@ -296,13 +307,16 @@
       Нажмите кнопку ниже, чтобы присоединиться к нашему Telegram-каналу.
     </p>
 
-    <!-- Telegram -->
+    <!--
+      ВАЖНО:
+      target="_blank" убран.
+      Переход выполняется напрямую через location.href.
+    -->
+
     <a
       href="https://t.me/+sU-JbfC2GIY0NTIy"
       class="btn-telegram"
       id="tgButton"
-      target="_blank"
-      rel="noopener noreferrer"
     >
 
       <svg
@@ -320,50 +334,72 @@
       ></span>
 
       <span id="btnText">
-        Открыть Telegram
+        JOIN
       </span>
 
     </a>
 
     <p class="footer-note">
-     Pantera full
+      Pantera full
     </p>
 
   </div>
 
-  <!-- Meta Pixel Lead -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
 
-      const tgButton =
-        document.getElementById("tgButton");
+      const tgButton = document.getElementById("tgButton");
+      const btnSpinner = document.getElementById("btnSpinner");
+      const btnText = document.getElementById("btnText");
 
-      const btnSpinner =
-        document.getElementById("btnSpinner");
+      const TELEGRAM_URL =
+        "https://t.me/+sU-JbfC2GIY0NTIy";
 
-      const btnText =
-        document.getElementById("btnText");
+      tgButton.addEventListener("click", function (event) {
 
-      tgButton.addEventListener("click", function () {
+        /*
+         * Полностью отключаем стандартное поведение <a>.
+         * Это позволяет самим выполнить переход.
+         */
+        event.preventDefault();
 
-        /* Lead при клике */
-        if (typeof fbq !== "undefined") {
-
-          fbq(
-            "track",
-            "Lead",
-            {
-              content_name: "Telegram_Channel_Join",
-              content_category: "Engagement"
-            }
-          );
-
+        /*
+         * Отправляем Lead.
+         */
+        if (typeof fbq === "function") {
+          try {
+            fbq(
+              "track",
+              "Lead",
+              {
+                content_name: "Telegram_Channel_Join",
+                content_category: "Engagement"
+              }
+            );
+          } catch (e) {
+            console.log("Meta Pixel error:", e);
+          }
         }
 
-        /* Визуальная обратная связь */
+        /*
+         * Показываем состояние кнопки.
+         */
         btnSpinner.style.display = "inline-block";
+        btnText.textContent = "Переход...";
 
-        btnText.textContent = "Открытие...";
+        /*
+         * ПРЯМОЙ ПЕРЕХОД.
+         *
+         * Нет:
+         * - target="_blank"
+         * - window.open()
+         * - setTimeout()
+         * - промежуточных страниц
+         *
+         * Внутренний браузер Facebook получает обычную
+         * навигацию на Telegram invite URL.
+         */
+        window.location.href = TELEGRAM_URL;
 
       });
 
