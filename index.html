@@ -4,65 +4,78 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-  <meta
-    name="facebook-domain-verification"
-    content="1ddq5g9b9nlbak5619ajnlyjbz4xjt"
-  >
+  <meta name="facebook-domain-verification" content="1ddq5g9b9nlbak5619ajnlyjbz4xjt">
 
   <title>Telegram Channel</title>
 
-  <meta
-    name="description"
-    content="Telegram channel — присоединяйтесь к нашему каналу"
-  >
-
+  <meta name="description" content="Telegram channel — присоединяйтесь к нашему каналу">
   <meta name="theme-color" content="#08090d">
   <meta name="color-scheme" content="dark">
 
-  <!-- META PIXEL -->
+  <!-- GOOGLE TAG MANAGER -->
   <script>
-    !function(f,b,e,v,n,t,s) {
+    !function(e,t,a,n,g){e[n]=e[n]||[],e[n].push({"gtm.start":(new Date).getTime(),event:"gtm.js"});var m=t.getElementsByTagName(a)[0],r=t.createElement(a);r.async=!0,r.src="https://www.googletagmanager.com/gtm.js?id=GTM-MC87N4V",m.parentNode.insertBefore(r,m)}(window,document,"script","dataLayer");
+  </script>
+
+  <!-- USER ANALYTICS CONFIG -->
+  <script>
+    window.USERANALYTICS = {
+      "google": "",
+      "facebook": "1413695077434129",
+      "tiktok": "",
+      "hasFacebookCapi": true,
+      "websiteId": "adtraff"
+    };
+  </script>
+
+  <!-- META PIXEL & CAPI INFRASTRUCTURE -->
+  <script>
+    !function(f,b,e,v,n,t,s){
       if(f.fbq)return;
-
-      n=f.fbq=function(){
-        n.callMethod
-          ? n.callMethod.apply(n,arguments)
-          : n.queue.push(arguments)
-      };
-
+      n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
       if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
+      t=b.createElement(e);t.async=!0;t.src=v;
+      s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)
+    }(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 
-      n.push=n;
-      n.loaded=!0;
-      n.version='2.0';
-      n.queue=[];
+    function fbGenEventId() {
+      return typeof crypto !== 'undefined' && crypto.randomUUID
+        ? crypto.randomUUID()
+        : Math.random().toString(36).substring(2) + Date.now().toString(36);
+    }
 
-      t=b.createElement(e);
-      t.async=!0;
-      t.src=v;
+    function fbSendToCAPI({ eventName, eventId, customData, userData }) {
+      var ua = window.USERANALYTICS;
+      if (!ua.hasFacebookCapi || !ua.websiteId) return;
+      var blob = new Blob([JSON.stringify({
+        eventName: eventName,
+        eventId: eventId,
+        sourceUrl: location.href,
+        fbp: (document.cookie.match(/_fbp=([^;]+)/) || [])[1],
+        fbc: (document.cookie.match(/_fbc=([^;]+)/) || [])[1],
+        customData: customData || null,
+        email: userData && userData.email,
+        phone: userData && userData.phone
+      })], { type: 'application/json' });
+      
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon('/userpage/api/websites/' + ua.websiteId + '/track', blob);
+      }
+    }
 
-      s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s);
-    }(
-      window,
-      document,
-      'script',
-      'https://connect.facebook.net/en_US/fbevents.js'
-    );
-
+    // Initialize Meta Pixel & Track PageView
     fbq('init', '1413695077434129');
-    fbq('track', 'PageView');
+    var pageViewEid = fbGenEventId();
+    fbq('track', 'PageView', {}, { eventID: pageViewEid });
+    fbSendToCAPI({ eventName: 'PageView', eventId: pageViewEid });
   </script>
 
   <noscript>
-    <img
-      height="1"
-      width="1"
-      style="display:none"
-      src="https://www.facebook.com/tr?id=1413695077434129&ev=PageView&noscript=1"
-    >
+    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1413695077434129&ev=PageView&noscript=1">
   </noscript>
 
+  <!-- STYLES (PRESERVED FROM CODE 2) -->
   <style>
     :root {
       --bg-color: #0f1115;
@@ -291,13 +304,8 @@
   <div class="container">
 
     <div class="logo">
-      <svg
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"
-        />
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
       </svg>
     </div>
 
@@ -307,36 +315,13 @@
       Нажмите кнопку ниже, чтобы присоединиться к нашему Telegram-каналу.
     </p>
 
-    <!--
-      ВАЖНО:
-      target="_blank" убран.
-      Переход выполняется напрямую через location.href.
-    -->
-
-    <a
-      href="https://t.me/+sU-JbfC2GIY0NTIy"
-      class="btn-telegram"
-      id="tgButton"
-    >
-
-      <svg
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"
-        />
+    <a href="https://t.me/+sU-JbfC2GIY0NTIy" class="btn-telegram" id="tgButton" data-messenger="telegram">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
       </svg>
 
-      <span
-        class="spinner"
-        id="btnSpinner"
-      ></span>
-
-      <span id="btnText">
-        JOIN
-      </span>
-
+      <span class="spinner" id="btnSpinner"></span>
+      <span id="btnText">JOIN</span>
     </a>
 
     <p class="footer-note">
@@ -345,64 +330,54 @@
 
   </div>
 
+  <!-- REDIRECT & TRACKING SCRIPT -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-
       const tgButton = document.getElementById("tgButton");
       const btnSpinner = document.getElementById("btnSpinner");
       const btnText = document.getElementById("btnText");
 
-      const TELEGRAM_URL =
-        "https://t.me/+sU-JbfC2GIY0NTIy";
+      const TELEGRAM_URL = "https://t.me/+sU-JbfC2GIY0NTIy";
 
       tgButton.addEventListener("click", function (event) {
-
-        /*
-         * Полностью отключаем стандартное поведение <a>.
-         * Это позволяет самим выполнить переход.
-         */
         event.preventDefault();
 
-        /*
-         * Отправляем Lead.
-         */
+        // 1. Генерация Event IDs для точности склейки Pixel + CAPI
+        var leadEid = fbGenEventId();
+        var anyMessengerEid = fbGenEventId();
+        var tgClickEid = fbGenEventId();
+
+        // 2. Отправка событий в Facebook Pixel
         if (typeof fbq === "function") {
           try {
-            fbq(
-              "track",
-              "Lead",
-              {
-                content_name: "Telegram_Channel_Join",
-                content_category: "Engagement"
-              }
-            );
+            fbq('track', 'Lead', {
+              content_name: 'Telegram_Channel_Join',
+              content_category: 'Engagement'
+            }, { eventID: leadEid });
+
+            fbq('track', 'fp_any_messenger_click', {}, { eventID: anyMessengerEid });
+            fbq('track', 'fp_telegram_click', {}, { eventID: tgClickEid });
           } catch (e) {
             console.log("Meta Pixel error:", e);
           }
         }
 
-        /*
-         * Показываем состояние кнопки.
-         */
+        // 3. Отправка событий в Facebook CAPI
+        try {
+          fbSendToCAPI({ eventName: 'Lead', eventId: leadEid, customData: { content_name: 'Telegram_Channel_Join' } });
+          fbSendToCAPI({ eventName: 'fp_any_messenger_click', eventId: anyMessengerEid });
+          fbSendToCAPI({ eventName: 'fp_telegram_click', eventId: tgClickEid });
+        } catch (e) {
+          console.log("CAPI error:", e);
+        }
+
+        // 4. Визуальный отклик кнопки
         btnSpinner.style.display = "inline-block";
         btnText.textContent = "Переход...";
 
-        /*
-         * ПРЯМОЙ ПЕРЕХОД.
-         *
-         * Нет:
-         * - target="_blank"
-         * - window.open()
-         * - setTimeout()
-         * - промежуточных страниц
-         *
-         * Внутренний браузер Facebook получает обычную
-         * навигацию на Telegram invite URL.
-         */
+        // 5. Прямой редирект на Telegram
         window.location.href = TELEGRAM_URL;
-
       });
-
     });
   </script>
 
