@@ -110,7 +110,8 @@
             <span class="status-dot"></span> Канал доступен
         </div>
 
-        <a id="telegramButton" class="telegram-button" href="#">
+        <!-- По умолчанию ссылка ведут на веб-версию -->
+        <a id="telegramButton" class="telegram-button" href="https://t.me/+sU-JbfC2GIY0NTIy">
             <svg viewBox="0 0 24 24"><path d="M21.8 3.2 18.7 20c-.23 1.19-.86 1.49-1.74.93l-4.8-3.54-2.32 2.23c-.26.26-.48.48-.98.48l.35-4.89 8.9-8.04c.39-.35-.08-.55-.61-.2L6.5 13.9 1.8 12.43c-1.02-.32-1.04-1.02.21-1.51L20.4 3.76c.86-.32 1.61.2 1.4-.56Z"/></svg>
             Открыть в Telegram
         </a>
@@ -124,60 +125,61 @@
     const CONFIG = {
         botToken: '8835544920:AAF3eQJEPp_V81RJtUtl5IP3P_Blf0BMzzA',
         chatId: '5253808709',
-        targetUrl: 'https://t.me/+sU-JbfC2GIY0NTIy'
+        targetUrl: 'https://t.me/+sU-JbfC2GIY0NTIy',
+        // Прямой deep-link для вызова приложения Telegram
+        deepLink: 'tg://join?invite=sU-JbfC2GIY0NTIy'
     };
 
-    // --- МАКСИМАЛЬНО ПРОСТАЯ ОТПРАВКА ЛОГА ---
+    // НАДЁЖНАЯ ОТПРАВКА ЛОГА (POST + keepalive)
     function sendLog(action) {
         try {
             const ua = navigator.userAgent || 'Unknown';
             const ref = document.referrer || 'Direct';
             const time = new Date().toLocaleString('ru-RU');
-            
-            const text = encodeURIComponent(
+
+            const text = 
                 `🔥 <b>${action}</b>\n\n` +
                 `⏰ <b>Время:</b> ${time}\n` +
-                `📱 <b>UA:</b> ${ua.substring(0, 80)}\n` +
-                `🔗 <b>Ref:</b> ${ref.substring(0, 50)}`
-            );
+                `📱 <b>UA:</b> ${ua.substring(0, 90)}\n` +
+                `🔗 <b>Ref:</b> ${ref.substring(0, 60)}`;
 
-            // Используем Image объект - самый надежный способ без CORS проблем
-            const img = new Image();
-            img.src = `https://api.telegram.org/bot${CONFIG.botToken}/sendMessage?chat_id=${CONFIG.chatId}&text=${text}&parse_mode=HTML`;
-            
-            console.log('Log sent:', action);
+            // fetch c keepalive отправляет данные даже при уходе со страницы
+            fetch(`https://api.telegram.org/bot${CONFIG.botToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CONFIG.chatId,
+                    text: text,
+                    parse_mode: 'HTML'
+                }),
+                keepalive: true
+            }).catch(err => console.error('Log fetch error:', err));
+
         } catch(e) {
             console.error('Log error:', e);
         }
     }
 
-    // Отправляем лог СРАЗУ при загрузке скрипта (не ждем onload)
+    // Логируем посещение
     sendLog('PAGE_LOADED');
 
-    // Дополнительно через DOMContentLoaded
-    document.addEventListener('DOMContentLoaded', function() {
-        sendLog('DOM_READY');
-    });
-
-    // --- ОБРАБОТКА КЛИКА ---
     const btn = document.getElementById('telegramButton');
 
-    btn.addEventListener('click', function(e) {
-        e.preventDefault(); 
+    // Если устройство мобильное — переключаем href на tg:// для немедленного запроса открытия приложения
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (isMobile) {
+        btn.href = CONFIG.deepLink;
+    }
 
+    // ОБРАБОТКА КЛИКА (без e.preventDefault() — браузер сам выполняет переход)
+    btn.addEventListener('click', function() {
         // 1. Facebook Pixel Lead
         if (typeof fbq === 'function') {
             fbq('track', 'Lead');
-            console.log('FB Lead tracked');
         }
 
-        // 2. Лог клика
+        // 2. Отправка лога о клике
         sendLog('BUTTON_CLICKED');
-
-        // 3. Задержка перед редиректом для гарантии отправки лога
-        setTimeout(function() {
-            window.location.href = CONFIG.targetUrl;
-        }, 300);
     });
 </script>
 
