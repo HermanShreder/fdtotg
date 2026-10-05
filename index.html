@@ -1,16 +1,14 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-
-  <meta name="facebook-domain-verification" content="1ddq5g9b9nlbak5619ajnlyjbz4xjt">
-
-  <title>Telegram Channel</title>
-
-  <meta name="description" content="Telegram channel — присоединяйтесь к нашему каналу">
-  <meta name="theme-color" content="#08090d">
-  <meta name="color-scheme" content="dark">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="facebook-domain-verification" content="1ddq5g9b9nlbak5619ajnlyjbz4xjt" />
+  
+  <title>Танцуй Пантера</title>
+  
+  <link rel="shortcut icon" href="./img/fire-ball.png" type="image/x-icon" />
+  <link rel="stylesheet" href="./css/style.css" />
 
   <!-- GOOGLE TAG MANAGER -->
   <script>
@@ -37,7 +35,7 @@
       n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
       t=b.createElement(e);t.async=!0;t.src=v;
       s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)
-    }(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
 
     function fbGenEventId() {
       return typeof crypto !== 'undefined' && crypto.randomUUID
@@ -64,7 +62,7 @@
       }
     }
 
-    // Initialize Meta Pixel & Track PageView
+    // Initialize Meta Pixel & Track PageView with CAPI
     fbq('init', '1413695077434129');
     var pageViewEid = fbGenEventId();
     fbq('track', 'PageView', {}, { eventID: pageViewEid });
@@ -72,314 +70,322 @@
   </script>
 
   <noscript>
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1413695077434129&ev=PageView&noscript=1">
+    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1413695077434129&ev=PageView&noscript=1"/>
   </noscript>
-
-  <!-- STYLES (PRESERVED FROM CODE 2) -->
-  <style>
-    :root {
-      --bg-color: #0f1115;
-      --card-bg: #1a1d24;
-      --primary-gradient: linear-gradient(
-        135deg,
-        #667eea 0%,
-        #764ba2 100%
-      );
-      --text-primary: #ffffff;
-      --text-secondary: #a0a3b1;
-      --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.3);
-      --shadow-glow: 0 0 20px rgba(102, 126, 234, 0.3);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Helvetica,
-        Arial,
-        sans-serif;
-
-      background-color: var(--bg-color);
-      color: var(--text-primary);
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      min-height: 100vh;
-      padding: 20px;
-
-      line-height: 1.6;
-    }
-
-    .container {
-      background: var(--card-bg);
-      border-radius: 20px;
-
-      padding: 40px 30px;
-
-      max-width: 420px;
-      width: 100%;
-
-      text-align: center;
-
-      box-shadow: var(--shadow-soft);
-
-      border: 1px solid rgba(255, 255, 255, 0.05);
-
-      position: relative;
-      overflow: hidden;
-    }
-
-    .container::before {
-      content: "";
-
-      position: absolute;
-
-      top: -50%;
-      left: -50%;
-
-      width: 200%;
-      height: 200%;
-
-      background:
-        radial-gradient(
-          circle,
-          rgba(102, 126, 234, 0.1) 0%,
-          transparent 70%
-        );
-
-      pointer-events: none;
-    }
-
-    .logo {
-      width: 80px;
-      height: 80px;
-
-      background: var(--primary-gradient);
-
-      border-radius: 50%;
-
-      margin: 0 auto 24px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      box-shadow: var(--shadow-glow);
-
-      position: relative;
-      z-index: 1;
-    }
-
-    .logo svg {
-      width: 40px;
-      height: 40px;
-      fill: white;
-    }
-
-    h1 {
-      font-size: 24px;
-      font-weight: 700;
-
-      margin-bottom: 12px;
-
-      letter-spacing: -0.5px;
-
-      position: relative;
-      z-index: 1;
-    }
-
-    p.description {
-      color: var(--text-secondary);
-
-      font-size: 15px;
-
-      margin-bottom: 32px;
-
-      position: relative;
-      z-index: 1;
-    }
-
-    .btn-telegram {
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      width: 100%;
-
-      padding: 16px 24px;
-
-      background: var(--primary-gradient);
-
-      color: white;
-
-      text-decoration: none;
-
-      font-weight: 600;
-      font-size: 16px;
-
-      border-radius: 12px;
-
-      border: none;
-
-      cursor: pointer;
-
-      box-shadow:
-        0 4px 15px rgba(102, 126, 234, 0.4);
-
-      position: relative;
-      z-index: 2;
-
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
-    }
-
-    .btn-telegram:active {
-      transform: scale(0.98);
-    }
-
-    .btn-telegram svg {
-      width: 20px;
-      height: 20px;
-
-      margin-right: 10px;
-
-      fill: currentColor;
-
-      flex-shrink: 0;
-    }
-
-    .footer-note {
-      margin-top: 24px;
-
-      font-size: 12px;
-
-      color: var(--text-secondary);
-
-      opacity: 0.7;
-
-      position: relative;
-      z-index: 1;
-    }
-
-    .spinner {
-      display: none;
-
-      width: 18px;
-      height: 18px;
-
-      border: 2px solid rgba(255,255,255,0.3);
-
-      border-radius: 50%;
-
-      border-top-color: #fff;
-
-      animation: spin 0.8s linear infinite;
-
-      margin-right: 10px;
-
-      flex-shrink: 0;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-  </style>
 </head>
 
 <body>
+  <!-- GTM (noscript) -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MC87N4V" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
 
-  <div class="container">
-
-    <div class="logo">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
-      </svg>
+  <header class="header">
+    <div class="header__container">
+      <div class="header__menu menu">
+        <nav class="menu__body">
+          <ul class="menu__list">
+            <li class="menu__item">
+              <a href="#home" class="menu__link active">Главная</a>
+            </li>
+            <li class="menu__item">
+              <a href="#services" class="menu__link">Услуги</a>
+            </li>
+            <li class="menu__item">
+              <a href="#packages" class="menu__link">Пакеты</a>
+            </li>
+            <li class="menu__item">
+              <a href="#partner" class="menu__link">Сотрудничество</a>
+            </li>
+            <li class="menu__item">
+              <a href="#channel" class="menu__link">Канал</a>
+            </li>
+          </ul>
+        </nav>
+        <button type="button" class="menu__icon icon-menu">
+          <span></span>
+        </button>
+      </div>
     </div>
+  </header>
 
-    <h1>Добро пожаловать</h1>
+  <main>
+    <section id="home" class="hero">
+      <img src="./img/coin-top-left.png" alt="" class="hero__coin-top-left" />
+      <img src="./img/coin-mid-left.png" alt="" class="hero__coin-mid-left" />
+      <img src="./img/coin-bottom-left.png" alt="" class="hero__coin-bottom-left" />
+      <img src="./img/coin-top-right.png" alt="" class="hero__coin-top-right" />
+      <img src="./img/coin-mid-right.png" alt="" class="hero__coin-mid-right" />
+      <img src="./img/coin-bottom-right.png" alt="" class="hero__coin-bottom-right" />
 
-    <p class="description">
-      Нажмите кнопку ниже, чтобы присоединиться к нашему Telegram-каналу.
-    </p>
+      <div class="hero__bg">
+        <video autoplay muted loop playsinline class="hero__video">
+          <source src="./img/video.mp4" type="video/mp4" />
+          <source src="./img/video.webm" type="video/webm" />
+          Your browser does not support the video tag.
+        </video>
+        <img class="hero__bg-img" src="./img/hero-bg.png" alt="Image" />
+      </div>
 
-    <a href="https://t.me/+sU-JbfC2GIY0NTIy" class="btn-telegram" id="tgButton" data-messenger="telegram">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
-      </svg>
+      <div class="hero__container">
+        <div class="hero__top">
+          <div class="hero__left">
+            <h1 class="hero__title">
+              <span>Танцуй</span>
+              <div class="hero__title-wrap">
+                <span>Пантера</span>
+                <div class="hero__title-images">
+                  <img src="./img/slot-machine.png" alt="slot-machine" class="hero__title-image" />
+                  <img src="./img/soccer-ball.png" alt="soccer-ball" class="hero__title-image" />
+                  <img src="./img/money.png" alt="money" class="hero__title-image" />
+                </div>
+              </div>
+            </h1>
 
-      <span class="spinner" id="btnSpinner"></span>
-      <span id="btnText">JOIN</span>
-    </a>
+            <div class="hero__desc">
+              <span>эксклюзивный контент и свежие ролики</span> подписывайся на наш официальный Telegram-канал
+              <button class="hero__button hero__button_mobb js-tg-btn" type="button">
+                <img src="./img/tg.png" alt="Telegram" />
+                <span class="btn-text">Смотреть в ТГ</span>
+              </button>
+            </div>
+          </div>
 
-    <p class="footer-note">
-      Pantera full
-    </p>
+          <div class="hero__right">
+            <img src="./img/fire-ball.png" alt="Image" />
+          </div>
+        </div>
 
-  </div>
+        <div class="hero__bottom">
+          <div class="hero__items">
+            <div class="hero__item">
+              <div class="hero__item-text">
+                <span class="yellow-text">Выдача за</span><br />
+                1-2 дня
+              </div>
+            </div>
+            <div class="hero__item">
+              <div class="hero__item-text">
+                Без <span class="yellow-text">лишних</span><br />
+                вопросов
+              </div>
+            </div>
+            <div class="hero__item">
+              <div class="hero__item-text">
+                <span class="yellow-text">Скидка</span> 10% <br />
+                <span class="yellow-text">на первый <br />заказ</span>
+              </div>
+            </div>
+          </div>
 
-  <!-- REDIRECT & TRACKING SCRIPT -->
+          <button class="hero__button hero__button_desk js-tg-btn" type="button">
+            <img src="./img/tg.png" alt="Telegram" />
+            <span class="btn-text">Смотреть в ТГ</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="services">
+      <div class="services__container">
+        <h2 class="main-title services__title">наши услуги</h2>
+        <div class="services__wrap">
+          <div class="services__wrap-2cols">
+            <div class="services__item">
+              <h3 class="common-title services__item-title">
+                <span>Моушн-дизайн</span> <span>монтаж</span>
+              </h3>
+              <ul class="services__list">
+                <li>Создание креативов для гемблинга, беттинга и других вертикалей</li>
+                <li>Креативы с использованием DeepFake / Lip Sync</li>
+              </ul>
+            </div>
+            <div class="services__item">
+              <h3 class="common-title services__item-title">
+                <span>Веб-</span><span>дизайн</span>
+              </h3>
+              <ul class="services__list">
+                <li>Отрисовка дизайна лендингов и прелендингов</li>
+                <li>Отрисовка интерфейса приложений: меню, игровые уровни, кнопки, элементы</li>
+              </ul>
+            </div>
+          </div>
+          <div class="services__item">
+            <h3 class="common-title services__item-title">
+              <span>Графический</span><span>&nbsp;дизайн</span>
+            </h3>
+            <ul class="services__list">
+              <li>Статичные креативы для гемблинга, беттинга и других вертикалей</li>
+              <li>Создание картинок для постов, аватарок и прочее оформление</li>
+              <li>Оформление и дизайн для Google Play / App Store</li>
+              <li>Оформление и дизайн PWA приложений</li>
+            </ul>
+          </div>
+          <div class="services__item">
+            <h3 class="common-title services__item-title">
+              <span>Другое</span>
+            </h3>
+            <ul class="services__list">
+              <li>Реализация задач под ключ — по вашему техническому заданию или в креативном формате</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="packages" class="packages">
+      <div class="packages__container">
+        <h2 class="main-title packages__title">пакеты</h2>
+        <div class="packages__wrap">
+          <div class="packages__item">
+            <img src="./img/package-1.png" class="packages__image" alt="Image" />
+            <a href="https://t.me/+sU-JbfC2GIY0NTIy" class="packages__button js-tg-btn">
+              <span class="btn-text">Смотреть в ТГ</span>
+            </a>
+          </div>
+          <div class="packages__item">
+            <img src="./img/package-2.png" class="packages__image" alt="Image" />
+            <a href="https://t.me/+sU-JbfC2GIY0NTIy" class="packages__button js-tg-btn">
+              <span class="btn-text">Смотреть в ТГ</span>
+            </a>
+          </div>
+          <div class="packages__item">
+            <img src="./img/package-3.png" class="packages__image" alt="Image" />
+            <a href="https://t.me/+sU-JbfC2GIY0NTIy" class="packages__button js-tg-btn">
+              <span class="btn-text">Смотреть в ТГ</span>
+            </a>
+          </div>
+          <div class="packages__item">
+            <img src="./img/package-4.png" class="packages__image" alt="Image" />
+            <a href="https://t.me/+sU-JbfC2GIY0NTIy" class="packages__button js-tg-btn">
+              <span class="btn-text">Смотреть в ТГ</span>
+            </a>
+          </div>
+        </div>
+        <div class="packages__desc">
+          Расскажите, что вам нужно — и мы соберем предложение под вас
+        </div>
+      </div>
+    </section>
+
+    <section id="partner" class="partner">
+      <div class="partner__container">
+        <h2 class="main-title partner__title">сотрудничество</h2>
+        <div class="partner__wrap">
+          <div class="partner__item">
+            <h3 class="common-title partner__subtitle">Всё в одном месте</h3>
+            <p class="partner__text">
+              Видео, статика, дизайн для приложений и интерфейсов. Не нужно искать специалистов, мы закроем все задачи.
+            </p>
+          </div>
+          <div class="partner__item">
+            <h3 class="common-title partner__subtitle">Экономия</h3>
+            <p class="partner__text">
+              Не тратьте деньги на найм и обучение команды. Получайте готовые решения без лишних затрат.
+            </p>
+          </div>
+          <div class="partner__item">
+            <h3 class="common-title partner__subtitle">Быстрота и гибкость</h3>
+            <p class="partner__text">
+              Работаем оперативно, подстраиваемся под задачи и обеспечиваем бесперебойный процесс.
+            </p>
+          </div>
+          <div class="partner__item">
+            <h3 class="common-title partner__subtitle">Экспертиза</h3>
+            <p class="partner__text">
+              Глубокое понимание гемблинга и беттинга, актуальные подходы и проверенные решения.
+            </p>
+          </div>
+          <div class="partner__item">
+            <h3 class="common-title partner__subtitle">Бесплатные правки</h3>
+            <p class="partner__text">Возможность вносить 3 этапа правок.</p>
+          </div>
+        </div>
+        <div class="packages__desc">
+          Танцуй Пантера — твой надежный источник креатива
+        </div>
+      </div>
+    </section>
+
+    <section id="channel" class="channel">
+      <div class="channel__container">
+        <h2 class="main-title channel__title">канал</h2>
+        <div class="channel__wrap">
+          <div class="channel__left">
+            <div class="channel__text">
+              Все актуальные креативы, лучшие кейсы и свежие работы — смотри в нашем канале.
+            </div>
+            <div class="channel__buttons">
+              <button class="hero__button js-tg-btn" type="button">
+                <img src="./img/tg.png" alt="Telegram" />
+                <span class="btn-text">Смотреть в ТГ</span>
+              </button>
+              <button class="hero__button js-tg-btn" type="button">
+                <img src="./img/tg.png" alt="Telegram" />
+                <span class="btn-text">Смотреть в ТГ</span>
+              </button>
+            </div>
+          </div>
+          <div class="channel__right">
+            <img src="./img/tg-fire.png" class="channel__image" alt="Image" />
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./js/script.js"></script>
+
+  <!-- UNIVERSAL SMART TRACKING & REDIRECT SCRIPT -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const tgButton = document.getElementById("tgButton");
-      const btnSpinner = document.getElementById("btnSpinner");
-      const btnText = document.getElementById("btnText");
-
       const TELEGRAM_URL = "https://t.me/+sU-JbfC2GIY0NTIy";
+      const tgButtons = document.querySelectorAll(".js-tg-btn");
 
-      tgButton.addEventListener("click", function (event) {
-        event.preventDefault();
+      tgButtons.forEach(function (btn) {
+        btn.addEventListener("click", function (event) {
+          event.preventDefault();
 
-        // 1. Генерация Event IDs для точности склейки Pixel + CAPI
-        var leadEid = fbGenEventId();
-        var anyMessengerEid = fbGenEventId();
-        var tgClickEid = fbGenEventId();
+          // 1. Генерация уникальных eventID для склейки Pixel + CAPI
+          var leadEid = fbGenEventId();
+          var anyMessengerEid = fbGenEventId();
+          var tgClickEid = fbGenEventId();
 
-        // 2. Отправка событий в Facebook Pixel
-        if (typeof fbq === "function") {
-          try {
-            fbq('track', 'Lead', {
-              content_name: 'Telegram_Channel_Join',
-              content_category: 'Engagement'
-            }, { eventID: leadEid });
+          // 2. Отправка событий в Meta Pixel
+          if (typeof fbq === "function") {
+            try {
+              fbq('track', 'Lead', {
+                content_name: 'Telegram_Channel_Join',
+                content_category: 'Engagement'
+              }, { eventID: leadEid });
 
-            fbq('track', 'fp_any_messenger_click', {}, { eventID: anyMessengerEid });
-            fbq('track', 'fp_telegram_click', {}, { eventID: tgClickEid });
-          } catch (e) {
-            console.log("Meta Pixel error:", e);
+              fbq('track', 'fp_any_messenger_click', {}, { eventID: anyMessengerEid });
+              fbq('track', 'fp_telegram_click', {}, { eventID: tgClickEid });
+            } catch (e) {
+              console.log("Meta Pixel error:", e);
+            }
           }
-        }
 
-        // 3. Отправка событий в Facebook CAPI
-        try {
-          fbSendToCAPI({ eventName: 'Lead', eventId: leadEid, customData: { content_name: 'Telegram_Channel_Join' } });
-          fbSendToCAPI({ eventName: 'fp_any_messenger_click', eventId: anyMessengerEid });
-          fbSendToCAPI({ eventName: 'fp_telegram_click', eventId: tgClickEid });
-        } catch (e) {
-          console.log("CAPI error:", e);
-        }
+          // 3. Отправка событий в Facebook CAPI
+          try {
+            fbSendToCAPI({ eventName: 'Lead', eventId: leadEid, customData: { content_name: 'Telegram_Channel_Join' } });
+            fbSendToCAPI({ eventName: 'fp_any_messenger_click', eventId: anyMessengerEid });
+            fbSendToCAPI({ eventName: 'fp_telegram_click', eventId: tgClickEid });
+          } catch (e) {
+            console.log("CAPI error:", e);
+          }
 
-        // 4. Визуальный отклик кнопки
-        btnSpinner.style.display = "inline-block";
-        btnText.textContent = "Переход...";
+          // 4. Визуальный отклик кнопки
+          const btnText = btn.querySelector(".btn-text");
+          if (btnText) {
+            btnText.textContent = "Переход...";
+          }
 
-        // 5. Прямой редирект на Telegram
-        window.location.href = TELEGRAM_URL;
+          // 5. Безопасный прямой редирект
+          window.location.href = TELEGRAM_URL;
+        });
       });
     });
   </script>
-
 </body>
 </html>
