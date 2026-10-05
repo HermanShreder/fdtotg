@@ -1,391 +1,96 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html class="theme_dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="facebook-domain-verification" content="1ddq5g9b9nlbak5619ajnlyjbz4xjt" />
-  
-  <title>Танцуй Пантера</title>
-  
-  <link rel="shortcut icon" href="./img/fire-ball.png" type="image/x-icon" />
-  <link rel="stylesheet" href="./css/style.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Start bot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- GOOGLE TAG MANAGER -->
-  <script>
-    !function(e,t,a,n,g){e[n]=e[n]||[],e[n].push({"gtm.start":(new Date).getTime(),event:"gtm.js"});var m=t.getElementsByTagName(a)[0],r=t.createElement(a);r.async=!0,r.src="https://www.googletagmanager.com/gtm.js?id=GTM-MC87N4V",m.parentNode.insertBefore(r,m)}(window,document,"script","dataLayer");
-  </script>
+    <link rel="icon" type="image/svg+xml" href="images/website_icon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="alternate icon" href="images/favicon.ico" type="image/x-icon">
 
-  <!-- USER ANALYTICS CONFIG -->
-  <script>
-    window.USERANALYTICS = {
-      "google": "",
-      "facebook": "1413695077434129",
-      "tiktok": "",
-      "hasFacebookCapi": true,
-      "websiteId": "adtraff"
-    };
-  </script>
+    <link href="css/font-roboto.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet" media="screen">
 
-  <!-- META PIXEL & CAPI INFRASTRUCTURE -->
-  <script>
-    !function(f,b,e,v,n,t,s){
-      if(f.fbq)return;
-      n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;
-      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
-      t=b.createElement(e);t.async=!0;t.src=v;
-      s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)
-    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    <!-- Meta Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1413695077434129');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1413695077434129&ev=PageView&noscript=1" /></noscript>
+    <!-- End Meta Pixel Code -->
 
-    function fbGenEventId() {
-      return typeof crypto !== 'undefined' && crypto.randomUUID
-        ? crypto.randomUUID()
-        : Math.random().toString(36).substring(2) + Date.now().toString(36);
-    }
-
-    function fbSendToCAPI({ eventName, eventId, customData, userData }) {
-      var ua = window.USERANALYTICS;
-      if (!ua.hasFacebookCapi || !ua.websiteId) return;
-      var blob = new Blob([JSON.stringify({
-        eventName: eventName,
-        eventId: eventId,
-        sourceUrl: location.href,
-        fbp: (document.cookie.match(/_fbp=([^;]+)/) || [])[1],
-        fbc: (document.cookie.match(/_fbc=([^;]+)/) || [])[1],
-        customData: customData || null,
-        email: userData && userData.email,
-        phone: userData && userData.phone
-      })], { type: 'application/json' });
-      
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon('/userpage/api/websites/' + ua.websiteId + '/track', blob);
-      }
-    }
-
-    // Initialize Meta Pixel & Track PageView with CAPI
-    fbq('init', '1413695077434129');
-    var pageViewEid = fbGenEventId();
-    fbq('track', 'PageView', {}, { eventID: pageViewEid });
-    fbSendToCAPI({ eventName: 'PageView', eventId: pageViewEid });
-  </script>
-
-  <noscript>
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1413695077434129&ev=PageView&noscript=1"/>
-  </noscript>
 </head>
 
-<body>
-  <!-- GTM (noscript) -->
-  <noscript>
-    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MC87N4V" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-  </noscript>
-
-  <header class="header">
-    <div class="header__container">
-      <div class="header__menu menu">
-        <nav class="menu__body">
-          <ul class="menu__list">
-            <li class="menu__item">
-              <a href="#home" class="menu__link active">Главная</a>
-            </li>
-            <li class="menu__item">
-              <a href="#services" class="menu__link">Услуги</a>
-            </li>
-            <li class="menu__item">
-              <a href="#packages" class="menu__link">Пакеты</a>
-            </li>
-            <li class="menu__item">
-              <a href="#partner" class="menu__link">Сотрудничество</a>
-            </li>
-            <li class="menu__item">
-              <a href="#channel" class="menu__link">Канал</a>
-            </li>
-          </ul>
-        </nav>
-        <button type="button" class="menu__icon icon-menu">
-          <span></span>
-        </button>
-      </div>
+<body class="">
+    <div class="background_wrap">
+        <canvas id="background" class="background default" width="50" height="50" data-colors="dbddbb,6ba587,d5d88d,88b884"></canvas>
+        <div class="background_pattern default"></div>
     </div>
-  </header>
-
-  <main>
-    <section id="home" class="hero">
-      <img src="./img/coin-top-left.png" alt="" class="hero__coin-top-left" />
-      <img src="./img/coin-mid-left.png" alt="" class="hero__coin-mid-left" />
-      <img src="./img/coin-bottom-left.png" alt="" class="hero__coin-bottom-left" />
-      <img src="./img/coin-top-right.png" alt="" class="hero__coin-top-right" />
-      <img src="./img/coin-mid-right.png" alt="" class="hero__coin-mid-right" />
-      <img src="./img/coin-bottom-right.png" alt="" class="hero__coin-bottom-right" />
-
-      <div class="hero__bg">
-        <video autoplay muted loop playsinline class="hero__video">
-          <source src="./img/video.mp4" type="video/mp4" />
-          <source src="./img/video.webm" type="video/webm" />
-          Your browser does not support the video tag.
-        </video>
-        <img class="hero__bg-img" src="./img/hero-bg.png" alt="Image" />
-      </div>
-
-      <div class="hero__container">
-        <div class="hero__top">
-          <div class="hero__left">
-            <h1 class="hero__title">
-              <span>Танцуй</span>
-              <div class="hero__title-wrap">
-                <span>Пантера</span>
-                <div class="hero__title-images">
-                  <img src="./img/slot-machine.png" alt="slot-machine" class="hero__title-image" />
-                  <img src="./img/soccer-ball.png" alt="soccer-ball" class="hero__title-image" />
-                  <img src="./img/money.png" alt="money" class="hero__title-image" />
+    <div class="page_wrap">
+        <div class="head_wrap" hidden="">
+        </div>
+        <div class="body_wrap">
+            <div class="page">
+                <div class="page_photo">
+                    <a href="tg://join?invite=sU-JbfC2GIY0NTIy" onclick="fbq('track', 'Lead')">
+                        <img class="page_photo_image" src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo" style="width: 120px; height: 120px;">
+                    </a>
                 </div>
-              </div>
-            </h1>
-
-            <div class="hero__desc">
-              <span>эксклюзивный контент и свежие ролики</span> подписывайся на наш официальный Telegram-канал
-              <button class="hero__button hero__button_mobb js-tg-btn" type="button">
-                <img src="./img/tg.png" alt="Telegram" />
-                <span class="btn-text">Смотреть в ТГ</span>
-              </button>
+                <div class="page_title" dir="auto">
+                    <span dir="auto">Пантера</span>
+                </div>
+                <div class="page_action">
+                    <a class="action_button_new shine" onclick="fbq('track', 'Lead')" href="tg://join?invite=sU-JbfC2GIY0NTIy">Join Channel</a>
+                </div>
             </div>
-          </div>
-
-          <div class="hero__right">
-            <img src="./img/fire-ball.png" alt="Image" />
-          </div>
         </div>
+    </div>
 
-        <div class="hero__bottom">
-          <div class="hero__items">
-            <div class="hero__item">
-              <div class="hero__item-text">
-                <span class="yellow-text">Выдача за</span><br />
-                1-2 дня
-              </div>
-            </div>
-            <div class="hero__item">
-              <div class="hero__item-text">
-                Без <span class="yellow-text">лишних</span><br />
-                вопросов
-              </div>
-            </div>
-            <div class="hero__item">
-              <div class="hero__item-text">
-                <span class="yellow-text">Скидка</span> 10% <br />
-                <span class="yellow-text">на первый <br />заказ</span>
-              </div>
-            </div>
-          </div>
+    <div id="frame_cont"></div>
 
-          <button class="hero__button hero__button_desk js-tg-btn" type="button">
-            <img src="./img/tg.png" alt="Telegram" />
-            <span class="btn-text">Смотреть в ТГ</span>
-          </button>
-        </div>
-      </div>
-    </section>
+    <!-- фон телеграма -->
+    <script src="js/wallpaper.js"></script>
 
-    <section id="services" class="services">
-      <div class="services__container">
-        <h2 class="main-title services__title">наши услуги</h2>
-        <div class="services__wrap">
-          <div class="services__wrap-2cols">
-            <div class="services__item">
-              <h3 class="common-title services__item-title">
-                <span>Моушн-дизайн</span> <span>монтаж</span>
-              </h3>
-              <ul class="services__list">
-                <li>Создание креативов для гемблинга, беттинга и других вертикалей</li>
-                <li>Креативы с использованием DeepFake / Lip Sync</li>
-              </ul>
-            </div>
-            <div class="services__item">
-              <h3 class="common-title services__item-title">
-                <span>Веб-</span><span>дизайн</span>
-              </h3>
-              <ul class="services__list">
-                <li>Отрисовка дизайна лендингов и прелендингов</li>
-                <li>Отрисовка интерфейса приложений: меню, игровые уровни, кнопки, элементы</li>
-              </ul>
-            </div>
-          </div>
-          <div class="services__item">
-            <h3 class="common-title services__item-title">
-              <span>Графический</span><span>&nbsp;дизайн</span>
-            </h3>
-            <ul class="services__list">
-              <li>Статичные креативы для гемблинга, беттинга и других вертикалей</li>
-              <li>Создание картинок для постов, аватарок и прочее оформление</li>
-              <li>Оформление и дизайн для Google Play / App Store</li>
-              <li>Оформление и дизайн PWA приложений</li>
-            </ul>
-          </div>
-          <div class="services__item">
-            <h3 class="common-title services__item-title">
-              <span>Другое</span>
-            </h3>
-            <ul class="services__list">
-              <li>Реализация задач под ключ — по вашему техническому заданию или в креативном формате</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- темна тема -->
+    <script type="text/javascript">
+        var tme_bg = document.getElementById('background');
 
-    <section id="packages" class="packages">
-      <div class="packages__container">
-        <h2 class="main-title packages__title">пакеты</h2>
-        <div class="packages__wrap">
-          <div class="packages__item">
-            <img src="./img/package-1.png" class="packages__image" alt="Image" />
-            <a href="https://t.me/+sU-JbfC2GIY0NTIy" class="packages__button js-tg-btn">
-              <span class="btn-text">Смотреть в ТГ</span>
-            </a>
-          </div>
-          <div class="packages__item">
-            <img src="./img/package-2.png" class="packages__image" alt="Image" />
-            <a href="https://t.me/+sU-JbfC2GIY0NTIy" class="packages__button js-tg-btn">
-              <span class="btn-text">Смотреть в ТГ</span>
-            </a>
-          </div>
-          <div class="packages__item">
-            <img src="./img/package-3.png" class="packages__image" alt="Image" />
-            <a href="https://t.me/+sU-JbfC2GIY0NTIy" class="packages__button js-tg-btn">
-              <span class="btn-text">Смотреть в ТГ</span>
-            </a>
-          </div>
-          <div class="packages__item">
-            <img src="./img/package-4.png" class="packages__image" alt="Image" />
-            <a href="https://t.me/+sU-JbfC2GIY0NTIy" class="packages__button js-tg-btn">
-              <span class="btn-text">Смотреть в ТГ</span>
-            </a>
-          </div>
-        </div>
-        <div class="packages__desc">
-          Расскажите, что вам нужно — и мы соберем предложение под вас
-        </div>
-      </div>
-    </section>
+        if (tme_bg) {
+            TWallpaper.init(tme_bg);
+            TWallpaper.animate(true);
+            window.onfocus = function () { TWallpaper.update(); };
+        }
+        document.body.classList.remove('no_transition');
 
-    <section id="partner" class="partner">
-      <div class="partner__container">
-        <h2 class="main-title partner__title">сотрудничество</h2>
-        <div class="partner__wrap">
-          <div class="partner__item">
-            <h3 class="common-title partner__subtitle">Всё в одном месте</h3>
-            <p class="partner__text">
-              Видео, статика, дизайн для приложений и интерфейсов. Не нужно искать специалистов, мы закроем все задачи.
-            </p>
-          </div>
-          <div class="partner__item">
-            <h3 class="common-title partner__subtitle">Экономия</h3>
-            <p class="partner__text">
-              Не тратьте деньги на найм и обучение команды. Получайте готовые решения без лишних затрат.
-            </p>
-          </div>
-          <div class="partner__item">
-            <h3 class="common-title partner__subtitle">Быстрота и гибкость</h3>
-            <p class="partner__text">
-              Работаем оперативно, подстраиваемся под задачи и обеспечиваем бесперебойный процесс.
-            </p>
-          </div>
-          <div class="partner__item">
-            <h3 class="common-title partner__subtitle">Экспертиза</h3>
-            <p class="partner__text">
-              Глубокое понимание гемблинга и беттинга, актуальные подходы и проверенные решения.
-            </p>
-          </div>
-          <div class="partner__item">
-            <h3 class="common-title partner__subtitle">Бесплатные правки</h3>
-            <p class="partner__text">Возможность вносить 3 этапа правок.</p>
-          </div>
-        </div>
-        <div class="packages__desc">
-          Танцуй Пантера — твой надежный источник креатива
-        </div>
-      </div>
-    </section>
+        function toggleTheme(dark) {
+            window.Telegram && Telegram.setWidgetOptions({ dark: dark });
+        }
+        if (window.matchMedia) {
+            var darkMedia = window.matchMedia('(prefers-color-scheme: dark)');
+            toggleTheme(darkMedia.matches);
+            darkMedia.addListener(function (e) {
+                toggleTheme(e.matches);
+            });
+        }
+    </script>
 
-    <section id="channel" class="channel">
-      <div class="channel__container">
-        <h2 class="main-title channel__title">канал</h2>
-        <div class="channel__wrap">
-          <div class="channel__left">
-            <div class="channel__text">
-              Все актуальные креативы, лучшие кейсы и свежие работы — смотри в нашем канале.
-            </div>
-            <div class="channel__buttons">
-              <button class="hero__button js-tg-btn" type="button">
-                <img src="./img/tg.png" alt="Telegram" />
-                <span class="btn-text">Смотреть в ТГ</span>
-              </button>
-              <button class="hero__button js-tg-btn" type="button">
-                <img src="./img/tg.png" alt="Telegram" />
-                <span class="btn-text">Смотреть в ТГ</span>
-              </button>
-            </div>
-          </div>
-          <div class="channel__right">
-            <img src="./img/tg-fire.png" class="channel__image" alt="Image" />
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+    <!-- аналитика -->
+    <script src="js/tracker_etap1.js"></script>
 
-  <script src="./js/script.js"></script>
-
-  <!-- UNIVERSAL SMART TRACKING & REDIRECT SCRIPT -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const TELEGRAM_URL = "https://t.me/+sU-JbfC2GIY0NTIy";
-      const tgButtons = document.querySelectorAll(".js-tg-btn");
-
-      tgButtons.forEach(function (btn) {
-        btn.addEventListener("click", function (event) {
-          event.preventDefault();
-
-          // 1. Генерация уникальных eventID для склейки Pixel + CAPI
-          var leadEid = fbGenEventId();
-          var anyMessengerEid = fbGenEventId();
-          var tgClickEid = fbGenEventId();
-
-          // 2. Отправка событий в Meta Pixel
-          if (typeof fbq === "function") {
-            try {
-              fbq('track', 'Lead', {
-                content_name: 'Telegram_Channel_Join',
-                content_category: 'Engagement'
-              }, { eventID: leadEid });
-
-              fbq('track', 'fp_any_messenger_click', {}, { eventID: anyMessengerEid });
-              fbq('track', 'fp_telegram_click', {}, { eventID: tgClickEid });
-            } catch (e) {
-              console.log("Meta Pixel error:", e);
-            }
-          }
-
-          // 3. Отправка событий в Facebook CAPI
-          try {
-            fbSendToCAPI({ eventName: 'Lead', eventId: leadEid, customData: { content_name: 'Telegram_Channel_Join' } });
-            fbSendToCAPI({ eventName: 'fp_any_messenger_click', eventId: anyMessengerEid });
-            fbSendToCAPI({ eventName: 'fp_telegram_click', eventId: tgClickEid });
-          } catch (e) {
-            console.log("CAPI error:", e);
-          }
-
-          // 4. Визуальный отклик кнопки
-          const btnText = btn.querySelector(".btn-text");
-          if (btnText) {
-            btnText.textContent = "Переход...";
-          }
-
-          // 5. Безопасный прямой редирект
-          window.location.href = TELEGRAM_URL;
-        });
-      });
-    });
-  </script>
 </body>
 </html>
