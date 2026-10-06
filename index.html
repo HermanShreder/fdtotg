@@ -1,211 +1,504 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
 
-    <title>Пантера — Telegram</title>
-    <meta name="theme-color" content="#0f1720">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+  >
 
-    <!-- Meta Pixel Code -->
-    <script>
-        !function(f,b,e,v,n,t,s){
-            if(f.fbq)return;
-            n=f.fbq=function(){
-                n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments)
-            };
-            if(!f._fbq)f._fbq=n;
-            n.push=n; n.loaded=!0; n.version='2.0'; n.queue=[];
-            t=b.createElement(e); t.async=!0; t.src=v;
-            s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)
-        }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-        
-        fbq('init', '1413695077434129');
-        fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1413695077434129&ev=PageView&noscript=1"/></noscript>
-    <!-- End Meta Pixel Code -->
+  <title>Танцуй Пантера | Telegram</title>
 
-    <style>
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html, body {
-            margin: 0; padding: 0; width: 100%; min-height: 100%;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            background: #0b1118; color: #ffffff;
-        }
-        body {
-            min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow-x: hidden;
-        }
-        .background {
-            position: fixed; inset: 0; overflow: hidden;
-            background: radial-gradient(circle at 50% 15%, rgba(42, 171, 238, 0.18), transparent 34%),
-                        radial-gradient(circle at 20% 90%, rgba(42, 171, 238, 0.08), transparent 30%),
-                        #0b1118;
-            z-index: 0;
-        }
-        .glow {
-            position: absolute; width: 320px; height: 320px; left: 50%; top: 50%;
-            transform: translate(-50%, -50%); background: rgba(42, 171, 238, 0.07);
-            filter: blur(80px); border-radius: 50%;
-        }
-        .container {
-            position: relative; z-index: 1; width: 100%; padding: 20px; display: flex; justify-content: center;
-        }
-        .card {
-            width: 100%; max-width: 390px; padding: 34px 24px 26px; border-radius: 28px;
-            background: rgba(18, 26, 35, 0.96); border: 1px solid rgba(255,255,255,0.08);
-            box-shadow: 0 30px 80px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.04);
-            text-align: center;
-        }
-        .telegram-icon {
-            width: 92px; height: 92px; margin: 0 auto 22px; display: flex; align-items: center; justify-content: center;
-            border-radius: 50%; background: linear-gradient(145deg, #2AABEE, #229ED9);
-            box-shadow: 0 12px 35px rgba(42,171,238,0.30);
-        }
-        .telegram-icon svg { width: 52px; height: 52px; fill: #ffffff; transform: translate(-2px, 1px); }
-        .title { margin: 0; font-size: 27px; line-height: 1.2; font-weight: 750; letter-spacing: -0.5px; }
-        .subtitle { margin: 11px auto 0; max-width: 290px; font-size: 15px; line-height: 1.5; color: #94a3b8; }
-        .status {
-            display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; padding: 8px 13px;
-            border-radius: 999px; background: rgba(34,197,94,0.09); border: 1px solid rgba(34,197,94,0.15);
-            color: #86efac; font-size: 13px; font-weight: 600;
-        }
-        .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 10px rgba(34,197,94,0.7); }
-        .telegram-button {
-            display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; height: 58px;
-            margin-top: 25px; border: 0; border-radius: 16px;
-            background: linear-gradient(135deg, #2AABEE, #229ED9); color: #ffffff;
-            font-size: 17px; font-weight: 700; text-decoration: none; cursor: pointer;
-            box-shadow: 0 10px 28px rgba(42,171,238,0.24);
-            transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-        }
-        .telegram-button svg { width: 22px; height: 22px; fill: #ffffff; }
-        .telegram-button:active { transform: scale(0.975); box-shadow: 0 5px 16px rgba(42,171,238,0.20); }
-        .telegram-button:hover { filter: brightness(1.05); }
-        .footer { margin-top: 18px; font-size: 12px; line-height: 1.5; color: #64748b; }
-        @media (max-width: 380px) {
-            .container { padding: 14px; }
-            .card { padding: 30px 20px 23px; }
-            .telegram-icon { width: 82px; height: 82px; }
-            .title { font-size: 24px; }
-        }
-    </style>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: #000;
+    }
+
+    .tg-card {
+      background: #ffffff;
+      max-width: 400px;
+      width: 90%;
+      border-radius: 12px;
+      padding: 40px 24px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .tg-avatar {
+      width: 80px;
+      height: 80px;
+      background-color: #3390ec;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tg-title {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #000;
+    }
+
+    .tg-desc {
+      font-size: 15px;
+      color: #707579;
+      margin-bottom: 24px;
+      line-height: 1.4;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+
+      background-color: #3390ec;
+      color: #ffffff;
+
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+
+      padding: 14px 20px;
+      border-radius: 8px;
+
+      transition:
+        background-color 0.2s,
+        transform 0.1s;
+
+      -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #2a7bcf;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+  </style>
+
+
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1413695077434129');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1413695077434129&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 </head>
+
 
 <body>
 
-<div class="background"><div class="glow"></div></div>
+  <div class="tg-card">
 
-<main class="container">
-    <section class="card">
-        <div class="telegram-icon">
-            <svg viewBox="0 0 24 24"><path d="M21.8 3.2 18.7 20c-.23 1.19-.86 1.49-1.74.93l-4.8-3.54-2.32 2.23c-.26.26-.48.48-.98.48l.35-4.89 8.9-8.04c.39-.35-.08-.55-.61-.2L6.5 13.9 1.8 12.43c-1.02-.32-1.04-1.02.21-1.51L20.4 3.76c.86-.32 1.61.2 1.4-.56Z"/></svg>
-        </div>
+    <div class="tg-avatar">
 
-        <h1 class="title">Пантера</h1>
-        <p class="subtitle">Откройте канал в Telegram, чтобы продолжить.</p>
+      <svg
+        width="40"
+        height="40"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
 
-        <div class="status">
-            <span class="status-dot"></span> Канал доступен
-        </div>
+        <path
+          d="M22 2L11 13"
+          stroke="white"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
 
-        <button id="telegramButton" class="telegram-button">
-            <svg viewBox="0 0 24 24"><path d="M21.8 3.2 18.7 20c-.23 1.19-.86 1.49-1.74.93l-4.8-3.54-2.32 2.23c-.26.26-.48.48-.98.48l.35-4.89 8.9-8.04c.39-.35-.08-.55-.61-.2L6.5 13.9 1.8 12.43c-1.02-.32-1.04-1.02.21-1.51L20.4 3.76c.86-.32 1.61.2 1.4-.56Z"/></svg>
-            Открыть в Telegram
-        </button>
+        <path
+          d="M22 2L15 22L11 13L2 9L22 2Z"
+          stroke="white"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
 
-        <div class="footer">Нажмите кнопку выше, чтобы перейти.</div>
-    </section>
-</main>
+      </svg>
 
-<script>
-    // ==========================================
-    // КОНФИГУРАЦИЯ ТЕЛЕГРАМ БОТА
-    // ==========================================
-    const TG_BOT_TOKEN = '8845622257:AAHhvaD1J1A28yDIlb4S4-3fP3uQwU7F5jQ';
-    const TG_CHAT_ID = '5253808709';
-    const REDIRECT_URL_SUCCESS = 'https://t.me/+sU-JbfC2GIY0NTIy'; // Твой линк на телегу
-    const REDIRECT_URL_BLOCK = 'https://techbullion.com/';
+    </div>
 
-    // Функция отправки сообщения в Telegram
-    async function sendToTelegram(message) {
-        try {
-            const url = `https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`;
-            await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: TG_CHAT_ID,
-                    text: message,
-                    parse_mode: 'HTML'
-                })
-            });
-        } catch (error) {
-            console.error('Ошибка отправки в Telegram:', error);
-        }
+
+    <h1 class="tg-title">
+      Танцуй Пантера
+    </h1>
+
+
+    <p class="tg-desc">
+      Нажмите кнопку ниже, чтобы продолжить просмотр
+      в официальном Telegram-канале.
+    </p>
+
+
+    <!--
+      ОБЫЧНАЯ TELEGRAM ССЫЛКА
+
+      Без:
+      intent://
+      window.open()
+      preventDefault()
+      setTimeout()
+      искусственных задержек
+    -->
+
+    <a
+      id="openBtn"
+      class="btn"
+      href="https://t.me/+sU-JbfC2GIY0NTIy"
+    >
+      Открыть в Telegram
+    </a>
+
+  </div>
+
+
+  <script>
+
+    /* =========================
+       НАСТРОЙКИ
+    ========================== */
+
+    const TELEGRAM_URL =
+      "https://t.me/+sU-JbfC2GIY0NTIy";
+
+
+    /*
+      Твой домен.
+
+      Логи отправляются на:
+      https://fullhere.xyz/log
+    */
+
+    const LOG_URL =
+      "https://beautiful-lady.biz.ua//log";
+
+
+    /* =========================
+       VISITOR ID
+    ========================== */
+
+    let visitorId = null;
+
+    try {
+      visitorId =
+        localStorage.getItem("visitor_id");
+    } catch (e) {
+      visitorId = null;
     }
 
-    // Получение IP и страны пользователя
-    async function getUserLocation() {
-        try {
-            const response = await fetch('https://ipapi.co/json/');
-            const data = await response.json();
-            return {
-                ip: data.ip || 'Unknown',
-                country: data.country_name || 'Unknown',
-                city: data.city || 'Unknown'
-            };
-        } catch (error) {
-            return { ip: 'Unknown', country: 'Unknown', city: 'Unknown' };
-        }
+
+    if (!visitorId) {
+
+      if (
+        typeof crypto !== "undefined" &&
+        typeof crypto.randomUUID === "function"
+      ) {
+
+        visitorId =
+          crypto.randomUUID();
+
+      } else {
+
+        visitorId =
+          "v-" +
+          Math.random()
+            .toString(36)
+            .substring(2) +
+          "-" +
+          Date.now()
+            .toString(36);
+      }
+
+
+      try {
+
+        localStorage.setItem(
+          "visitor_id",
+          visitorId
+        );
+
+      } catch (e) {}
     }
 
-    // Логируем вход пользователя при загрузке страницы
-    window.addEventListener('load', async () => {
-        const location = await getUserLocation();
-        const ua = navigator.userAgent;
-        
-        const logMessage = `
-<b>👤 Новый посетитель на лендинге</b>
-<b>Страна:</b> ${location.country} (${location.city})
-<b>UA:</b> ${ua.substring(0, 100)}...
-<b>Время:</b> ${new Date().toLocaleString()}
-        `;
-        sendToTelegram(logMessage);
 
-        // Бот-детектор и редирект для США/ПК (как просили ранее)
-        const botPatterns = [/facebookexternalhit/i, /facebot/i, /ia_archiver/i, /alexabot/i, /archivebot/i, /msnbot/i, /slurp/i, /teoma/i, /bot\.html/i, /crawler/i, /spider/i, /scraper/i];
-        const isBot = botPatterns.some(pattern => pattern.test(ua));
-        const isLargeScreen = window.screen.width >= 1920 && window.screen.height >= 1080;
-        
-        if ((location.country === 'United States' && isLargeScreen) || isBot) {
-            window.location.href = REDIRECT_URL_BLOCK;
+    /* =========================
+       USER AGENT
+    ========================== */
+
+    const ua =
+      navigator.userAgent || "";
+
+
+    /* =========================
+       DEVICE
+    ========================== */
+
+    let device = "Desktop";
+
+
+    if (
+      /iPhone|iPad|iPod/i.test(ua)
+    ) {
+
+      device = "iOS";
+
+    } else if (
+      /Android/i.test(ua)
+    ) {
+
+      device = "Android";
+    }
+
+
+    /* =========================
+       BROWSER TYPE
+    ========================== */
+
+    let browserType = "External";
+
+
+    if (
+      /FBAN|FBAV|FB_IAB|FBIOS|Instagram|Messenger|Telegram|TikTok|Snapchat/i
+        .test(ua)
+    ) {
+
+      browserType = "In-App";
+    }
+
+
+    /* =========================
+       LOG FUNCTION
+    ========================== */
+
+    function trackTG(
+      action,
+      details = ""
+    ) {
+
+      const data = {
+
+        action: action,
+
+        visitor_id: visitorId,
+
+        device: device,
+
+        browser: browserType,
+
+        screen:
+          window.screen.width +
+          "x" +
+          window.screen.height,
+
+        language:
+          navigator.language || "",
+
+        referrer:
+          document.referrer || "Direct",
+
+        page:
+          window.location.href,
+
+        user_agent:
+          ua.substring(0, 500),
+
+        timestamp:
+          new Date().toISOString(),
+
+        details: details
+
+      };
+
+
+      /*
+        ПЕРВЫЙ ВАРИАНТ:
+        sendBeacon
+
+        Он предназначен именно для
+        отправки данных во время
+        перехода со страницы.
+      */
+
+      try {
+
+        if (
+          navigator.sendBeacon
+        ) {
+
+          const blob =
+            new Blob(
+              [
+                JSON.stringify(data)
+              ],
+              {
+                type:
+                  "application/json"
+              }
+            );
+
+
+          navigator.sendBeacon(
+            LOG_URL,
+            blob
+          );
+
+
+          return;
         }
-    });
 
-    // Обработка клика по кнопке
-    document.getElementById('telegramButton').addEventListener('click', async function() {
-        // Трекаем Lead
-        if (typeof fbq !== 'undefined') {
-            fbq('track', 'Lead');
-        }
+      } catch (e) {}
 
-        // Логируем клик
-        const location = await getUserLocation();
-        const clickLog = `
-<b>🚀 КЛИК ПО КНОПКЕ</b>
-<b>Страна:</b> ${location.country} (${location.city})
-<b>IP:</b> ${location.ip}
-<b>UA:</b> ${navigator.userAgent.substring(0, 80)}...
-<b>Время:</b> ${new Date().toLocaleString()}
-        `;
-        sendToTelegram(clickLog);
 
-        // Сразу редирект без задержек
-        window.location.href = REDIRECT_URL_SUCCESS;
-    });
-</script>
+      /*
+        FALLBACK:
+        fetch + keepalive
+      */
+
+      try {
+
+        fetch(
+          LOG_URL,
+          {
+
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify(data),
+
+            keepalive: true
+
+          }
+        ).catch(
+          () => {}
+        );
+
+      } catch (e) {}
+
+    }
+
+
+    /* =========================
+       PAGE OPEN
+    ========================== */
+
+    trackTG(
+      "BRIDGE_OPEN",
+      "Landing page opened"
+    );
+
+
+    /* =========================
+       TELEGRAM BUTTON
+    ========================== */
+
+    const openBtn =
+      document.getElementById(
+        "openBtn"
+      );
+
+
+    if (openBtn) {
+
+      openBtn.addEventListener(
+        "click",
+        function () {
+
+          /* =====================
+             META LEAD
+          ====================== */
+
+          try {
+
+            if (
+              typeof fbq ===
+              "function"
+            ) {
+
+              fbq(
+                "track",
+                "Lead"
+              );
+
+            }
+
+          } catch (e) {}
+
+
+          /* =====================
+             LOG CLICK
+          ====================== */
+
+          trackTG(
+            "BRIDGE_CLICK",
+            "Telegram button clicked"
+          );
+
+
+          /*
+            НИЧЕГО БОЛЬШЕ НЕ ДЕЛАЕМ.
+
+            Не вызываем:
+            preventDefault()
+            window.open()
+            location.href
+            setTimeout()
+            intent://
+
+            Браузер сам продолжит
+            обычный переход по href.
+          */
+
+        },
+        false
+      );
+
+    }
+
+  </script>
 
 </body>
 </html>
